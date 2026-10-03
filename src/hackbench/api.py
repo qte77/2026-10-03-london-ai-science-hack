@@ -2,8 +2,12 @@
 
 import os
 
-from fastapi import FastAPI
-from fastapi.responses import PlainTextResponse
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse, PlainTextResponse, Response
+
+from hackbench.landing import render_html, render_markdown
+
+MARKDOWN = "text/markdown; charset=utf-8"
 
 DESCRIPTION = (
     "Science agents doing Polaron's battery-electrode QC, and the evals that tell you when "
@@ -60,6 +64,18 @@ def _agent_card() -> dict[str, object]:
 
 def create_app() -> FastAPI:
     app = FastAPI(title="HackBench", version="0.1.0", description=DESCRIPTION)
+
+    @app.get("/", include_in_schema=False)
+    def root(request: Request) -> Response:
+        # Reason: one URL, two audiences; Vary tells caches the body depends on Accept.
+        headers = {"Vary": "Accept"}
+        if "text/markdown" in request.headers.get("accept", ""):
+            return Response(render_markdown(), media_type=MARKDOWN, headers=headers)
+        return HTMLResponse(render_html(_base_url()), headers=headers)
+
+    @app.get("/index.md", include_in_schema=False)
+    def index_md() -> Response:
+        return Response(render_markdown(), media_type=MARKDOWN)
 
     @app.get("/v1/health")
     def health() -> dict[str, str]:
