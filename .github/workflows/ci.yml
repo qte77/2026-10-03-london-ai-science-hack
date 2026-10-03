@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - run: pip install uv
+      - name: Install (lockfile must match pyproject)
+        run: uv sync --all-extras --frozen
+      - name: Lint, format check, tests
+        run: make validate
+
+  guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: No private data, raw TIFFs or .env tracked
+        run: |
+          if git ls-files | grep -E '^private/|\.tiff?$|(^|/)\.env$'; then
+            echo "::error::private data, TIFFs or .env are tracked"; exit 1
+          fi
+      - name: No credentials in tracked files
+        run: |
+          # Modal (ak-/as-), Anthropic, Hugging Face, GitHub token shapes
+          pattern='\b(ak|as)-[A-Za-z0-9]{16,}\b|sk-ant-[A-Za-z0-9_-]{16,}|\bhf_[A-Za-z0-9]{20,}|\bgh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}'
+          if git grep -nE "$pattern" -- . ':!.github/workflows/ci.yml'; then
+            echo "::error::credential-like string in a tracked file"; exit 1
+          fi
