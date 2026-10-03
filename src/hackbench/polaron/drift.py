@@ -81,6 +81,15 @@ DEFAULT_LEVELS: Mapping[str, Sequence[float]] = {
 }
 
 
+# Held-out levels differ from the training levels, so calibration cannot memorise them.
+HELDOUT_LEVELS: Mapping[str, Sequence[float]] = {
+    "pores": (0.03, 0.10),
+    "coarsen": (1.2, 1.5),
+    "contrast": (0.7, 1.4),
+    "blur": (1.5, 2.5),
+}
+
+
 def apply_drift(img: Image, name: str, magnitude: float, seed: int = 0) -> Image:
     return DRIFTS[name].apply(img, magnitude, seed)
 
