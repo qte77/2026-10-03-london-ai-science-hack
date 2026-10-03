@@ -24,6 +24,9 @@ e2e: ## End-to-end tests against the live deploy (override HACKBENCH_E2E_URL to 
 qc: ## Run the reference QC pipeline on HACKBENCH_DATA_DIR (writes results/, git-ignored)
 	uv run python -m hackbench.polaron --out results
 
+qc-suite: ## Build the synthetic drift suite from the baseline, run it, score vs known truth
+	uv run python -m hackbench.polaron --suite --out results
+
 validate: lint typecheck test ## Full local gate (run before pushing)
 
 run: ## Serve the app locally on :8000
@@ -32,4 +35,4 @@ run: ## Serve the app locally on :8000
 deploy: ## Deploy to Modal (needs `modal token new` once); stamps the git commit
 	HACKBENCH_COMMIT=$${HACKBENCH_COMMIT:-$$(git rev-parse HEAD)} uv run modal deploy src/hackbench/deploy.py
 
-.PHONY: help install test lint typecheck audit e2e qc validate run deploy
+.PHONY: help install test lint typecheck audit e2e qc qc-suite validate run deploy

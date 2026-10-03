@@ -15,6 +15,12 @@ versioning: [SemVer](https://semver.org/).
   (`stats.py`). `HACKBENCH_DATA_DIR` setting; profile `[domain]` section.
 - QC libraries as an optional `qc` extra (tifffile, imagecodecs, numpy, scikit-image).
 - Tests use synthetic micrographs with known ground truth; no real data in the repo or CI.
+- Drift injector and scored suite (`make qc-suite`): material drifts (added pores, coarsening;
+  large = reject) vs imaging drifts (contrast, blur; material unchanged = accept), injected into
+  the right halves of baseline fields of view and compared with the left halves.
+  `PolaronTask.ground_truth()` / `score()` now read the suite's `truth.json`. First run of the
+  reference pipeline: 3/9 correct; it rejects imaging-only drift (edge density and intensity
+  spread track acquisition settings, not material).
 
 ### Changed
 

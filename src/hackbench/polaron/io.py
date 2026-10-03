@@ -23,6 +23,19 @@ def pixel_size_nm(path: Path) -> float:
     return float(per_unit_nm / (num / den))
 
 
+def save_channel(path: Path, img: NDArray[np.float64], px_nm: float) -> None:
+    """Write a [0, 1] greyscale image as an 8-bit LZW TIFF that keeps the pixel size."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    px_per_inch = INCH_NM / px_nm
+    tifffile.imwrite(
+        path,
+        (np.clip(img, 0.0, 1.0) * 255).astype(np.uint8),
+        compression="lzw",
+        resolution=(px_per_inch, px_per_inch),
+        resolutionunit="INCH",
+    )
+
+
 def load_channel(path: Path, crop_px: int) -> NDArray[np.float64]:
     """First colour channel as floats in [0, 1], with `crop_px` removed from every edge.
 
