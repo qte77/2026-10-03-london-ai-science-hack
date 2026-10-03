@@ -16,3 +16,8 @@ versioning: [SemVer](https://semver.org/).
   `llms.txt` advertise the public URL (#2).
 - `.env.example` with sponsor API variable names (#2).
 - `AGENTS.md`, `Makefile`, architecture doc with the system diagram (#1).
+- README documents the live URL, endpoints, configuration and commands; this changelog (#3).
+- CI on every PR and push to `main`: ruff with security, annotation and bugbear rules;
+  `mypy --strict`; pytest; `pip-audit`; gitleaks full-history secret scan; a guard against
+  tracking `private/`, TIFFs or `.env`. Actions pinned by commit SHA (#4).
+- `make typecheck` and `make audit` (#4).
