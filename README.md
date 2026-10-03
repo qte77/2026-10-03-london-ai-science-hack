@@ -42,6 +42,8 @@ them: correctness, reward hacking, calibration, falsification. Built during the
 | Variable | Where | Purpose |
 |---|---|---|
 | `HACKBENCH_BASE_URL` | Modal Secret `hackbench`; local `.env` | Public URL the agent card and `llms.txt` advertise (default `http://localhost:8000`) |
+| `HACKBENCH_PROFILE` | Modal Secret `hackbench`; local `.env` | Use-case profile in `src/hackbench/profiles/` (default `polaron`) |
+| `HACKBENCH_COMMIT` | set by `make deploy` / CI | Commit reported by `/v1/health` |
 | `HACKBENCH_E2E_URL` | shell, when running `make e2e` | Deployment the e2e tests target (default: the live URL above) |
 | Sponsor API keys | local `.env` | See [`.env.example`](.env.example) |
 
