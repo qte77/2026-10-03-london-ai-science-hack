@@ -30,6 +30,8 @@ versioning: [SemVer](https://semver.org/).
   focus-sensitive), high contrast (porosity threshold), large coarsening under-called.
 - Suite images are written to a scratch folder on `/tmp` instead of the repo (`--scratch`);
   the first run filled the shared workspace disk.
+- README names the team and links the teammate repo; states the open pseudo-replication caveat
+  on real-data verdicts (tiles of shared micrographs).
 
 ### Changed
 
