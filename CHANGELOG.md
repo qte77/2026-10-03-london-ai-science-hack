@@ -21,6 +21,15 @@ versioning: [SemVer](https://semver.org/).
   `PolaronTask.ground_truth()` / `score()` now read the suite's `truth.json`. First run of the
   reference pipeline: 3/9 correct; it rejects imaging-only drift (edge density and intensity
   spread track acquisition settings, not material).
+- Material vs imaging KPIs: only material KPIs (porosity, bright phase, pore density, pore
+  diameter) decide the verdict; imaging KPIs (edge density, intensity spread) raise
+  `acquisition_flags` instead. Idea credited to teammate GRAMSINATOR's per-KPI robustness check.
+- Calibration without tuning to the benchmark: `calibrate_k()` picks the tolerance factor on a
+  training suite; `make qc-suite` then scores a held-out suite (different seeds and drift
+  levels) once. Held-out accuracy 5/9 (was 3/9); remaining errors: blur (pore diameter is
+  focus-sensitive), high contrast (porosity threshold), large coarsening under-called.
+- Suite images are written to a scratch folder on `/tmp` instead of the repo (`--scratch`);
+  the first run filled the shared workspace disk.
 
 ### Changed
 
