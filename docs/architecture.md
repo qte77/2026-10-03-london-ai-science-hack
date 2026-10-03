@@ -3,7 +3,8 @@
 Back to [README](../README.md) · See also: [event facts](event.md)
 
 **Status:** the agent-native surface (`/llms.txt`, `/robots.txt`, `/.well-known/agent-card.json`,
-`/openapi.json`, `/v1/health`) is built. Everything else below is planned.
+`/openapi.json`, `/v1/health`) is built and live at
+<https://thismay52--hackbench-web.modal.run>. Everything else below is planned.
 
 ```
                     ┌──────────────────────────────────────────────────────────────────┐
