@@ -5,6 +5,12 @@ versioning: [SemVer](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Deploy e2e raced Modal's container swap and tested the previous version. The deploy now
+  stamps `HACKBENCH_COMMIT`, `/v1/health` reports it, and `deploy.yml` waits until the new
+  commit is serving before running `make e2e`.
+
 ### Added
 
 - Landing page at `/` (was a 404): HTML for people in the qte77 EyeRest palette, markdown
