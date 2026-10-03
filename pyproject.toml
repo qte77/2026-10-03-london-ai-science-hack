@@ -12,7 +12,7 @@ dependencies = [
 deploy = ["modal>=1.0"]
 
 [dependency-groups]
-dev = ["pytest>=8", "ruff>=0.6"]
+dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.11", "pip-audit>=2.7"]
 
 [build-system]
 requires = ["hatchling"]
@@ -25,11 +25,17 @@ packages = ["src/hackbench"]
 line-length = 100
 
 [tool.ruff.lint]
-# E/F pycodestyle+pyflakes, I imports, B bugbear, UP pyupgrade, S bandit security
-select = ["E", "F", "I", "B", "UP", "S"]
+# E/W pycodestyle, F pyflakes, I imports, B bugbear, UP pyupgrade, S bandit security,
+# ANN annotations, N naming, SIM simplify, C4 comprehensions, PT pytest, RUF ruff-specific
+select = ["E", "W", "F", "I", "B", "UP", "S", "ANN", "N", "SIM", "C4", "PT", "RUF"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]  # assert is how pytest checks
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+files = ["src", "tests"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -7,7 +7,7 @@ from hackbench.api import create_app
 client = TestClient(create_app())
 
 
-def test_llms_txt_describes_the_project_and_links_the_api():
+def test_llms_txt_describes_the_project_and_links_the_api() -> None:
     r = client.get("/llms.txt")
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("text/plain")
@@ -15,13 +15,13 @@ def test_llms_txt_describes_the_project_and_links_the_api():
     assert "/openapi.json" in r.text
 
 
-def test_robots_txt_carries_a_content_signal():
+def test_robots_txt_carries_a_content_signal() -> None:
     r = client.get("/robots.txt")
     assert r.status_code == 200
     assert "Content-Signal: search=yes, ai-input=yes, ai-train=no" in r.text
 
 
-def test_agent_card_is_served_from_well_known():
+def test_agent_card_is_served_from_well_known() -> None:
     r = client.get("/.well-known/agent-card.json")
     assert r.status_code == 200
     card = r.json()
@@ -30,11 +30,11 @@ def test_agent_card_is_served_from_well_known():
     assert card["skills"], "agent card must list at least one skill"
 
 
-def test_openapi_schema_is_published():
+def test_openapi_schema_is_published() -> None:
     r = client.get("/openapi.json")
     assert r.status_code == 200
     assert r.json()["info"]["title"] == "HackBench"
 
 
-def test_health_endpoint():
+def test_health_endpoint() -> None:
     assert client.get("/v1/health").json() == {"status": "ok"}

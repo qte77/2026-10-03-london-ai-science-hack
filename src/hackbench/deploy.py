@@ -4,6 +4,7 @@ Deploy with `make deploy`. Pattern per Modal's web-functions guide (checked 2026
 """
 
 import modal
+from fastapi import FastAPI
 
 image = (
     modal.Image.debian_slim()
@@ -17,7 +18,7 @@ app = modal.App("hackbench")
 @app.function(image=image, secrets=[modal.Secret.from_name("hackbench")])
 @modal.concurrent(max_inputs=100)
 @modal.asgi_app()
-def web():
+def web() -> FastAPI:
     from hackbench.api import create_app
 
     return create_app()
