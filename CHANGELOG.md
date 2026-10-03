@@ -5,6 +5,16 @@ versioning: [SemVer](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Modularity seam: use-case copy and metadata moved from code into
+  `src/hackbench/profiles/polaron.toml` (switch with `HACKBENCH_PROFILE`); one `Settings`
+  reads all `HACKBENCH_*` env vars; version comes from package metadata (was typed 3×);
+  one app-name constant (was 4×); a bare `Task` protocol for domain plug-ins. The Polaron
+  anti-cheat rule moved from AGENTS.md into the profile's `integrity_rules`. Pages unchanged
+  except one unified skill description.
+- Modal deploy keeps non-Python package files (the default ignore would drop the profile).
+
 ### Fixed
 
 - Deploy e2e raced Modal's container swap and tested the previous version. The deploy now
