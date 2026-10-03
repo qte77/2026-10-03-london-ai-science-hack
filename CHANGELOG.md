@@ -10,6 +10,11 @@ versioning: [SemVer](https://semver.org/).
 - Landing page at `/` (was a 404): HTML for people in the qte77 EyeRest palette, markdown
   for agents via `Accept: text/markdown` (`Vary: Accept`) and `/index.md`; canonical link,
   Open Graph tags, `SoftwareApplication` JSON-LD.
+- Agent discovery: `/sitemap.xml`, `/.well-known/api-catalog` (RFC 9727),
+  `/.well-known/agent-skills/index.json` + `SKILL.md` (SHA-256 pinned), `/.well-known/ard.json`;
+  RFC 8288 `Link` headers on the homepage; per-agent `robots.txt` rules with a sitemap line;
+  markdown 404s for `Accept: text/markdown`; "when to use / when not" in `llms.txt`, the skill
+  and the homepage; markdown frontmatter.
 
 - `deploy.yml`: deploy to Modal after green CI on a push to `main`, then run the e2e tests
   against the live URL. Fork-triggered runs are excluded.

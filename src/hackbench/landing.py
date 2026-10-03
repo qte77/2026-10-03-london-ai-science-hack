@@ -19,6 +19,20 @@ AGENT_LINKS: tuple[tuple[str, str], ...] = (
 
 STATUS = "Status: the agent-native surface is live; the QC tools and evals are in progress."
 
+WHEN_TO_USE: tuple[str, ...] = (
+    "To check whether a science agent's accept / investigate / reject verdict on a "
+    "battery-electrode micrograph batch is correct against known ground truth.",
+    "To detect reward hacking: an agent using shortcuts such as filenames, detector-channel "
+    "metadata or leaked labels instead of the microstructure.",
+    "To measure calibration: whether an agent's stated confidence matches how often it is right.",
+)
+
+WHEN_NOT_TO_USE: tuple[str, ...] = (
+    "Not a production QC system or a certified materials test; it is a hackathon research "
+    "prototype (London AI x Science Hackathon, October 2026).",
+    "Not a source of Polaron's data; their micrographs are not redistributed here.",
+)
+
 # Colour values are the qte77 EyeRest design tokens (DESIGN.md); the CSS is written here.
 CSS = """
 :root { color-scheme: light dark;
@@ -45,12 +59,21 @@ footer { border-top:1px solid var(--border); margin-top:64px; padding-top:16px; 
 """
 
 
-def render_markdown() -> str:
+def render_markdown(base_url: str) -> str:
     links = "\n".join(f"- [{label}]({path})" for path, label in AGENT_LINKS)
+    use = "\n".join(f"- {item}" for item in WHEN_TO_USE)
+    avoid = "\n".join(f"- {item}" for item in WHEN_NOT_TO_USE)
     return (
-        f"# HackBench\n\n> {TAGLINE}\n\n{STATUS}\n\n## For agents\n\n{links}\n\n"
-        f"## Source\n\n- [GitHub repository]({REPO_URL})\n"
+        f"---\ntitle: HackBench\ndescription: {TAGLINE}\ncanonical: {base_url}/\n"
+        f"last-updated: 2026-10-03\n---\n\n"
+        f"# HackBench\n\n> {TAGLINE}\n\n{STATUS}\n\n"
+        f"## When to use HackBench\n\n{use}\n\n## When not to use it\n\n{avoid}\n\n"
+        f"## For agents\n\n{links}\n\n## Source\n\n- [GitHub repository]({REPO_URL})\n"
     )
+
+
+def _li(items: tuple[str, ...]) -> str:
+    return "\n".join(f"<li>{html.escape(item)}</li>" for item in items)
 
 
 def _json_ld(base_url: str) -> str:
@@ -100,6 +123,14 @@ def render_html(base_url: str) -> str:
 <div class="rule" aria-hidden="true"></div>
 <p>{html.escape(TAGLINE)}</p>
 <p class="muted">{html.escape(STATUS)}</p>
+<h2>When to use HackBench</h2>
+<ul>
+{_li(WHEN_TO_USE)}
+</ul>
+<h2>When not to use it</h2>
+<ul>
+{_li(WHEN_NOT_TO_USE)}
+</ul>
 <h2>For agents</h2>
 <ul>
 {links}
