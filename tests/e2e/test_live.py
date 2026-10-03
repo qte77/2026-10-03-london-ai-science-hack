@@ -57,7 +57,7 @@ def test_homepage_serves_html_and_markdown(http: httpx.Client) -> None:
     assert "<h1>HackBench</h1>" in page.text
     md = http.get("/", headers={"Accept": "text/markdown"})
     assert md.headers["content-type"].startswith("text/markdown")
-    assert md.text.startswith("# HackBench")
+    assert "\n# HackBench\n" in md.text
     assert "Accept" in md.headers["vary"]
 
 

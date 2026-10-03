@@ -25,7 +25,8 @@ def test_root_serves_markdown_when_asked() -> None:
     r = client.get("/", headers={"Accept": "text/markdown"})
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("text/markdown")
-    assert r.text.startswith("# HackBench")
+    assert r.text.startswith("---\ntitle: HackBench\n")
+    assert "\n# HackBench\n" in r.text
 
 
 def test_root_varies_on_accept_so_caches_keep_both_forms() -> None:

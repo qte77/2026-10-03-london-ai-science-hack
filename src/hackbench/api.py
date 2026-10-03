@@ -3,46 +3,45 @@
 import os
 
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, PlainTextResponse, Response
+from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, Response
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from hackbench.landing import render_html, render_markdown
+from hackbench import discovery
+from hackbench.landing import TAGLINE, render_html, render_markdown
 
 MARKDOWN = "text/markdown; charset=utf-8"
 
-DESCRIPTION = (
-    "Science agents doing Polaron's battery-electrode QC, and the evals that tell you when "
-    "to trust them: correctness, reward hacking, calibration, falsification."
+# Reason: name the major AI agents/crawlers explicitly so per-bot policy is unambiguous.
+AI_AGENTS = (
+    "ChatGPT-User",
+    "GPTBot",
+    "ClaudeBot",
+    "Claude-User",
+    "PerplexityBot",
+    "Google-Extended",
+    "ora-agent",
+    "DeepSeekBot",
 )
-
-ROBOTS_TXT = """User-agent: *
-Content-Signal: search=yes, ai-input=yes, ai-train=no
-Allow: /
-"""
 
 
 def _base_url() -> str:
-    # Reason: the agent card must carry an absolute URL; the deploy sets it, tests fall back.
+    # Reason: absolute URLs in discovery files; the deploy sets it, tests fall back.
     return os.environ.get("HACKBENCH_BASE_URL", "http://localhost:8000")
 
 
-def _llms_txt() -> str:
-    base = _base_url()
-    return f"""# HackBench
-
-> {DESCRIPTION}
-
-## API
-
-- [OpenAPI schema]({base}/openapi.json): REST endpoints under /v1
-- [Agent card]({base}/.well-known/agent-card.json): A2A discovery
-- [Health]({base}/v1/health)
-"""
+def _robots_txt() -> str:
+    per_agent = "".join(f"User-agent: {ua}\nAllow: /\n\n" for ua in AI_AGENTS)
+    return (
+        f"{per_agent}User-agent: *\n"
+        "Content-Signal: search=yes, ai-input=yes, ai-train=no\nAllow: /\n\n"
+        f"Sitemap: {_base_url()}/sitemap.xml\n"
+    )
 
 
 def _agent_card() -> dict[str, object]:
     return {
         "name": "HackBench",
-        "description": DESCRIPTION,
+        "description": TAGLINE,
         "url": _base_url(),
         "version": "0.1.0",
         "capabilities": {"streaming": False},
@@ -62,20 +61,35 @@ def _agent_card() -> dict[str, object]:
     }
 
 
+def _wants_markdown(request: Request) -> bool:
+    return "text/markdown" in request.headers.get("accept", "")
+
+
 def create_app() -> FastAPI:
-    app = FastAPI(title="HackBench", version="0.1.0", description=DESCRIPTION)
+    app = FastAPI(title="HackBench", version="0.1.0", description=TAGLINE)
+
+    @app.exception_handler(StarletteHTTPException)
+    async def http_error(request: Request, exc: StarletteHTTPException) -> Response:
+        # Reason: agents asking for markdown get a readable 404 with a way back in.
+        if exc.status_code == 404 and _wants_markdown(request):
+            return Response(discovery.markdown_404(), status_code=404, media_type=MARKDOWN)
+        return JSONResponse({"detail": exc.detail}, status_code=exc.status_code)
 
     @app.get("/", include_in_schema=False)
     def root(request: Request) -> Response:
         # Reason: one URL, two audiences; Vary tells caches the body depends on Accept.
-        headers = {"Vary": "Accept"}
-        if "text/markdown" in request.headers.get("accept", ""):
-            return Response(render_markdown(), media_type=MARKDOWN, headers=headers)
+        headers = {"Vary": "Accept", "Link": discovery.link_header()}
+        if _wants_markdown(request):
+            return Response(render_markdown(_base_url()), media_type=MARKDOWN, headers=headers)
         return HTMLResponse(render_html(_base_url()), headers=headers)
 
     @app.get("/index.md", include_in_schema=False)
     def index_md() -> Response:
-        return Response(render_markdown(), media_type=MARKDOWN)
+        return Response(
+            render_markdown(_base_url()),
+            media_type=MARKDOWN,
+            headers={"Link": discovery.link_header()},
+        )
 
     @app.get("/v1/health")
     def health() -> dict[str, str]:
@@ -83,14 +97,34 @@ def create_app() -> FastAPI:
 
     @app.get("/llms.txt", response_class=PlainTextResponse, include_in_schema=False)
     def llms_txt() -> str:
-        return _llms_txt()
+        return discovery.llms_txt(_base_url())
 
     @app.get("/robots.txt", response_class=PlainTextResponse, include_in_schema=False)
     def robots_txt() -> str:
-        return ROBOTS_TXT
+        return _robots_txt()
+
+    @app.get("/sitemap.xml", include_in_schema=False)
+    def sitemap() -> Response:
+        return Response(discovery.sitemap_xml(_base_url()), media_type="application/xml")
 
     @app.get("/.well-known/agent-card.json", include_in_schema=False)
     def agent_card() -> dict[str, object]:
         return _agent_card()
+
+    @app.get("/.well-known/agent-skills/index.json", include_in_schema=False)
+    def skills_index() -> dict[str, object]:
+        return discovery.skills_index(_base_url())
+
+    @app.get(discovery.SKILL_PATH, include_in_schema=False)
+    def skill_md() -> Response:
+        return Response(discovery.skill_md(_base_url()), media_type=MARKDOWN)
+
+    @app.get("/.well-known/ard.json", include_in_schema=False)
+    def ard() -> dict[str, object]:
+        return discovery.ard(_base_url())
+
+    @app.get("/.well-known/api-catalog", include_in_schema=False)
+    def api_catalog() -> JSONResponse:
+        return JSONResponse(discovery.api_catalog(_base_url()), media_type=discovery.LINKSET)
 
     return app

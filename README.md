@@ -17,7 +17,11 @@ them: correctness, reward hacking, calibration, falsification. Built during the
 | `/` | people + agents | Landing page; `Accept: text/markdown` returns markdown instead |
 | `/index.md` | agents | Markdown version of the landing page |
 | `/llms.txt` | agents | Project summary and links |
-| `/robots.txt` | crawlers | `Content-Signal: search=yes, ai-input=yes, ai-train=no` |
+| `/robots.txt` | crawlers | Per-agent allow rules, `Content-Signal: search=yes, ai-input=yes, ai-train=no`, sitemap |
+| `/sitemap.xml` | crawlers | Indexable pages with `lastmod` |
+| `/.well-known/api-catalog` | agents | RFC 9727 API catalog (`application/linkset+json`) |
+| `/.well-known/agent-skills/index.json` | agents | Agent skills index; the `hackbench` `SKILL.md` is pinned by SHA-256 |
+| `/.well-known/ard.json` | agents | Agentic Resource Discovery catalog |
 | `/.well-known/agent-card.json` | agents (A2A) | Agent card with the `evaluate-qc-verdict` skill |
 | `/openapi.json` | agents | REST schema |
 | `/v1/health` | anyone | `{"status": "ok"}` |
