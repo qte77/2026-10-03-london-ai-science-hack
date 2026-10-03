@@ -47,6 +47,17 @@ uv run modal secret create hackbench --from-dotenv .env --force   # app config +
 make deploy
 ```
 
+## CI/CD
+
+| Workflow | Trigger | What |
+|---|---|---|
+| `ci.yml` | PR, push to `main` | Lint, strict typecheck, tests, `pip-audit`, gitleaks, tracking guard |
+| `deploy.yml` | CI green on a push to `main`; manual | `make deploy`, then `make e2e` against the live URL |
+| `preregister.yml` | push of a `prereg-*` tag | GitHub release whose server timestamp proves the pipeline was frozen first |
+
+Deploy needs repo secrets `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET` and repo variable
+`HACKBENCH_BASE_URL`.
+
 ## Docs
 
 - [Architecture](docs/architecture.md): system diagram, both surfaces, how it serves each track

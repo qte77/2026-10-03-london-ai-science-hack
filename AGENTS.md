@@ -21,7 +21,8 @@ serves locally; `make deploy` deploys to Modal.
 - **Never commit** raw TIFFs, `.env`, keys, or anything under `private/`.
 - **Never use detector-channel presence or filenames as features.** The channel mix differs by
   batch; that is a planted shortcut, not microstructure.
-- **The unseen batch stays closed until the pre-registration git tag exists.**
+- **The unseen batch stays closed until the pre-registration tag exists.** Push a `prereg-*`
+  tag; `preregister.yml` turns it into a server-timestamped release. Then open the batch.
 - Every agent tool call and verdict is logged to the run journal; never report a number that
   isn't in it.
 - Work on a branch and open a PR; never push to `main` directly from an agent session.
