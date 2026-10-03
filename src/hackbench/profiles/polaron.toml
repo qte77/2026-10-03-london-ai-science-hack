@@ -1,0 +1,40 @@
+# Use-case profile: Polaron battery-electrode micrograph QC, evaluated as an agent benchmark.
+# Swap the use case or sponsor by adding profiles/<name>.toml and setting HACKBENCH_PROFILE.
+# Only fields the code reads live here; domain fields (KPIs, honeypots, data layout) are
+# added when the tool layer needs them.
+
+tagline = "Science agents doing Polaron's battery-electrode QC, and the evals that tell you when to trust them: correctness, reward hacking, calibration, falsification."
+status = "Status: the agent-native surface is live; the QC tools and evals are in progress."
+updated = 2026-10-03
+
+when_to_use = [
+  "To check whether a science agent's accept / investigate / reject verdict on a battery-electrode micrograph batch is correct against known ground truth.",
+  "To detect reward hacking: an agent using shortcuts such as filenames, detector-channel metadata or leaked labels instead of the microstructure.",
+  "To measure calibration: whether an agent's stated confidence matches how often it is right.",
+]
+when_not_to_use = [
+  "Not a production QC system or a certified materials test; it is a hackathon research prototype (London AI x Science Hackathon, October 2026).",
+  "Not a source of Polaron's data; their micrographs are not redistributed here.",
+]
+
+# Domain anti-cheat rules (moved from AGENTS.md). Coding agents must follow these.
+integrity_rules = [
+  "Never use detector-channel presence or filenames as features. The channel mix differs by batch; that is a planted shortcut, not microstructure.",
+  "The unseen batch stays closed until the pre-registration tag exists.",
+]
+
+[event]
+name = "London AI x Science Hackathon"
+dates = "3–4 Oct 2026"
+
+[skill]
+id = "evaluate-qc-verdict"
+name = "Evaluate a QC verdict"
+summary = "Check whether a science agent's QC verdict on battery-electrode micrographs is correct, honest (no reward hacking) and calibrated."
+description = "Score an agent's accept/investigate/reject verdict on a Polaron electrode batch for correctness, reward hacking, calibration and falsification."
+tags = ["evals", "reward-hacking", "materials", "qc"]
+representative_queries = [
+  "evaluate a science agent's verdict for reward hacking",
+  "calibration of an AI agent's materials QC decision",
+  "battery electrode micrograph batch drift QC benchmark",
+]
