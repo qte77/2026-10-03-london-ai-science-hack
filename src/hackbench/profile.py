@@ -1,10 +1,13 @@
 """Load a use-case profile (domain copy + metadata) from `hackbench/profiles/<name>.toml`."""
 
 import tomllib
-from dataclasses import dataclass
+from collections.abc import Mapping
+from dataclasses import dataclass, field
 from datetime import date
 from functools import cache
 from importlib.resources import files
+from types import MappingProxyType
+from typing import Any
 
 
 @dataclass(frozen=True)
@@ -33,6 +36,8 @@ class Profile:
     integrity_rules: tuple[str, ...]
     event: Event
     skill: Skill
+    # Reason: domain-specific parameters stay opaque here; the domain Task interprets them.
+    domain: Mapping[str, Any] = field(default_factory=dict)
 
 
 @cache
@@ -58,4 +63,5 @@ def load_profile(name: str) -> Profile:
             tags=tuple(skill["tags"]),
             representative_queries=tuple(skill["representative_queries"]),
         ),
+        domain=MappingProxyType(raw.get("domain", {})),
     )
