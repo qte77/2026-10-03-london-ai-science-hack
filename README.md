@@ -6,7 +6,19 @@ Science agents doing Polaron's battery-electrode QC, and the evals that tell you
 them: correctness, reward hacking, calibration, falsification. Built during the
 [London AI x Science Hackathon](docs/event.md), 3–4 Oct 2026.
 
-**Status:** the agent-native surface is live; the QC tools and evals are in progress.
+**Status:** the agent-native surface is live. The QC pipeline and the drift suite with known
+ground truth run locally (`make qc`, `make qc-suite`; held-out suite 5/9). Honeypots, agents and
+the UI are in progress.
+
+**Team:** built together with
+[GRAMSINATOR/2026_10_03_hackathon_AI-X-SCIENCE](https://github.com/GRAMSINATOR/2026_10_03_hackathon_AI-X-SCIENCE)
+(Track 4 QC core with a Streamlit dashboard). This repo is the evaluation layer. Coordination
+happens in that repo's issues.
+
+**Caveat on real-data verdicts:** the fields of view appear to be tiles of fewer, larger
+micrographs, some spanning several batch folders. Until the tile-to-micrograph mapping is
+applied, real-data verdicts treat tiles as independent and may be overconfident. The synthetic
+drift suite is not affected.
 
 ## Live
 

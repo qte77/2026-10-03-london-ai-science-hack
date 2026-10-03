@@ -31,6 +31,11 @@ Polaron-specific and live behind `Task`, like the KPIs and the drift injector.
 on a held-out suite (different seeds and drift levels), so the benchmark is never tuned to the
 numbers it reports.
 
+**Known limitation:** real fields of view are treated as independent samples. They appear to be
+tiles of fewer parent micrographs, some spanning batch folders, so real-data confidence intervals
+may be too narrow until the teammate repo's tile-to-micrograph mapping becomes the statistical
+unit.
+
 ```
                     ┌──────────────────────────────────────────────────────────────────┐
                     │           ONE FastAPI APP  (Modal web endpoint, @asgi_app)       │
