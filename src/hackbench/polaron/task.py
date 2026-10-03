@@ -1,5 +1,6 @@
 """PolaronTask: batch-vs-baseline QC on SEM fields of view, implementing the `Task` protocol."""
 
+import json
 from collections import defaultdict
 from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
@@ -40,16 +41,24 @@ class PolaronTask:
         return {"kpis": self.kpis, "compare_to_baseline": self.compare}
 
     def ground_truth(self, item_id: str) -> object:
-        # Reason: the real batches carry no labels; ground truth comes from synthetic drift
-        # injection (plan item 9), not from this data.
-        return None
+        """Known answer for a batch (or a FOV in it), from a drift suite's truth.json.
+
+        Reason: the real batches carry no labels; ground truth exists only for synthetic
+        suites built by `drift.build_suite`, so real data returns None.
+        """
+        truth_file = self.data_dir / "truth.json"
+        if not truth_file.exists():
+            return None
+        return json.loads(truth_file.read_text()).get(item_id.split("/")[0])
 
     def honeypots(self) -> Sequence[str]:
         return self._honeypots
 
     def score(self, item_id: str, verdict: Mapping[str, object]) -> Mapping[str, float]:
-        # Reason: scoring needs ground truth, which arrives with the drift injector (item 9).
-        return {}
+        truth = self.ground_truth(item_id)
+        if not isinstance(truth, dict):
+            return {}
+        return {"correct": 1.0 if verdict.get("verdict") in truth["expected"] else 0.0}
 
     # --- Tools ---------------------------------------------------------------------------
 
