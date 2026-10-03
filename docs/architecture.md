@@ -4,8 +4,9 @@ Back to [README](../README.md) · See also: [event facts](event.md)
 
 **Status:** built and live at <https://thismay52--hackbench-web.modal.run>: the landing page
 (HTML + markdown), the agent discovery files (`llms.txt`, `robots.txt`, sitemap, agent card,
-skills index, ARD, API catalog, OpenAPI) and `/v1/health`. The environment, agents, evals and
-UI below are planned.
+skills index, ARD, API catalog, OpenAPI) and `/v1/health`. Built locally: the Polaron QC
+reference pipeline (`make qc`: KPIs, bootstrap CIs, verdicts) and the hash-chained journal.
+Planned: the drift injector, honeypots, agents, detector chain and UI.
 
 ## Code layout: what is generic, what is swappable
 

@@ -15,10 +15,15 @@ from hackbench.task import Task
 
 
 def test_settings_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
-    for var in ("HACKBENCH_BASE_URL", "HACKBENCH_PROFILE", "HACKBENCH_COMMIT"):
+    for var in (
+        "HACKBENCH_BASE_URL",
+        "HACKBENCH_PROFILE",
+        "HACKBENCH_COMMIT",
+        "HACKBENCH_DATA_DIR",
+    ):
         monkeypatch.delenv(var, raising=False)
     assert Settings.from_env() == Settings(
-        base_url="http://localhost:8000", profile="polaron", commit="local"
+        base_url="http://localhost:8000", profile="polaron", commit="local", data_dir="data/polaron"
     )
 
 

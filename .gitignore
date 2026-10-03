@@ -4,3 +4,6 @@ private/
 __pycache__/
 .pytest_cache/
 .ruff_cache/
+# Real-data inputs and derived results stay local until Polaron agrees to publication
+data/
+results/

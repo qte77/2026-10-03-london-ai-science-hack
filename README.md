@@ -30,9 +30,10 @@ them: correctness, reward hacking, calibration, falsification. Built during the
 
 | Command | What |
 |---|---|
-| `make install` | `uv sync --all-extras` (app, dev tools, Modal CLI) |
+| `make install` | `uv sync --all-extras` (app, dev tools, Modal CLI, QC libraries) |
 | `make validate` | Lint (incl. security rules), format check, `mypy --strict`, tests; run before pushing |
 | `make audit` | Dependency vulnerability scan (`pip-audit`) |
+| `make qc` | Reference QC pipeline on `HACKBENCH_DATA_DIR`: KPIs per field of view, bootstrap CIs vs the baseline batch, accept / investigate / reject; writes `results/` (git-ignored) |
 | `make e2e` | End-to-end tests against the live deploy (`HACKBENCH_E2E_URL` overrides the target) |
 | `make run` | Serve locally at <http://localhost:8000> |
 | `make deploy` | Deploy to Modal |
@@ -43,6 +44,7 @@ them: correctness, reward hacking, calibration, falsification. Built during the
 |---|---|---|
 | `HACKBENCH_BASE_URL` | Modal Secret `hackbench`; local `.env` | Public URL the agent card and `llms.txt` advertise (default `http://localhost:8000`) |
 | `HACKBENCH_PROFILE` | Modal Secret `hackbench`; local `.env` | Use-case profile in `src/hackbench/profiles/` (default `polaron`) |
+| `HACKBENCH_DATA_DIR` | shell / `.env` | Folder of batch subfolders with SEM TIFFs for `make qc` (default `data/polaron`, git-ignored) |
 | `HACKBENCH_COMMIT` | set by `make deploy` / CI | Commit reported by `/v1/health` |
 | `HACKBENCH_E2E_URL` | shell, when running `make e2e` | Deployment the e2e tests target (default: the live URL above) |
 | Sponsor API keys | local `.env` | See [`.env.example`](.env.example) |
