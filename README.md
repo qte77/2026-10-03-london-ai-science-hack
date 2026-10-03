@@ -34,7 +34,7 @@ them: correctness, reward hacking, calibration, falsification. Built during the
 | `make validate` | Lint (incl. security rules), format check, `mypy --strict`, tests; run before pushing |
 | `make audit` | Dependency vulnerability scan (`pip-audit`) |
 | `make qc` | Reference QC pipeline on `HACKBENCH_DATA_DIR`: KPIs per field of view, bootstrap CIs vs the baseline batch, accept / investigate / reject; writes `results/` (git-ignored) |
-| `make qc-suite` | Builds a synthetic drift suite from the baseline (material vs imaging drift, known truth), runs the same pipeline and scores every batch; writes `results/suite.json` |
+| `make qc-suite` | Builds a **training** and a **held-out** synthetic drift suite from the baseline (material vs imaging drift, known truth), chooses the tolerance `k` on training only, scores the held-out suite once; images go to `/tmp/hackbench-scratch` (`--scratch`), results to `results/suite.json` |
 | `make e2e` | End-to-end tests against the live deploy (`HACKBENCH_E2E_URL` overrides the target) |
 | `make run` | Serve locally at <http://localhost:8000> |
 | `make deploy` | Deploy to Modal |

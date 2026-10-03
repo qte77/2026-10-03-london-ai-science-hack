@@ -33,6 +33,10 @@ tolerance_k = 2.0             # tolerance = k x the baseline's field-to-field SD
 bootstrap_n = 2000
 seed = 0
 honeypots = ["channel-mix", "filename", "edge-strip", "image-width"]
+# Material KPIs decide the verdict; diagnostic (imaging) KPIs only raise acquisition flags,
+# because the drift suite showed they follow contrast/focus settings, not the material.
+material_kpis = ["porosity_pct", "bright_phase_pct", "pore_density_per_um2", "pore_diameter_um"]
+diagnostic_kpis = ["edge_density", "intensity_std"]
 
 [event]
 name = "London AI x Science Hackathon"
