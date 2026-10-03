@@ -1,5 +1,7 @@
 # HackBench: London AI x Science Hackathon (2026-10-03)
 
+[![CI](https://github.com/qte77/2026-10-03-london-ai-science-hack/actions/workflows/ci.yml/badge.svg)](https://github.com/qte77/2026-10-03-london-ai-science-hack/actions/workflows/ci.yml)
+
 Science agents doing Polaron's battery-electrode QC, and the evals that tell you when to trust
 them: correctness, reward hacking, calibration, falsification. Built during the
 [London AI x Science Hackathon](docs/event.md), 3–4 Oct 2026.
@@ -23,7 +25,8 @@ them: correctness, reward hacking, calibration, falsification. Built during the
 | Command | What |
 |---|---|
 | `make install` | `uv sync --all-extras` (app, dev tools, Modal CLI) |
-| `make validate` | Lint, format check and tests; run before pushing |
+| `make validate` | Lint (incl. security rules), format check, `mypy --strict`, tests; run before pushing |
+| `make audit` | Dependency vulnerability scan (`pip-audit`) |
 | `make run` | Serve locally at <http://localhost:8000> |
 | `make deploy` | Deploy to Modal |
 
