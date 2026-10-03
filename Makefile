@@ -9,10 +9,16 @@ install: ## Install dependencies (incl. dev + deploy)
 test: ## Run tests
 	uv run pytest -q
 
-lint: ## Lint and format-check
+lint: ## Lint (incl. security rules) and format-check
 	uv run ruff check . && uv run ruff format --check .
 
-validate: lint test ## Full local gate (run before pushing)
+typecheck: ## Strict type check
+	uv run mypy
+
+audit: ## Scan dependencies for known vulnerabilities
+	uv run pip-audit --skip-editable
+
+validate: lint typecheck test ## Full local gate (run before pushing)
 
 run: ## Serve the app locally on :8000
 	uv run fastapi dev src/hackbench/api.py --factory
@@ -20,4 +26,4 @@ run: ## Serve the app locally on :8000
 deploy: ## Deploy to Modal (needs `modal token new` once)
 	uv run modal deploy src/hackbench/deploy.py
 
-.PHONY: help install test lint validate run deploy
+.PHONY: help install test lint typecheck audit validate run deploy

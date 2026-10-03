@@ -35,7 +35,7 @@ def _llms_txt() -> str:
 """
 
 
-def _agent_card() -> dict:
+def _agent_card() -> dict[str, object]:
     return {
         "name": "HackBench",
         "description": DESCRIPTION,
@@ -62,7 +62,7 @@ def create_app() -> FastAPI:
     app = FastAPI(title="HackBench", version="0.1.0", description=DESCRIPTION)
 
     @app.get("/v1/health")
-    def health() -> dict:
+    def health() -> dict[str, str]:
         return {"status": "ok"}
 
     @app.get("/llms.txt", response_class=PlainTextResponse, include_in_schema=False)
@@ -74,7 +74,7 @@ def create_app() -> FastAPI:
         return ROBOTS_TXT
 
     @app.get("/.well-known/agent-card.json", include_in_schema=False)
-    def agent_card() -> dict:
+    def agent_card() -> dict[str, object]:
         return _agent_card()
 
     return app
