@@ -2,9 +2,25 @@
 
 Back to [README](../README.md) · See also: [event facts](event.md)
 
-**Status:** the agent-native surface (`/llms.txt`, `/robots.txt`, `/.well-known/agent-card.json`,
-`/openapi.json`, `/v1/health`) is built and live at
-<https://<modal-workspace>--hackbench-web.modal.run>. Everything else below is planned.
+**Status:** built and live at <https://<modal-workspace>--hackbench-web.modal.run>: the landing page
+(HTML + markdown), the agent discovery files (`llms.txt`, `robots.txt`, sitemap, agent card,
+skills index, ARD, API catalog, OpenAPI) and `/v1/health`. The environment, agents, evals and
+UI below are planned.
+
+## Code layout: what is generic, what is swappable
+
+| Layer | File | Swap by |
+|---|---|---|
+| Project identity (name, repo, version) | `src/hackbench/__init__.py` | Editing once; version comes from `pyproject.toml` |
+| Runtime settings (`HACKBENCH_*` env vars) | `src/hackbench/settings.py` | Env vars / Modal Secret `hackbench` |
+| **Use case and sponsor** (copy, event, skill metadata, integrity rules) | `src/hackbench/profiles/<name>.toml` | Adding a profile and setting `HACKBENCH_PROFILE` |
+| **Domain plug-in seam** | `src/hackbench/task.py` (`Task` protocol) | Implementing `Task` for the new domain |
+| Generic surfaces (API, discovery, landing) | `api.py`, `discovery.py`, `landing.py` | Not needed: they read the profile and settings |
+| Deployment | `src/hackbench/deploy.py` | Commit and version are baked into the image |
+
+Planned components split the same way. The journal, detector chain, calibration and
+falsification evals, agent adapters and UI are generic and call `Task`. The segmentation, KPIs,
+drift injector and honeypots are Polaron-specific and live behind `Task`.
 
 ```
                     ┌──────────────────────────────────────────────────────────────────┐
