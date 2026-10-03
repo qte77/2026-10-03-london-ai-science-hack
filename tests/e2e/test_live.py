@@ -19,7 +19,8 @@ def http() -> httpx.Client:
 def test_health(http: httpx.Client) -> None:
     r = http.get("/v1/health")
     assert r.status_code == 200
-    assert r.json() == {"status": "ok"}
+    assert r.json()["status"] == "ok"
+    assert r.json()["commit"]
 
 
 def test_llms_txt_advertises_the_public_url(http: httpx.Client) -> None:

@@ -26,7 +26,7 @@ validate: lint typecheck test ## Full local gate (run before pushing)
 run: ## Serve the app locally on :8000
 	uv run fastapi dev src/hackbench/api.py --factory
 
-deploy: ## Deploy to Modal (needs `modal token new` once)
-	uv run modal deploy src/hackbench/deploy.py
+deploy: ## Deploy to Modal (needs `modal token new` once); stamps the git commit
+	HACKBENCH_COMMIT=$${HACKBENCH_COMMIT:-$$(git rev-parse HEAD)} uv run modal deploy src/hackbench/deploy.py
 
 .PHONY: help install test lint typecheck audit e2e validate run deploy

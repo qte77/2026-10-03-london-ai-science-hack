@@ -1,5 +1,6 @@
 """Agent-native surface: discovery files agents and readiness scanners look for at the host root."""
 
+import pytest
 from fastapi.testclient import TestClient
 
 from hackbench.api import create_app
@@ -37,4 +38,11 @@ def test_openapi_schema_is_published() -> None:
 
 
 def test_health_endpoint() -> None:
-    assert client.get("/v1/health").json() == {"status": "ok"}
+    assert client.get("/v1/health").json()["status"] == "ok"
+
+
+def test_health_reports_the_running_commit(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("HACKBENCH_COMMIT", "abc1234")
+    assert client.get("/v1/health").json() == {"status": "ok", "commit": "abc1234"}
+    monkeypatch.delenv("HACKBENCH_COMMIT")
+    assert client.get("/v1/health").json()["commit"] == "local"

@@ -93,7 +93,8 @@ def create_app() -> FastAPI:
 
     @app.get("/v1/health")
     def health() -> dict[str, str]:
-        return {"status": "ok"}
+        # Reason: lets the deploy pipeline wait until the new commit is the one serving.
+        return {"status": "ok", "commit": os.environ.get("HACKBENCH_COMMIT", "local")}
 
     @app.get("/llms.txt", response_class=PlainTextResponse, include_in_schema=False)
     def llms_txt() -> str:
