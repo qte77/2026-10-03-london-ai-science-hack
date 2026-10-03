@@ -29,6 +29,7 @@ jobs:
       MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
       MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
       HACKBENCH_E2E_URL: ${{ vars.HACKBENCH_BASE_URL }}
+      HACKBENCH_COMMIT: ${{ github.event.workflow_run.head_sha || github.sha }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -41,5 +42,14 @@ jobs:
       - run: uv sync --all-extras --frozen
       - name: Deploy to Modal
         run: make deploy
+      - name: Wait until the new commit is the one serving
+        # Reason: Modal swaps containers gradually; e2e must not test the previous version.
+        run: |
+          for i in $(seq 1 36); do
+            live=$(curl -fsS "$HACKBENCH_E2E_URL/v1/health" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("commit",""))' || true)
+            if [ "$live" = "$HACKBENCH_COMMIT" ]; then echo "serving $live"; exit 0; fi
+            echo "waiting: live=$live want=$HACKBENCH_COMMIT"; sleep 5
+          done
+          echo "::error::new commit not serving after 3 minutes"; exit 1
       - name: End-to-end tests against the live deploy
         run: make e2e

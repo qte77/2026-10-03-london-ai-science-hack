@@ -24,7 +24,7 @@ them: correctness, reward hacking, calibration, falsification. Built during the
 | `/.well-known/ard.json` | agents | Agentic Resource Discovery catalog |
 | `/.well-known/agent-card.json` | agents (A2A) | Agent card with the `evaluate-qc-verdict` skill |
 | `/openapi.json` | agents | REST schema |
-| `/v1/health` | anyone | `{"status": "ok"}` |
+| `/v1/health` | anyone | `{"status": "ok", "commit": "<git SHA of the deployed code>"}` |
 
 ## Quick start
 
