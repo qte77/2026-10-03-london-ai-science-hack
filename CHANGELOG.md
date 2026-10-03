@@ -5,6 +5,17 @@ versioning: [SemVer](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Polaron QC reference pipeline (`make qc`): BSE channel, edge-cropped, 25 nm/px from the TIFF;
+  six KPIs per field of view (porosity %, bright-phase %, pore density, pore diameter µm, edge
+  density, intensity spread); bootstrap 95% CIs of each batch vs the baseline; accept /
+  investigate / reject with the driving KPIs named. Implements the `Task` protocol.
+- Generic: hash-chained, tamper-evident run journal (`journal.py`); bootstrap and verdict rules
+  (`stats.py`). `HACKBENCH_DATA_DIR` setting; profile `[domain]` section.
+- QC libraries as an optional `qc` extra (tifffile, imagecodecs, numpy, scikit-image).
+- Tests use synthetic micrographs with known ground truth; no real data in the repo or CI.
+
 ### Changed
 
 - Modularity seam: use-case copy and metadata moved from code into

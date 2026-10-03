@@ -10,6 +10,12 @@ dependencies = [
 
 [project.optional-dependencies]
 deploy = ["modal>=1.0"]
+qc = [
+    "imagecodecs>=2026.8.16",
+    "numpy>=2.5.3",
+    "scikit-image>=0.26.0",
+    "tifffile>=2026.9.20",
+]
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.11", "pip-audit>=2.7"]
@@ -36,6 +42,8 @@ select = ["E", "W", "F", "I", "B", "UP", "S", "ANN", "N", "SIM", "C4", "PT", "RU
 strict = true
 python_version = "3.12"
 files = ["src", "tests"]
+# Reason: scikit-image ships without type hints; exempt calls into it, keep our code strict.
+untyped_calls_exclude = ["skimage"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
