@@ -18,6 +18,9 @@ typecheck: ## Strict type check
 audit: ## Scan dependencies for known vulnerabilities
 	uv run pip-audit --skip-editable
 
+e2e: ## End-to-end tests against the live deploy (override HACKBENCH_E2E_URL to target another)
+	HACKBENCH_E2E_URL=$${HACKBENCH_E2E_URL:-https://<modal-workspace>--hackbench-web.modal.run} uv run pytest -q tests/e2e
+
 validate: lint typecheck test ## Full local gate (run before pushing)
 
 run: ## Serve the app locally on :8000
@@ -26,4 +29,4 @@ run: ## Serve the app locally on :8000
 deploy: ## Deploy to Modal (needs `modal token new` once)
 	uv run modal deploy src/hackbench/deploy.py
 
-.PHONY: help install test lint typecheck audit validate run deploy
+.PHONY: help install test lint typecheck audit e2e validate run deploy

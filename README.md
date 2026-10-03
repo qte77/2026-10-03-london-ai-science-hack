@@ -27,6 +27,7 @@ them: correctness, reward hacking, calibration, falsification. Built during the
 | `make install` | `uv sync --all-extras` (app, dev tools, Modal CLI) |
 | `make validate` | Lint (incl. security rules), format check, `mypy --strict`, tests; run before pushing |
 | `make audit` | Dependency vulnerability scan (`pip-audit`) |
+| `make e2e` | End-to-end tests against the live deploy (`HACKBENCH_E2E_URL` overrides the target) |
 | `make run` | Serve locally at <http://localhost:8000> |
 | `make deploy` | Deploy to Modal |
 
@@ -35,6 +36,7 @@ them: correctness, reward hacking, calibration, falsification. Built during the
 | Variable | Where | Purpose |
 |---|---|---|
 | `HACKBENCH_BASE_URL` | Modal Secret `hackbench`; local `.env` | Public URL the agent card and `llms.txt` advertise (default `http://localhost:8000`) |
+| `HACKBENCH_E2E_URL` | shell, when running `make e2e` | Deployment the e2e tests target (default: the live URL above) |
 | Sponsor API keys | local `.env` | See [`.env.example`](.env.example) |
 
 One-time Modal setup:

@@ -21,3 +21,5 @@ versioning: [SemVer](https://semver.org/).
   `mypy --strict`; pytest; `pip-audit`; gitleaks full-history secret scan; a guard against
   tracking `private/`, TIFFs or `.env`. Actions pinned by commit SHA (#4).
 - `make typecheck` and `make audit` (#4).
+- End-to-end tests against the live deploy (`make e2e`, `HACKBENCH_E2E_URL`); skipped by
+  default so `make test` stays offline (#6).
