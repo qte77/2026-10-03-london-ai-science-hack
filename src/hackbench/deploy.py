@@ -13,7 +13,8 @@ image = (
 app = modal.App("hackbench")
 
 
-@app.function(image=image)
+# Reason: the "hackbench" Modal Secret carries HACKBENCH_BASE_URL (and later the API keys).
+@app.function(image=image, secrets=[modal.Secret.from_name("hackbench")])
 @modal.concurrent(max_inputs=100)
 @modal.asgi_app()
 def web():
