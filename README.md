@@ -4,23 +4,48 @@ Science agents doing Polaron's battery-electrode QC, and the evals that tell you
 them: correctness, reward hacking, calibration, falsification. Built during the
 [London AI x Science Hackathon](docs/event.md), 3–4 Oct 2026.
 
-**Status:** skeleton. The agent-native surface is live locally; the QC tools and evals are in
-progress.
+**Status:** the agent-native surface is live; the QC tools and evals are in progress.
+
+## Live
+
+<https://<modal-workspace>--hackbench-web.modal.run>
+
+| Path | For | What |
+|---|---|---|
+| `/llms.txt` | agents | Project summary and links |
+| `/robots.txt` | crawlers | `Content-Signal: search=yes, ai-input=yes, ai-train=no` |
+| `/.well-known/agent-card.json` | agents (A2A) | Agent card with the `evaluate-qc-verdict` skill |
+| `/openapi.json` | agents | REST schema |
+| `/v1/health` | anyone | `{"status": "ok"}` |
 
 ## Quick start
 
-```sh
-make install   # uv sync
-make test      # pytest
-make run       # http://localhost:8000/llms.txt
-make deploy    # Modal (run `uv run modal token new` once)
-```
+| Command | What |
+|---|---|
+| `make install` | `uv sync --all-extras` (app, dev tools, Modal CLI) |
+| `make validate` | Lint, format check and tests; run before pushing |
+| `make run` | Serve locally at <http://localhost:8000> |
+| `make deploy` | Deploy to Modal |
 
-Copy [`.env.example`](.env.example) to `.env` for sponsor API keys.
+## Configuration
+
+| Variable | Where | Purpose |
+|---|---|---|
+| `HACKBENCH_BASE_URL` | Modal Secret `hackbench`; local `.env` | Public URL the agent card and `llms.txt` advertise (default `http://localhost:8000`) |
+| Sponsor API keys | local `.env` | See [`.env.example`](.env.example) |
+
+One-time Modal setup:
+
+```sh
+uv run modal token new                                            # writes ~/.modal.toml
+uv run modal secret create hackbench --from-dotenv .env --force   # app config + keys
+make deploy
+```
 
 ## Docs
 
 - [Architecture](docs/architecture.md): system diagram, both surfaces, how it serves each track
+- [Changelog](CHANGELOG.md)
 - [Event facts](docs/event.md): format, tracks, prizes, judging
 - [Application draft](docs/application-draft.md): Luma application questions and answers
 - [AGENTS.md](AGENTS.md): rules for coding agents working here
