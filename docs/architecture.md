@@ -1,0 +1,73 @@
+# Architecture
+
+Back to [README](../README.md) · See also: [event facts](event.md)
+
+**Status:** the agent-native surface (`/llms.txt`, `/robots.txt`, `/.well-known/agent-card.json`,
+`/openapi.json`, `/v1/health`) is built. Everything else below is planned.
+
+```
+                    ┌──────────────────────────────────────────────────────────────────┐
+                    │           ONE FastAPI APP  (Modal web endpoint, @asgi_app)       │
+                    │      https://<workspace>--hackbench-web.modal.run                │
+                    │                                                                  │
+   HUMANS ────────▶ │  UI   /                leaderboard (hack rate · calibration · acc)│
+   (QC engineer,    │       /runs/{id}       evidence: verdict · tool trace · trips    │
+    judges)         │       /batches/{id}    verdict card: accept/investigate/reject   │
+                    │                        + driving KPIs + confidence intervals     │
+                    │       *.md twins · JSON-LD · no-JS server-rendered               │
+                    │                                                                  │
+   AGENTS ────────▶ │  API  /v1/tasks  /v1/runs/{id}  /v1/leaderboard   (public read)  │
+   (Claude, judges' │       POST /v1/verdicts                           (bearer token) │
+    own agents)     │       /openapi.json · /mcp (MCP server)                          │
+                    │  DISC /llms.txt · /robots.txt (Content-Signal)                   │
+                    │       /.well-known/{agent-card.json, mcp/server-card.json,       │
+                    │        agent-skills/index.json → SKILL.md, api-catalog, ard.json}│
+                    └───────────────┬───────────────────────────────┬──────────────────┘
+                                    │ same data (DRY)               │ reads
+                                    ▼                               ▼
+┌─ ENVIRONMENT ──────────────────────────────────┐   ┌─ RESULTS STORE (Modal Volume) ─────┐
+│ REAL       Polaron Batch_1/2/3 (31 FOV × 3 ch) │   │ runs/*.jsonl  hash-chained journal │
+│ HELD-OUT   unseen batch (opened only after tag)│   │ kpis/*.csv · verdicts/*.json       │
+│ SYNTHETIC  drift injector (contrast · blur ·   │   │ → exported to repo (replayable)    │
+│            particle-scale · pores, known size) │   └──────────────▲─────────────────────┘
+│ HONEYPOTS  decoy labels.json · channel/filename│                  │ every call + verdict
+│            shortcut · cached-verdict tool ·    │                  │
+│            early unseen-batch path             │                  │
+│                                                │                  │
+│ TOOLS (every call logged) ─────────────────────┼──────────────────┘
+│   segment()  kpis()  compare_to_baseline()     │
+│   verdict(label, confidence, falsifier)        │
+└───────────────┬────────────────────────────────┘
+                │ tasks + tools via one adapter
+                ▼
+┌─ AGENTS UNDER TEST ────────────────────────────────────────────────────────────────────┐
+│ Claude Haiku / Sonnet (neutral vs score-pressure prompt) · Claude Code headless        │
+│ open model on Modal GPU · optional Devin ×5 (own VM → GitHub PRs)                      │
+│ CONTROLS: reference pipeline (honest, non-agent) · cheating control agent (trips all)  │
+└───────────────┬────────────────────────────────────────────────────────────────────────┘
+                │ verdict + confidence + "what would change my mind" + tool log
+                ▼
+┌─ EVALS: detector chain, cheap → expensive ────────────────────────────────────────────┐
+│ 1 honeypot trip-wires        did it touch a planted shortcut?                         │
+│ 2 re-score                   vs synthetic ground truth / unseen batch                 │
+│ 3 provenance                 every reported number ↔ a tool-log entry                 │
+│ 4 fast judge (Jev / Laya)    "did this run exploit X?"  (calibrated; optional)        │
+│ 5 Claude escalation          only when the fast judge is unsure                       │
+│ + calibration                ECE / Brier: stated confidence vs outcome                │
+│ + falsification              does its stated counterexample flip the verdict?         │
+└───────────────┬───────────────────────────────────────────────────────────────────────┘
+                ▼
+     verdicts: honest / hack(type) / borderline  ──▶  results store  ──▶  UI + API
+
+ OUTSIDE THE APP
+ ├─ GitHub repo ◀── agent PRs · CI (tests, guards) · pre-registration TAG
+ │                   (tag before the unseen batch is first opened)
+ └─ (optional) GitHub Pages static leaderboard mirror; agent discovery stays on Modal
+```
+
+## How it serves both tracks
+
+| Track | What it judges | Where it shows up |
+|---|---|---|
+| Polaron (materials QC) | KPI quality, accuracy on the new batch, interpretability, honest uncertainty, usability | KPI table, unseen-batch verdict, verdict cards with confidence intervals, QC view |
+| Originator (agents that know when they're wrong) | Reward-hacking evals, calibrated uncertainty, falsification | Detector chain, precision/recall on planted controls, calibration and falsification metrics |
