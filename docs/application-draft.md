@@ -1,5 +1,7 @@
 # Luma application draft
 
+Back to [README](../README.md) · See also: [event facts](event.md)
+
 Drafted 2026-09-13. These are drafts to personalise, not a record of what was submitted.
 
 ## Open items
