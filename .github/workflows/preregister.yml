@@ -1,0 +1,24 @@
+name: Pre-registration
+
+# Pushing a prereg-* tag creates a GitHub release. Its creation time is set by GitHub's
+# server, so it proves the pipeline was frozen before the unseen batch was opened
+# (a git tag's own date comes from the commit and can be faked).
+on:
+  push:
+    tags: ["prereg-*"]
+
+permissions:
+  contents: write
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create a server-timestamped release for the tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --prerelease \
+            --title "Pre-registration $TAG" \
+            --notes "Environment, detectors and reference pipeline frozen at this commit, before the unseen batch was opened."

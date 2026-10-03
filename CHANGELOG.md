@@ -5,6 +5,13 @@ versioning: [SemVer](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `deploy.yml`: deploy to Modal after green CI on a push to `main`, then run the e2e tests
+  against the live URL. Fork-triggered runs are excluded.
+- `preregister.yml`: a `prereg-*` tag creates a GitHub release as server-timestamped proof that
+  the pipeline was frozen before the unseen batch was opened.
+
 ## [0.1.0] - 2026-10-03
 
 ### Added
