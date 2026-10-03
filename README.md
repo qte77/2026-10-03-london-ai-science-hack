@@ -14,6 +14,8 @@ them: correctness, reward hacking, calibration, falsification. Built during the
 
 | Path | For | What |
 |---|---|---|
+| `/` | people + agents | Landing page; `Accept: text/markdown` returns markdown instead |
+| `/index.md` | agents | Markdown version of the landing page |
 | `/llms.txt` | agents | Project summary and links |
 | `/robots.txt` | crawlers | `Content-Signal: search=yes, ai-input=yes, ai-train=no` |
 | `/.well-known/agent-card.json` | agents (A2A) | Agent card with the `evaluate-qc-verdict` skill |

@@ -51,5 +51,15 @@ def test_openapi_lists_the_health_route(http: httpx.Client) -> None:
     assert "/v1/health" in r.json()["paths"]
 
 
+def test_homepage_serves_html_and_markdown(http: httpx.Client) -> None:
+    page = http.get("/", headers={"Accept": "text/html"})
+    assert page.status_code == 200
+    assert "<h1>HackBench</h1>" in page.text
+    md = http.get("/", headers={"Accept": "text/markdown"})
+    assert md.headers["content-type"].startswith("text/markdown")
+    assert md.text.startswith("# HackBench")
+    assert "Accept" in md.headers["vary"]
+
+
 def test_served_over_https(http: httpx.Client) -> None:
     assert http.get("/v1/health").url.scheme == "https"

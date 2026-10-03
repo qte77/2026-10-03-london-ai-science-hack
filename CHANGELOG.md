@@ -7,6 +7,10 @@ versioning: [SemVer](https://semver.org/).
 
 ### Added
 
+- Landing page at `/` (was a 404): HTML for people in the qte77 EyeRest palette, markdown
+  for agents via `Accept: text/markdown` (`Vary: Accept`) and `/index.md`; canonical link,
+  Open Graph tags, `SoftwareApplication` JSON-LD.
+
 - `deploy.yml`: deploy to Modal after green CI on a push to `main`, then run the e2e tests
   against the live URL. Fork-triggered runs are excluded.
 - `preregister.yml`: a `prereg-*` tag creates a GitHub release as server-timestamped proof that
