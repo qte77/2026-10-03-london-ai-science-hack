@@ -1,0 +1,28 @@
+[project]
+name = "hackbench"
+version = "0.1.0"
+description = "Science agents doing Polaron's battery-electrode QC, and the evals that tell you when to trust them."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.115",
+]
+
+[project.optional-dependencies]
+deploy = ["modal>=1.0"]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hackbench"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
