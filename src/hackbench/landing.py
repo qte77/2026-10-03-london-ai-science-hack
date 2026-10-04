@@ -79,6 +79,40 @@ def _json_ld(p: Profile, base_url: str) -> str:
     return json.dumps(data, indent=2).replace("</", "<\\/")
 
 
+def head_meta(p: Profile, base_url: str) -> str:
+    """Identity metadata (canonical, markdown twin, OpenGraph, JSON-LD) for any HTML page at /."""
+    tagline = html.escape(p.tagline)
+    base = html.escape(base_url)
+    return f"""<meta name="description" content="{tagline}">
+<link rel="canonical" href="{base}/">
+<link rel="alternate" type="text/markdown" href="/index.md">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{DISPLAY_NAME}">
+<meta property="og:description" content="{tagline}">
+<meta property="og:url" content="{base}/">
+<script type="application/ld+json">
+{_json_ld(p, base_url)}
+</script>
+"""
+
+
+def render_console(console_html: str, p: Profile, base_url: str) -> str:
+    """The designed console as the homepage, carrying the landing's identity metadata and a
+    no-JS summary so crawlers and agents still read who we are and where to go."""
+    noscript = (
+        f"<noscript><h1>{DISPLAY_NAME}</h1><p>{html.escape(p.tagline)}</p>"
+        '<p><a href="/about">About</a> · <a href="/index.md">Markdown</a> · '
+        '<a href="/results.md">Results (markdown)</a> · <a href="/v1/results">Results (JSON)</a> · '
+        '<a href="/llms.txt">llms.txt</a></p></noscript>'
+    )
+    page = console_html.replace("<html>", '<html lang="en">', 1)
+    page = page.replace(
+        "<title>Polaron QC Console</title>", f"<title>{DISPLAY_NAME} — QC console</title>", 1
+    )
+    page = page.replace("</head>", head_meta(p, base_url) + "</head>", 1)
+    return page.replace("<body>", "<body>\n" + noscript, 1)
+
+
 def render_html(p: Profile, base_url: str) -> str:
     links = "\n".join(
         f'<li><a href="{html.escape(path)}">{html.escape(label)}</a></li>'

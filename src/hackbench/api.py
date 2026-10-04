@@ -12,7 +12,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from hackbench import DISPLAY_NAME, __version__, discovery
-from hackbench.landing import render_html, render_markdown
+from hackbench.landing import render_console, render_html, render_markdown
 from hackbench.profile import Profile, load_profile
 from hackbench.settings import Settings
 
@@ -183,7 +183,18 @@ def create_app(reload: Callable[[], None] | None = None) -> FastAPI:
         headers = {"Vary": "Accept", "Link": discovery.link_header()}
         if _wants_markdown(request):
             return Response(render_markdown(p, s.base_url), media_type=MARKDOWN, headers=headers)
+        # Reason: people get the owner's designed QC console at /; its assets resolve under
+        # /results/ (Vite base). Agents keep the markdown twin; the plain landing is at /about.
+        console = Path(s.ui_dir) / "index.html"
+        if console.exists():
+            page = render_console(console.read_text(), p, s.base_url)
+            return HTMLResponse(page, headers=headers)
         return HTMLResponse(render_html(p, s.base_url), headers=headers)
+
+    @app.get("/about", include_in_schema=False)
+    def about() -> Response:
+        s, p = _ctx()
+        return HTMLResponse(render_html(p, s.base_url), headers={"Link": discovery.link_header()})
 
     @app.get("/index.md", include_in_schema=False)
     def index_md() -> Response:
