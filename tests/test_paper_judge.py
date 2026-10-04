@@ -1,7 +1,7 @@
 """hackbench.paper_judge: Paperclip resolve/score + LLM judge, via httpx.MockTransport.
 
 No network, no keys. Covers: skipped-without-key, Paperclip agreement/resolution/found-rate
-math, judge scoring + malformed-response errors, and the modal-vllm/cloudflare/skipped
+math, judge scoring + malformed-response errors, and the modal-endpoint/cloudflare/skipped
 provider-selection order.
 """
 
@@ -14,7 +14,18 @@ import httpx
 import pytest
 
 from hackbench.journal import Journal
-from hackbench.paper_judge import PAPERCLIP_BASE_URL, run_paper_judge
+from hackbench.paper_judge import PAPERCLIP_BASE_URL, _judge_target, run_paper_judge
+
+
+def test_modal_endpoint_is_first_with_proxy_token_and_model() -> None:
+    base, provider, headers, model = _judge_target(
+        "https://ws--ep.modal.run", "acct", "cf-token", "gpt-oss-20b", "wk-1.ws-2"
+    )
+    assert provider == "modal-endpoint"
+    assert base == "https://ws--ep.modal.run/v1"
+    assert headers == {"Authorization": "Bearer wk-1.ws-2"}  # proxy token id.secret
+    assert model == "gpt-oss-20b"
+
 
 BUNDLE = {
     "papers": [
@@ -159,7 +170,7 @@ def test_judge_scores_and_malformed_response_counts_as_error(tmp_path: Path) -> 
     )
     judge = out["judge"]
     assert judge["status"] == "ok"
-    assert judge["provider"] == "modal-vllm"
+    assert judge["provider"] == "modal-endpoint"
     assert judge["model"] == "judge-model"
     assert judge["n"] == 3
     assert judge["errors"] == 2  # m2 and m3 return unparsable content
@@ -189,7 +200,7 @@ def test_provider_selection_order(tmp_path: Path) -> None:
         judge_client=judge_client,
         backoff=(),
     )
-    assert out["judge"]["provider"] == "modal-vllm"
+    assert out["judge"]["provider"] == "modal-endpoint"
     assert seen["host"] == "judge.test"
     assert seen["auth"] is None
 

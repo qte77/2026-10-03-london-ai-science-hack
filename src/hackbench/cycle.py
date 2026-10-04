@@ -374,6 +374,13 @@ def _timed(
     return payload
 
 
+def _modal_proxy_auth(s: Settings) -> str:
+    # Reason: Modal endpoints take the workspace proxy token as `Bearer <id>.<secret>`.
+    if s.modal_proxy_token_id and s.modal_proxy_token_secret:
+        return f"{s.modal_proxy_token_id}.{s.modal_proxy_token_secret}"
+    return ""
+
+
 def run_cycle(
     inputs_dir: Path,
     out_dir: Path,
@@ -430,6 +437,8 @@ def run_cycle(
                 llm_url=Settings.from_env().llm_url,
                 cf_account_id=Settings.from_env().cloudflare_account_id,
                 cf_api_token=Settings.from_env().cloudflare_api_token,
+                llm_model=Settings.from_env().llm_model,
+                llm_auth=_modal_proxy_auth(Settings.from_env()),
             )
             if bundle_path.exists()
             else {"status": "skipped", "reason": "research bundle missing"}
