@@ -22,6 +22,7 @@ from typing import Any
 
 from hackbench.claude_agent import Client
 from hackbench.journal import Journal
+from hackbench.paper_judge import run_paper_judge
 from hackbench.papers import run_papers
 from hackbench.polaron.agents import CheatingAgent, HonestAgent
 from hackbench.polaron.llm import CONFIGS, make_agent
@@ -358,7 +359,9 @@ def _timed(
     t0 = time.monotonic()
     try:
         payload = fn()
-        status = payload.get("status", "ok") if name in ("papers", "agents") else "ok"
+        status = (
+            payload.get("status", "ok") if name in ("papers", "agents", "paper_judge") else "ok"
+        )
         reason = payload.get("reason") if status != "ok" else None
     except Exception as exc:  # one stage's failure must not crash the whole cycle
         payload, status, reason = {"status": "error", "reason": str(exc)}, "error", str(exc)
@@ -414,6 +417,24 @@ def run_cycle(
         ),
     )
     papers_result = _timed("papers", journal, stages, lambda: run_papers(journal))
+    bundle_path = inputs_dir / "research" / "qte77.research.0001.json"
+    paper_judge_result = _timed(
+        "paper_judge",
+        journal,
+        stages,
+        lambda: (
+            run_paper_judge(
+                bundle_path,
+                journal,
+                api_key=Settings.from_env().paperclip_api_key,
+                llm_url=Settings.from_env().llm_url,
+                cf_account_id=Settings.from_env().cloudflare_account_id,
+                cf_api_token=Settings.from_env().cloudflare_api_token,
+            )
+            if bundle_path.exists()
+            else {"status": "skipped", "reason": "research bundle missing"}
+        ),
+    )
     batches = _timed("parallax", journal, stages, lambda: compute_parallax(reference, parallax_dir))
 
     finished = datetime.now(UTC).isoformat()
@@ -428,6 +449,7 @@ def run_cycle(
         "kpi_robustness": kpi_rob,
         "agents": agents_result,
         "papers": papers_result,
+        "paper_judge": paper_judge_result,
         "limits": list(LIMITS),
         "cycle": {
             "started": started,
