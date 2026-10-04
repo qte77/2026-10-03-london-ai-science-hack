@@ -67,6 +67,9 @@ drift suite is not affected.
 | `HACKBENCH_COMMIT` | set by `make deploy` / CI | Commit reported by `/v1/health` |
 | `HACKBENCH_E2E_URL` | shell, when running `make e2e` | Deployment the e2e tests target (default: the live URL above) |
 | `ANTHROPIC_API_KEY` | local `.env` | Claude agents under test (`make agent-smoke`); never needed by tests or CI |
+| `HACKBENCH_LLM_URL` | Modal Secret `hackbench`; local `.env` | Base URL of an OpenAI-compatible LLM judge endpoint for the `paper_judge` cycle stage; unset skips the judge (Cloudflare Workers AI fallback, else skipped) |
+| `PAPERCLIP_API_KEY` (or `GXL_API_KEY`) | Modal Secret `hackbench`; local `.env` | Paperclip literature API, read by both `papers.py` and `paper_judge.py`; unset skips both |
+| `CLOUDFLARE_ACCOUNT_ID` / `CLOUDFLARE_API_TOKEN` | Modal Secret `hackbench`; local `.env` | Cloudflare Workers AI judge fallback for `paper_judge` when `HACKBENCH_LLM_URL` is unset; unset skips the judge |
 | Sponsor API keys | local `.env` | See [`.env.example`](.env.example) |
 
 One-time Modal setup:
