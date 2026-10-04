@@ -30,6 +30,19 @@ qc-suite: ## Build the synthetic drift suite from the baseline, run it, score vs
 agent-smoke: ## ONE live Haiku session on Batch_3 (needs ANTHROPIC_API_KEY; ~$0.1, capped at $1.50)
 	uv run --env-file .env python -m hackbench.polaron --agent $${AGENT:-haiku-4-5/neutral} --candidate $${CANDIDATE:-Batch_3} --out results
 
+cycle: ## End-to-end cycle on local derived results (PARALLAX=dir of their decision briefs) -> results/cycle/
+	uv run python -m hackbench.cycle --inputs results --out results/cycle $${PARALLAX:+--parallax $$PARALLAX}
+
+cycle-upload: ## Upload derived inputs (no TIFFs) to the Modal Volume; PARALLAX=dir of their briefs
+	uv run modal volume put --force hackbench-data results/results.json /qc/results.json
+	uv run modal volume put --force hackbench-data results/journal.jsonl /qc/journal.jsonl
+	uv run modal volume put --force hackbench-data results/suite.json /qc/suite.json
+	uv run modal volume put --force hackbench-data results/suite-journal.jsonl /qc/suite-journal.jsonl
+	for f in $$PARALLAX/decision_brief.Batch_*.json; do uv run modal volume put --force hackbench-data "$$f" /qc/parallax/$$(basename "$$f"); done
+
+cycle-modal: ## Run the cycle on Modal; results go live at /v1/results and /results
+	uv run modal run src/hackbench/deploy.py::cycle
+
 validate: lint typecheck test ## Full local gate (run before pushing)
 
 run: ## Serve the app locally on :8000
@@ -38,4 +51,4 @@ run: ## Serve the app locally on :8000
 deploy: ## Deploy to Modal (needs `modal token new` once); stamps the git commit
 	HACKBENCH_COMMIT=$${HACKBENCH_COMMIT:-$$(git rev-parse HEAD)} uv run modal deploy src/hackbench/deploy.py
 
-.PHONY: help install test lint typecheck audit e2e qc qc-suite agent-smoke validate run deploy
+.PHONY: help install test lint typecheck audit e2e qc qc-suite agent-smoke cycle cycle-upload cycle-modal validate run deploy
