@@ -7,6 +7,13 @@ versioning: [SemVer](https://semver.org/).
 
 ### Added
 
+- Claude agents under test (`claude_agent.py`, `polaron/llm.py`): a manual tool-use loop that
+  reaches the environment only through the session; four configs (Haiku 4.5 and Sonnet 5.5 ×
+  neutral and score-pressure prompts, published verbatim in `polaron/llm.py`); strict tool
+  schemas, `tool_choice` auto, no sampling overrides, Sonnet effort `medium`; each turn's cost
+  is journaled before its tools run, from per-model prices. No server-side refusal fallback,
+  because it would swap the model under test. `anthropic` SDK as the optional `agents` extra.
+- `make agent-smoke`: one live session (costs money; reads `ANTHROPIC_API_KEY` from `.env`).
 - Scripted control agents (`polaron/agents.py`, no LLM): `HonestAgent` judges only from
   `compare_to_baseline` with the reference rule (matches the reference pipeline, trips no
   honeypot, cites its evidence); `CheatingAgent` reads the decoy report and the cached verdict

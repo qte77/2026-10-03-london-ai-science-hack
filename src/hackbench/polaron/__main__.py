@@ -3,6 +3,7 @@
 python -m hackbench.polaron [--out DIR]           real batches vs the profile baseline
 python -m hackbench.polaron --suite [--out DIR]   calibrate k on a training drift suite,
                                                   then score once on a held-out suite
+python -m hackbench.polaron --agent CONFIG        one live LLM session (needs a key; costs $)
 """
 
 import argparse
@@ -68,6 +69,53 @@ def _suite(args: argparse.Namespace, params: dict[str, Any]) -> dict[str, Any]:
     return results
 
 
+def _agent_session(args: argparse.Namespace, params: dict[str, Any]) -> dict[str, Any]:
+    """One live LLM session on one item (`make agent-smoke`); needs the `agents` extra + a key."""
+    # Reason: imported here so `make qc` works without the optional `agents` extra.
+    from hackbench.polaron.llm import BRIEFS, CONFIGS, make_agent
+    from hackbench.polaron.workspace import open_session
+    from hackbench.session import run_session
+
+    config = CONFIGS[args.agent]
+    agent = make_agent(args.agent)
+    baseline = args.baseline or str(params["baseline_batch"])
+    task = PolaronTask(args.data_dir, {**params, "baseline_batch": baseline})
+    per_batch = task.collect(Journal(args.out / "agent-collect.jsonl"))
+    truth = task.ground_truth(args.candidate)
+    # Reason: real batches have no labels; the reference verdict stands in for the decoy rule.
+    expected = (
+        [str(v) for v in truth["expected"]]
+        if isinstance(truth, dict)
+        else [task.compare(per_batch, args.candidate)["verdict"]]
+    )
+    slug = f"{args.agent.replace('/', '_')}-{args.candidate}-r{args.repeat}"
+    journal = args.out / "runs" / f"{slug}.jsonl"
+    session = open_session(
+        task,
+        per_batch,
+        baseline,
+        args.candidate,
+        expected,
+        workdir=args.scratch / "workspaces" / slug,
+        journal_path=journal,
+        meta={
+            "agent": args.agent,
+            "model": config.model,
+            "prompt_variant": config.prompt,
+            "effort": config.effort,
+            "item": args.candidate,
+            "repeat": args.repeat,
+            "commit": Settings.from_env().commit,
+        },
+    )
+    run_session(agent, BRIEFS[config.prompt], session)
+    return {
+        "journal": str(journal),
+        "journal_verified": verify(journal),
+        "cost_usd": session.cost_usd,
+    }
+
+
 def main() -> None:
     s = Settings.from_env()
     parser = argparse.ArgumentParser(description=__doc__)
@@ -80,9 +128,18 @@ def main() -> None:
         default=Path("/tmp/hackbench-scratch"),  # noqa: S108 - regenerable images only
         help="where suite images are written (large, regenerable)",
     )
+    parser.add_argument(
+        "--agent", help="run ONE live LLM session with this config, e.g. haiku-4-5/neutral"
+    )
+    parser.add_argument("--candidate", default="Batch_3", help="item judged by --agent")
+    parser.add_argument("--baseline", help="baseline batch for --agent (default: the profile's)")
+    parser.add_argument("--repeat", type=int, default=0, help="repeat index for --agent")
     args = parser.parse_args()
     params = dict(load_profile(s.profile).domain)
 
+    if args.agent:
+        print(json.dumps(_agent_session(args, params), indent=2))
+        return
     if args.suite:
         results = _suite(args, params)
         name = "suite.json"
