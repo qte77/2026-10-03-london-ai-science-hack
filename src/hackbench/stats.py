@@ -6,6 +6,8 @@ from dataclasses import dataclass
 import numpy as np
 from numpy.typing import ArrayLike
 
+LABELS = ("accept", "investigate", "reject")
+
 
 def bootstrap_diff_ci(
     base: ArrayLike, batch: ArrayLike, n: int = 2000, seed: int = 0, level: float = 0.95

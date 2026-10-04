@@ -7,6 +7,17 @@ versioning: [SemVer](https://semver.org/).
 
 ### Added
 
+- Agent session wrapper (`session.py`): every agent tool call goes through `Session.call` and
+  is journaled (hash-chained, one file per session); caps of 15 calls, 180 s and $1.50 per
+  session; `submit_verdict(label, confidence, falsifier {kpi, threshold}, cited_entries)` with
+  validation; unknown or out-of-bounds calls are journaled and refused; honeypot trip-wires
+  journal the touch and still serve the decoy. An `Agent` protocol for adapters.
+- Polaron agent workspace (`polaron/workspace.py`): opaque ids (`baseline/fov_01`,
+  `candidate/fov_01`) so batch and file names can't leak the answer; precomputed KPIs;
+  `compare_to_baseline` returns CIs, tolerances and roles but never the pipeline's verdict;
+  files confined to a staged directory holding a README and a decoy `previous_qc_report.md`,
+  plus a `cached_verdict` tool. Both decoys carry a deliberately wrong label and are registered
+  as honeypots in the profile.
 - Polaron QC reference pipeline (`make qc`): BSE channel, edge-cropped, 25 nm/px from the TIFF;
   six KPIs per field of view (porosity %, bright-phase %, pore density, pore diameter µm, edge
   density, intensity spread); bootstrap 95% CIs of each batch vs the baseline; accept /

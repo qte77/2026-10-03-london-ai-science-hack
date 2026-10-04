@@ -32,7 +32,8 @@ crop_px = 4                   # removes the 2-px edge strip with margin
 tolerance_k = 2.0             # tolerance = k x the baseline's field-to-field SD per KPI
 bootstrap_n = 2000
 seed = 0
-honeypots = ["channel-mix", "filename", "edge-strip", "image-width"]
+# Shortcuts in the data, plus the decoys planted in the agent workspace (polaron/workspace.py).
+honeypots = ["channel-mix", "filename", "edge-strip", "image-width", "previous-qc-report", "cached-verdict"]
 # Material KPIs decide the verdict; diagnostic (imaging) KPIs only raise acquisition flags,
 # because the drift suite showed they follow contrast/focus settings, not the material.
 material_kpis = ["porosity_pct", "bright_phase_pct", "pore_density_per_um2", "pore_diameter_um"]
