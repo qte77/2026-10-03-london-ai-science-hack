@@ -1,0 +1,101 @@
+/*
+ * Design tokens for the three QC console "looks" (themes), per
+ * private/design/polaron-qc-console-spec.md §3 and §10.
+ *
+ * Selected by [data-look] on <html>: console | lab80 | polymer (default).
+ * Only plain `--name: #hex;` custom-property declarations live in this file
+ * (plus 8-digit hex "wash" variants, which are backgrounds, not text) so
+ * tests/test_ui_contrast.py can parse it without a CSS parser.
+ *
+ * Contrast fix (owner-requested): polymer's original link colour (#1677b8,
+ * 3.75:1) and the crit/warn/ok/ref/faint tones in both light looks fell
+ * below WCAG AA (4.5:1) against this look's own surfaces. Every text-like
+ * token below was darkened (lab80/polymer) until its contrast against the
+ * darkest same-look surface (or, for console, the lightest) is >= 4.5:1 -
+ * see tests/test_ui_contrast.py for the computed ratios.
+ */
+
+:root,
+[data-look="console"] {
+  color-scheme: dark;
+  --bg: #0f1011;
+  --surface-0: #121416;
+  --surface-1: #16181a;
+  --surface-2: #1c1f22;
+  --line: #2a2e33;
+  --line-strong: #3a3f45;
+  --text: #e8e6e1;
+  --text-2: #c9cac6;
+  --text-3: #b4b6b1;
+  --muted: #9a9c98;
+  --faint: #8a8d89;
+  --off: #4e545b;
+  --steel: #6b737b;
+  --on-signal: #0e0f10;
+  --crit: #d8693f;
+  --warn: #c9a458;
+  --ok: #8db894;
+  --ref: #9fb8c8;
+  --link: #c9a458;
+  --crit-wash: #d8693f1f;
+  --warn-wash: #c9a4581a;
+  --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --font-body: Archivo, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+[data-look="lab80"] {
+  color-scheme: light;
+  --bg: #e4e3df;
+  --surface-0: #eceae5;
+  --surface-1: #f6f5f2;
+  --surface-2: #dad9d4;
+  --line: #1f1e1b1f;
+  --line-strong: #1f1e1b3d;
+  --text: #1f1e1b;
+  --text-2: #34322d;
+  --text-3: #4a4741;
+  --muted: #615e57;
+  --faint: #615f58;
+  --off: #b7b5ae;
+  --steel: #8b8880;
+  --on-signal: #fff;
+  --crit: #ae3226;
+  --warn: #7e5700;
+  --ok: #1a6d3d;
+  --ref: #2c5bb6;
+  --link: #8a3a12;
+  --crit-wash: #c8392c1a;
+  --warn-wash: #b078001f;
+  --font-display: "IBM Plex Sans Condensed", sans-serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+[data-look="polymer"] {
+  color-scheme: light;
+  --bg: #e4e3df;
+  --surface-0: #e8e8e3;
+  --surface-1: #ebe9e4;
+  --surface-2: #e0ddd7;
+  --line: #342e261f;
+  --line-strong: #342e2638;
+  --text: #1f1e1b;
+  --text-2: #3c3a35;
+  --text-3: #55524c;
+  --muted: #55524c;
+  --faint: #64615a;
+  --off: #b7b5ae;
+  --steel: #87847c;
+  --on-signal: #fff;
+  --crit: #b23327;
+  --warn: #825900;
+  --ok: #17703e;
+  --ref: #2d5ebc;
+  --link: #13669e;
+  --crit-wash: #c8392c1a;
+  --warn-wash: #b078001a;
+  --font-display: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Consolas, "JetBrains Mono", monospace;
+}

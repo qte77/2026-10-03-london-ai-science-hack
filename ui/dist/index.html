@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" data-look="polymer">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Polaron QC Console</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var qs = new URLSearchParams(location.search).get("look");
+          var stored = null;
+          try {
+            stored = localStorage.getItem("qc-look");
+          } catch (e) {
+            /* storage may be blocked; ignore */
+          }
+          var look = qs || stored || "polymer";
+          if (["console", "lab80", "polymer"].indexOf(look) === -1) look = "polymer";
+          document.documentElement.dataset.look = look;
+        } catch (e) {
+          document.documentElement.dataset.look = "polymer";
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/results/assets/index-DH7SwW_L.js"></script>
+    <link rel="stylesheet" crossorigin href="/results/assets/index-DQmp2IS3.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
