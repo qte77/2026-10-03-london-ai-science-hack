@@ -185,16 +185,25 @@ def _paper_found(
 
 
 def _judge_target(
-    llm_url: str, cf_account_id: str, cf_api_token: str
+    llm_url: str,
+    cf_account_id: str,
+    cf_api_token: str,
+    llm_model: str = "",
+    llm_auth: str = "",
 ) -> tuple[str, str, dict[str, str], str | None]:
-    """(base_url, provider, headers, fixed_model). Modal vLLM first, else Cloudflare Workers AI.
+    """(base_url, provider, headers, fixed_model). Modal endpoint first, else Cloudflare.
+
+    The Modal endpoint is a Modal-managed Shared/Dedicated Endpoint (OpenAI-compatible,
+    `<url>/v1/chat/completions`, `Authorization: Bearer <proxy_id>.<proxy_secret>`; per
+    modal.com/docs/guide/endpoints, checked 2026-10-04).
 
     Reason: provider is picked by config PRESENCE, not a reachability probe - the judge call's
     own retry/backoff already tolerates a cold Modal container, so a failed call after retries
     is counted as a judge error, not a silent fallback to the other provider.
     """
     if llm_url:
-        return f"{llm_url}/v1", "modal-vllm", {}, None
+        headers = {"Authorization": f"Bearer {llm_auth}"} if llm_auth else {}
+        return f"{llm_url}/v1", "modal-endpoint", headers, llm_model or None
     if cf_account_id and cf_api_token:
         base = f"https://api.cloudflare.com/client/v4/accounts/{cf_account_id}/ai/v1"
         return base, "cloudflare-workers-ai", {"Authorization": f"Bearer {cf_api_token}"}, CF_MODEL
@@ -291,6 +300,8 @@ def run_paper_judge(
     llm_url: str = "",
     cf_account_id: str = "",
     cf_api_token: str = "",
+    llm_model: str = "",
+    llm_auth: str = "",
     client: httpx.Client | None = None,
     judge_client: httpx.Client | None = None,
     max_calls: int = MAX_CALLS,
@@ -401,7 +412,17 @@ def run_paper_judge(
         sum(1 for r in rows if r["paperclip"] == r["curated"]) / n_rows if n_rows else 0.0
     )
 
-    judge = _run_judge(rows, journal, llm_url, cf_account_id, cf_api_token, judge_client, backoff)
+    judge = _run_judge(
+        rows,
+        journal,
+        llm_url,
+        cf_account_id,
+        cf_api_token,
+        judge_client,
+        backoff,
+        llm_model=llm_model,
+        llm_auth=llm_auth,
+    )
     for row in rows:
         row.pop("_evidence", None)
         row.pop("_claim", None)
@@ -425,8 +446,13 @@ def _run_judge(
     cf_api_token: str,
     judge_client: httpx.Client | None,
     backoff: Sequence[float],
+    *,
+    llm_model: str = "",
+    llm_auth: str = "",
 ) -> dict[str, Any]:
-    base_url, provider, headers, fixed_model = _judge_target(llm_url, cf_account_id, cf_api_token)
+    base_url, provider, headers, fixed_model = _judge_target(
+        llm_url, cf_account_id, cf_api_token, llm_model, llm_auth
+    )
     if not provider:
         return {
             "status": "skipped",

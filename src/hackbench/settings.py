@@ -21,6 +21,11 @@ class Settings:
     # Reason: base URL of an OpenAI-compatible LLM judge endpoint for the paper_judge cycle
     # stage; empty means unset, so the judge sub-stage self-reports skipped rather than failing.
     llm_url: str = ""
+    # Reason: a Modal Shared/Dedicated Endpoint (Modal-managed, OpenAI-compatible) needs the
+    # model name and a workspace proxy token, sent as `Bearer <id>.<secret>`.
+    llm_model: str = ""
+    modal_proxy_token_id: str = ""
+    modal_proxy_token_secret: str = ""
     # Reason: Paperclip API key for paper_judge's resolve/claims-support calls; empty means
     # unset, so the whole paper_judge stage self-reports skipped rather than failing.
     paperclip_api_key: str = ""
@@ -42,6 +47,9 @@ class Settings:
             snapshot_path=os.environ.get("HACKBENCH_SNAPSHOT_PATH", defaults.snapshot_path),
             ui_dir=os.environ.get("HACKBENCH_UI_DIR", defaults.ui_dir),
             llm_url=os.environ.get("HACKBENCH_LLM_URL", defaults.llm_url).rstrip("/"),
+            llm_model=os.environ.get("HACKBENCH_LLM_MODEL", defaults.llm_model),
+            modal_proxy_token_id=os.environ.get("MODAL_PROXY_TOKEN_ID", ""),
+            modal_proxy_token_secret=os.environ.get("MODAL_PROXY_TOKEN_SECRET", ""),
             paperclip_api_key=(
                 os.environ.get("PAPERCLIP_API_KEY") or os.environ.get("GXL_API_KEY") or ""
             ),
