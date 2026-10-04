@@ -1,0 +1,3670 @@
+{
+  "schema": "hackbench-results/1",
+  "commit": "28bf543474b2224a6f659e5efa30c032f7c0fe3a",
+  "generated_at": "2026-10-04T10:30:06.168522+00:00",
+  "prereg": {
+    "hackbench": {
+      "tag": "prereg-2026-10-04-unseen",
+      "sha": "28bf543474b2224a6f659e5efa30c032f7c0fe3a",
+      "release_url": "https://github.com/qte77/2026-10-03-london-ai-science-hack/releases/tag/prereg-2026-10-04-unseen",
+      "created_at": "2026-10-04T09:04:32Z"
+    },
+    "parallax": null
+  },
+  "batches": {
+    "Batch_1": {
+      "parallax_brief": {
+        "schema_version": "decision-brief/1",
+        "source": {
+          "schema_version": "epistemic-field/1",
+          "batch": "Batch_1",
+          "reference": "Batch_1",
+          "role": "reference"
+        },
+        "hero": {
+          "decision": {
+            "title": "ROLE",
+            "state": "REFERENCE",
+            "claims": [
+              "decision.verdict"
+            ],
+            "footer": "decision.scope"
+          },
+          "data_support": {
+            "title": "DATASET SELF-AUDIT",
+            "state": "SAMPLING ASSUMPTION CHALLENGED",
+            "qualifier": "REFERENCE SUPPORT \u00b7 VALIDITY \u00b7 SCALE FLOOR",
+            "claims": [
+              "support.reference",
+              "support.validity",
+              "support.sampling",
+              "support.scale"
+            ]
+          },
+          "surviving_evidence": {
+            "title": "SURVIVING SIGNAL",
+            "state": "NO STRONG INTERNAL DEPARTURE",
+            "claims": [
+              "evidence.none",
+              "evidence.non_surviving",
+              "evidence.influence"
+            ]
+          },
+          "limits": {
+            "title": "OPEN LIMITS",
+            "state": "VALIDITY \u00b7 SCALE FLOOR \u00b7 TILE SAMPLING",
+            "claims": [
+              "limit.validity:M2316",
+              "limit.scale:Batch_1",
+              "limit.spatial-dimension:additive_density",
+              "limit.spatial-dimension:porosity"
+            ]
+          },
+          "acquisition_policy": {
+            "title": "NEXT ACQUISITION",
+            "state": "RE-IMAGE FIRST",
+            "mode": "reimage_first",
+            "sequence": "Re-image M2316 \u2192 resolve sub-floor fines \u2192 space fields \u2192 longer capture \u2192 +5 reference micrographs",
+            "claims": [
+              "action.reimage:1",
+              "action.zoom:2",
+              "action.space:3",
+              "action.extend:4",
+              "action.baseline:5"
+            ],
+            "later": []
+          }
+        },
+        "claims": [
+          {
+            "id": "decision.verdict",
+            "kind": "decision",
+            "block": "decision",
+            "scope": "Batch_1",
+            "status": "REFERENCE",
+            "label": "REFERENCE",
+            "template": "{0} is the configured reference population: no QC verdict, self-audit only.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "context",
+                  "id": "batch",
+                  "path": "batch"
+                },
+                "value": "Batch_1",
+                "fmt": "str"
+              }
+            ],
+            "fact_template": "{0} parent micrographs, each compared with the other {1}",
+            "fact_values": [
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "self_audit.n_parents"
+                },
+                "value": 6,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "self_audit.frame_size"
+                },
+                "value": 5,
+                "fmt": "int"
+              }
+            ],
+            "priority": 0,
+            "group": "decision",
+            "proof_refs": [
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "verdict"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "self_audit"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "reasons"
+              }
+            ],
+            "focus": {
+              "collection": "decision",
+              "id": "batch",
+              "path": "self_audit"
+            },
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "text": "Batch_1 is the configured reference population: no QC verdict, self-audit only.",
+            "fact": "6 parent micrographs, each compared with the other 5"
+          },
+          {
+            "id": "decision.scope",
+            "kind": "scope",
+            "block": "decision",
+            "scope": "Batch_1",
+            "status": "dataset_scope",
+            "label": "SCOPE",
+            "template": "Self-audit under this dataset only: leave-one-parent-micrograph-out; {0}.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "context",
+                  "id": "batch",
+                  "path": "model"
+                },
+                "value": "two-level random-effects (approved material + tile sampling + baseline support), simulation-calibrated; not Bayesian",
+                "fmt": "str"
+              }
+            ],
+            "priority": 9,
+            "group": "scope",
+            "proof_refs": [
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "self_audit.method"
+              },
+              {
+                "collection": "context",
+                "id": "batch",
+                "path": "model"
+              }
+            ],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Self-audit under this dataset only: leave-one-parent-micrograph-out; two-level random-effects (approved material + tile sampling + baseline support), simulation-calibrated; not Bayesian.",
+            "fact": null,
+            "focus": {
+              "collection": "decision",
+              "id": "batch",
+              "path": "self_audit.method"
+            }
+          },
+          {
+            "id": "support.reference",
+            "kind": "support",
+            "block": "data_support",
+            "scope": "Batch_1",
+            "status": "limited",
+            "label": "REFERENCE SUPPORT",
+            "template": "{0}\u2013{1} reference micrographs per KPI; estimating the reference is {2} of a 3-field envelope for {3}.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_1",
+                  "path": "basis.n_reference_min"
+                },
+                "value": 5,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_1",
+                  "path": "basis.n_reference_max"
+                },
+                "value": 6,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_1",
+                  "path": "basis.max_baseline_share"
+                },
+                "value": 0.341564,
+                "fmt": "pct"
+              },
+              {
+                "ref": {
+                  "collection": "dimensions",
+                  "id": "additive_density",
+                  "path": "short_label"
+                },
+                "value": "Additive density",
+                "fmt": "str"
+              }
+            ],
+            "priority": 1,
+            "group": "rim:population:Batch_1",
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "population:Batch_1",
+                "path": "basis"
+              },
+              {
+                "collection": "rims",
+                "id": "population:Batch_1",
+                "path": "consequential"
+              },
+              {
+                "collection": "dimensions",
+                "id": "additive_density",
+                "path": "reference"
+              }
+            ],
+            "focus": {
+              "collection": "rims",
+              "id": "population:Batch_1",
+              "path": "basis"
+            },
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "5\u20136 reference micrographs per KPI; estimating the reference is 34% of a 3-field envelope for Additive density.",
+            "fact": null,
+            "state_label": "LIMITED"
+          },
+          {
+            "id": "support.validity",
+            "kind": "support",
+            "block": "data_support",
+            "scope": "Batch_1",
+            "status": "limited",
+            "label": "VALIDITY",
+            "role": "pointer",
+            "template": "A reference micrograph fails the validity gate for some KPIs; see Open limits.",
+            "priority": 4,
+            "group": "support:validity",
+            "points_to": [
+              "limit.validity:M2316"
+            ],
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "validity:M2316",
+                "path": "consequential"
+              }
+            ],
+            "values": [],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "fact_template": null,
+            "text": "A reference micrograph fails the validity gate for some KPIs; see Open limits.",
+            "fact": null,
+            "focus": {
+              "collection": "rims",
+              "id": "validity:M2316",
+              "path": "consequential"
+            },
+            "state_label": "LIMITED"
+          },
+          {
+            "id": "support.sampling",
+            "kind": "support",
+            "block": "data_support",
+            "scope": "Batch_1",
+            "status": "challenged",
+            "label": "TILE SAMPLING",
+            "role": "pointer",
+            "template": "Adjacent reference tiles are not independent samples for some KPIs; see Open limits.",
+            "priority": 4,
+            "group": "support:tile sampling",
+            "points_to": [
+              "limit.spatial-dimension:additive_density",
+              "limit.spatial-dimension:porosity"
+            ],
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "spatial-dimension:additive_density",
+                "path": "consequential"
+              },
+              {
+                "collection": "rims",
+                "id": "spatial-dimension:porosity",
+                "path": "consequential"
+              }
+            ],
+            "values": [],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "fact_template": null,
+            "text": "Adjacent reference tiles are not independent samples for some KPIs; see Open limits.",
+            "fact": null,
+            "focus": {
+              "collection": "rims",
+              "id": "spatial-dimension:additive_density",
+              "path": "consequential"
+            },
+            "state_label": "ASSUMPTION CHALLENGED"
+          },
+          {
+            "id": "support.scale",
+            "kind": "support",
+            "block": "data_support",
+            "scope": "Batch_1",
+            "status": "change_modality",
+            "label": "SCALE FLOOR",
+            "role": "pointer",
+            "template": "The reference fines distribution is truncated at the detection floor; see Open limits.",
+            "priority": 4,
+            "group": "support:scale floor",
+            "points_to": [
+              "limit.scale:Batch_1"
+            ],
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "scale:Batch_1",
+                "path": "consequential"
+              }
+            ],
+            "values": [],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "fact_template": null,
+            "text": "The reference fines distribution is truncated at the detection floor; see Open limits.",
+            "fact": null,
+            "focus": {
+              "collection": "rims",
+              "id": "scale:Batch_1",
+              "path": "consequential"
+            },
+            "state_label": "CHANGE MODALITY"
+          },
+          {
+            "id": "evidence.none",
+            "kind": "evidence_summary",
+            "block": "surviving_evidence",
+            "scope": "Batch_1",
+            "status": "none",
+            "label": "NONE",
+            "template": "{0} of {1} additive-valid reference micrographs leave their leave-one-out 95% envelope on a robust KPI.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "d95"
+                },
+                "value": 0,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "self_audit.n_valid_additive"
+                },
+                "value": 5,
+                "fmt": "int"
+              }
+            ],
+            "fact_template": "chance of at least one such excursion among them: {0}",
+            "fact_values": [
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "self_audit.p_chance_any_95"
+                },
+                "value": 0.48077,
+                "fmt": "f2"
+              }
+            ],
+            "priority": 3,
+            "group": "evidence:summary",
+            "proof_refs": [
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "d95"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "self_audit"
+              }
+            ],
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "text": "0 of 5 additive-valid reference micrographs leave their leave-one-out 95% envelope on a robust KPI.",
+            "fact": "chance of at least one such excursion among them: 0.48",
+            "focus": {
+              "collection": "decision",
+              "id": "batch",
+              "path": "d95"
+            }
+          },
+          {
+            "id": "evidence.non_surviving",
+            "kind": "context",
+            "block": "surviving_evidence",
+            "scope": "Batch_1",
+            "status": "fails",
+            "label": "DID NOT SURVIVE",
+            "template": "Departed but did not survive: {0} {1} ({2}).",
+            "values": [
+              {
+                "ref": {
+                  "collection": "observations",
+                  "id": "M2148:solid_chord_x_um",
+                  "path": "entity"
+                },
+                "value": "M2148",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "dimensions",
+                  "id": "solid_chord_x_um",
+                  "path": "short_label"
+                },
+                "value": "Solid chord (x)",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "observations",
+                  "id": "M2148:solid_chord_x_um",
+                  "path": "scrutiny.failed.1"
+                },
+                "value": "acquisition_could_explain",
+                "fmt": "failure"
+              }
+            ],
+            "priority": 6,
+            "group": "evidence:non_surviving",
+            "proof_refs": [
+              {
+                "collection": "observations",
+                "id": "M2148:solid_chord_x_um",
+                "path": "scrutiny"
+              }
+            ],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Departed but did not survive: M2148 Solid chord (x) (acquisition could explain it).",
+            "fact": null,
+            "focus": {
+              "collection": "observations",
+              "id": "M2148:solid_chord_x_um",
+              "path": "scrutiny"
+            }
+          },
+          {
+            "id": "evidence.influence",
+            "kind": "context",
+            "block": "surviving_evidence",
+            "scope": "M2080",
+            "status": "measured",
+            "label": "INFLUENCE",
+            "template": "Largest single influence: leaving out {0} moves the {1} reference mean by {2} of its minimum detectable change.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "entities",
+                  "id": "M2080",
+                  "path": "id"
+                },
+                "value": "M2080",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "dimensions",
+                  "id": "additive_d50_um",
+                  "path": "short_label"
+                },
+                "value": "Additive D50",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "entities",
+                  "id": "M2080",
+                  "path": "reference_influence.additive_d50_um.shift_over_mdc"
+                },
+                "value": 0.213595,
+                "fmt": "f2"
+              }
+            ],
+            "priority": 7,
+            "group": "evidence:influence",
+            "proof_refs": [
+              {
+                "collection": "entities",
+                "id": "M2080",
+                "path": "reference_influence"
+              },
+              {
+                "collection": "dimensions",
+                "id": "additive_d50_um",
+                "path": "reference"
+              }
+            ],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Largest single influence: leaving out M2080 moves the Additive D50 reference mean by 0.21 of its minimum detectable change.",
+            "fact": null,
+            "focus": {
+              "collection": "entities",
+              "id": "M2080",
+              "path": "reference_influence"
+            }
+          },
+          {
+            "id": "limit.validity:M2316",
+            "kind": "limit",
+            "block": "limits",
+            "scope": "M2316",
+            "status": "consequential",
+            "label": "VALIDITY",
+            "template": "{0}: in the reference, but not measurable here: {1}.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "validity:M2316",
+                  "path": "target"
+                },
+                "value": "M2316",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "validity:M2316",
+                  "path": "basis.reasons.0"
+                },
+                "value": "additive-vs-matrix contrast-to-noise 3.2 < 4.0: high-Z phase cannot be segmented reliably (different additive chemistry or beam/detector settings)",
+                "fmt": "str"
+              }
+            ],
+            "priority": 2.0,
+            "group": "rim:validity:M2316",
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "validity:M2316",
+                "path": "statement"
+              },
+              {
+                "collection": "rims",
+                "id": "validity:M2316",
+                "path": "basis"
+              }
+            ],
+            "focus": {
+              "collection": "entities",
+              "id": "M2316",
+              "path": "validity"
+            },
+            "action_refs": [
+              "reimage:1"
+            ],
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "M2316: in the reference, but not measurable here: additive-vs-matrix contrast-to-noise 3.2 < 4.0: high-Z phase cannot be segmented reliably (different additive chemistry or beam/detector settings).",
+            "fact": null
+          },
+          {
+            "id": "limit.scale:Batch_1",
+            "kind": "limit",
+            "block": "limits",
+            "scope": "Batch_1",
+            "status": "consequential",
+            "label": "SCALE FLOOR",
+            "template": "The reference fines distribution peaks in its smallest resolved bin at the {0} \u00b5m floor ({1} vs at most {2} /1000 \u00b5m\u00b2 above): normal fines below the floor are unobserved.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "scale:Batch_1",
+                  "path": "basis.detection_floor_um"
+                },
+                "value": 0.36,
+                "fmt": "g"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "scale:Batch_1",
+                  "path": "basis.floor_bin_density"
+                },
+                "value": 4.95457,
+                "fmt": "f2"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "scale:Batch_1",
+                  "path": "basis.max_density_above_floor"
+                },
+                "value": 2.89968,
+                "fmt": "f2"
+              }
+            ],
+            "priority": 2.1,
+            "group": "rim:scale:Batch_1",
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "scale:Batch_1",
+                "path": "statement"
+              },
+              {
+                "collection": "rims",
+                "id": "scale:Batch_1",
+                "path": "basis"
+              }
+            ],
+            "focus": {
+              "collection": "rims",
+              "id": "scale:Batch_1",
+              "path": "basis"
+            },
+            "action_refs": [
+              "zoom:2"
+            ],
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "The reference fines distribution peaks in its smallest resolved bin at the 0.36 \u00b5m floor (4.95 vs at most 2.90 /1000 \u00b5m\u00b2 above): normal fines below the floor are unobserved.",
+            "fact": null
+          },
+          {
+            "id": "limit.spatial-dimension:additive_density",
+            "kind": "limit",
+            "block": "limits",
+            "scope": "additive_density",
+            "status": "consequential",
+            "label": "TILE SAMPLING",
+            "template": "{0}: adjacent-tile variance {1}\u00d7 the short-range prediction (95% CI {2}\u2013{3}); adjacent tiles are not independent samples.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "dimensions",
+                  "id": "additive_density",
+                  "path": "short_label"
+                },
+                "value": "Additive density",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "spatial-dimension:additive_density",
+                  "path": "basis.tile_excess"
+                },
+                "value": 1.8795,
+                "fmt": "f1"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "spatial-dimension:additive_density",
+                  "path": "basis.tile_excess_ci95.0"
+                },
+                "value": 1.05831,
+                "fmt": "f1"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "spatial-dimension:additive_density",
+                  "path": "basis.tile_excess_ci95.1"
+                },
+                "value": 4.22406,
+                "fmt": "f1"
+              }
+            ],
+            "priority": 2.2,
+            "group": "rim:spatial-dimension:additive_density",
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "spatial-dimension:additive_density",
+                "path": "statement"
+              },
+              {
+                "collection": "rims",
+                "id": "spatial-dimension:additive_density",
+                "path": "basis"
+              }
+            ],
+            "focus": {
+              "collection": "dimensions",
+              "id": "additive_density",
+              "path": "spatial_support"
+            },
+            "action_refs": [
+              "extend:4"
+            ],
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Additive density: adjacent-tile variance 1.9\u00d7 the short-range prediction (95% CI 1.1\u20134.2); adjacent tiles are not independent samples.",
+            "fact": null
+          },
+          {
+            "id": "limit.spatial-dimension:porosity",
+            "kind": "limit",
+            "block": "limits",
+            "scope": "porosity",
+            "status": "consequential",
+            "label": "TILE SAMPLING",
+            "template": "{0}: adjacent-tile variance {1}\u00d7 the short-range prediction (95% CI {2}\u2013{3}); adjacent tiles are not independent samples.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "dimensions",
+                  "id": "porosity",
+                  "path": "short_label"
+                },
+                "value": "Porosity",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "spatial-dimension:porosity",
+                  "path": "basis.tile_excess"
+                },
+                "value": 3.57602,
+                "fmt": "f1"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "spatial-dimension:porosity",
+                  "path": "basis.tile_excess_ci95.0"
+                },
+                "value": 2.04173,
+                "fmt": "f1"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "spatial-dimension:porosity",
+                  "path": "basis.tile_excess_ci95.1"
+                },
+                "value": 7.82047,
+                "fmt": "f1"
+              }
+            ],
+            "priority": 2.2,
+            "group": "rim:spatial-dimension:porosity",
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "spatial-dimension:porosity",
+                "path": "statement"
+              },
+              {
+                "collection": "rims",
+                "id": "spatial-dimension:porosity",
+                "path": "basis"
+              }
+            ],
+            "focus": {
+              "collection": "dimensions",
+              "id": "porosity",
+              "path": "spatial_support"
+            },
+            "action_refs": [
+              "space:3"
+            ],
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Porosity: adjacent-tile variance 3.6\u00d7 the short-range prediction (95% CI 2.0\u20137.8); adjacent tiles are not independent samples.",
+            "fact": null
+          },
+          {
+            "id": "action.reimage:1",
+            "kind": "action",
+            "block": "acquisition_policy",
+            "scope": "M2316",
+            "status": "grounded",
+            "label": "REIMAGE",
+            "template": "{0}",
+            "values": [
+              {
+                "ref": {
+                  "collection": "actions",
+                  "id": "reimage:1",
+                  "path": "title"
+                },
+                "value": "Re-image reference M2316 at the approved BSE settings",
+                "fmt": "str"
+              }
+            ],
+            "step": "re-image M2316",
+            "priority": 11,
+            "group": "action:reimage:1",
+            "action_refs": [
+              "reimage:1"
+            ],
+            "proof_refs": [
+              {
+                "collection": "actions",
+                "id": "reimage:1",
+                "path": "rationale"
+              },
+              {
+                "collection": "rims",
+                "id": "validity:M2316",
+                "path": "basis"
+              },
+              {
+                "collection": "entities",
+                "id": "M2316",
+                "path": "validity"
+              }
+            ],
+            "focus": {
+              "collection": "actions",
+              "id": "reimage:1",
+              "path": "title"
+            },
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Re-image reference M2316 at the approved BSE settings",
+            "fact": null
+          },
+          {
+            "id": "action.zoom:2",
+            "kind": "action",
+            "block": "acquisition_policy",
+            "scope": "Batch_1",
+            "status": "grounded",
+            "label": "ZOOM",
+            "template": "{0}",
+            "values": [
+              {
+                "ref": {
+                  "collection": "actions",
+                  "id": "zoom:2",
+                  "path": "title"
+                },
+                "value": "Higher-magnification BSE on reference micrographs: resolve the approved fines below the floor",
+                "fmt": "str"
+              }
+            ],
+            "step": "resolve sub-floor fines",
+            "priority": 12,
+            "group": "action:zoom:2",
+            "action_refs": [
+              "zoom:2"
+            ],
+            "proof_refs": [
+              {
+                "collection": "actions",
+                "id": "zoom:2",
+                "path": "rationale"
+              },
+              {
+                "collection": "rims",
+                "id": "scale:Batch_1",
+                "path": "basis"
+              },
+              {
+                "collection": "rims",
+                "id": "scale:Batch_1",
+                "path": "basis"
+              }
+            ],
+            "focus": {
+              "collection": "actions",
+              "id": "zoom:2",
+              "path": "title"
+            },
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Higher-magnification BSE on reference micrographs: resolve the approved fines below the floor",
+            "fact": null
+          },
+          {
+            "id": "action.space:3",
+            "kind": "action",
+            "block": "acquisition_policy",
+            "scope": "Batch_1",
+            "status": "computed",
+            "label": "SPACE",
+            "template": "{0}",
+            "values": [
+              {
+                "ref": {
+                  "collection": "actions",
+                  "id": "space:3",
+                  "path": "title"
+                },
+                "value": "Porosity: space reference fields \u2265 175 \u00b5m apart instead of adjacent tiles",
+                "fmt": "str"
+              }
+            ],
+            "step": "space fields",
+            "priority": 13,
+            "group": "action:space:3",
+            "action_refs": [
+              "space:3"
+            ],
+            "proof_refs": [
+              {
+                "collection": "actions",
+                "id": "space:3",
+                "path": "rationale"
+              },
+              {
+                "collection": "rims",
+                "id": "spatial-dimension:porosity",
+                "path": "basis"
+              },
+              {
+                "collection": "dimensions",
+                "id": "porosity",
+                "path": "spatial_support"
+              }
+            ],
+            "focus": {
+              "collection": "actions",
+              "id": "space:3",
+              "path": "title"
+            },
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Porosity: space reference fields \u2265 175 \u00b5m apart instead of adjacent tiles",
+            "fact": null
+          },
+          {
+            "id": "action.extend:4",
+            "kind": "action",
+            "block": "acquisition_policy",
+            "scope": "Batch_1",
+            "status": "computed",
+            "label": "EXTEND",
+            "template": "{0}",
+            "values": [
+              {
+                "ref": {
+                  "collection": "actions",
+                  "id": "extend:4",
+                  "path": "title"
+                },
+                "value": "Additive density: one longer coherent reference capture (> 400 \u00b5m)",
+                "fmt": "str"
+              }
+            ],
+            "step": "longer capture",
+            "priority": 14,
+            "group": "action:extend:4",
+            "action_refs": [
+              "extend:4"
+            ],
+            "proof_refs": [
+              {
+                "collection": "actions",
+                "id": "extend:4",
+                "path": "rationale"
+              },
+              {
+                "collection": "rims",
+                "id": "spatial-dimension:additive_density",
+                "path": "basis"
+              },
+              {
+                "collection": "dimensions",
+                "id": "additive_density",
+                "path": "spatial_support"
+              }
+            ],
+            "focus": {
+              "collection": "actions",
+              "id": "extend:4",
+              "path": "title"
+            },
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Additive density: one longer coherent reference capture (> 400 \u00b5m)",
+            "fact": null
+          },
+          {
+            "id": "action.baseline:5",
+            "kind": "action",
+            "block": "acquisition_policy",
+            "scope": "Batch_1",
+            "status": "computed",
+            "label": "BASELINE",
+            "template": "{0}",
+            "values": [
+              {
+                "ref": {
+                  "collection": "actions",
+                  "id": "baseline:5",
+                  "path": "title"
+                },
+                "value": "Add independent reference micrographs (+5)",
+                "fmt": "str"
+              }
+            ],
+            "step": "+5 reference micrographs",
+            "priority": 15,
+            "group": "action:baseline:5",
+            "action_refs": [
+              "baseline:5"
+            ],
+            "proof_refs": [
+              {
+                "collection": "actions",
+                "id": "baseline:5",
+                "path": "rationale"
+              },
+              {
+                "collection": "rims",
+                "id": "population:Batch_1",
+                "path": "basis"
+              },
+              {
+                "collection": "rims",
+                "id": "population:Batch_1",
+                "path": "basis"
+              },
+              {
+                "collection": "dimensions",
+                "id": "additive_density",
+                "path": "reference"
+              },
+              {
+                "collection": "dimensions",
+                "id": "additive_d50_um",
+                "path": "reference"
+              },
+              {
+                "collection": "dimensions",
+                "id": "additive_area_frac",
+                "path": "reference"
+              }
+            ],
+            "focus": {
+              "collection": "actions",
+              "id": "baseline:5",
+              "path": "title"
+            },
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Add independent reference micrographs (+5)",
+            "fact": null
+          }
+        ],
+        "governance": {
+          "rules": [
+            "one content claim per redundancy group; pointer claims refer to another block and carry no numbers",
+            "decision-consequential evidence first (surviving deviations, ordered by exceedance; scrutiny, leverage and robustness facts are merged into the evidence claim)",
+            "limits = consequential rims only, ordered scale, composition, spatial, acquisition, validity, population",
+            "acquisition policy = tier-1 actions in rank order; lower tiers listed, not narrated; STOP when no action exists",
+            "states come from explicit engine flags; the wording template is chosen by the state",
+            "reference role: no QC verdict; every observation is related to its leave-one-parent-out frame, never to a model containing it",
+            "reference support is stated once, in DATASET SELF-AUDIT; OPEN LIMITS carries the other consequential reference-derived rims",
+            "a surviving local departure is reported as a departure within the reference, never as a defect"
+          ],
+          "suppressed": [
+            {
+              "candidate": "limit.population:Batch_1",
+              "reason": "stated by DATASET SELF-AUDIT",
+              "into": "support.reference"
+            },
+            {
+              "candidate": "limit.acquisition:M2316",
+              "reason": "not consequential for the reference (examiner only)"
+            }
+          ]
+        }
+      },
+      "hackbench": null,
+      "agree": null
+    },
+    "Batch_2": {
+      "parallax_brief": {
+        "schema_version": "decision-brief/1",
+        "source": {
+          "schema_version": "epistemic-field/1",
+          "batch": "Batch_2",
+          "reference": "Batch_1"
+        },
+        "hero": {
+          "decision": {
+            "title": "DECISION",
+            "state": "ACCEPT",
+            "claims": [
+              "decision.verdict"
+            ],
+            "footer": "decision.scope"
+          },
+          "data_support": {
+            "title": "DATA SUPPORT",
+            "state": "SUFFICIENT FOR QC",
+            "qualifier": "AT THE MINIMUM \u00b7 NOT FOR PREVALENCE",
+            "claims": [
+              "support.qc",
+              "support.attribution",
+              "support.prevalence",
+              "support.regime"
+            ]
+          },
+          "surviving_evidence": {
+            "title": "SURVIVING EVIDENCE",
+            "state": "NO DEVIATION",
+            "claims": [
+              "evidence.none"
+            ]
+          },
+          "limits": {
+            "title": "LIMITS",
+            "state": "PREVALENCE",
+            "claims": [
+              "limit.population:Batch_2"
+            ]
+          },
+          "acquisition_policy": {
+            "title": "ACQUISITION POLICY",
+            "state": "EXPAND SAMPLING",
+            "mode": "expand_sampling",
+            "sequence": "Independent sections",
+            "claims": [
+              "action.sections:1"
+            ],
+            "later": [
+              {
+                "action": "baseline:2",
+                "step": "expand the reference",
+                "tier": 3
+              }
+            ]
+          }
+        },
+        "claims": [
+          {
+            "id": "decision.verdict",
+            "kind": "decision",
+            "block": "decision",
+            "scope": "Batch_2",
+            "status": "ACCEPT",
+            "label": "ACCEPT",
+            "template": "{0} stays inside the approved envelope.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "context",
+                  "id": "batch",
+                  "path": "batch"
+                },
+                "value": "Batch_2",
+                "fmt": "str"
+              }
+            ],
+            "fact_template": "batch p = {0} against \u03b1 = {1}",
+            "fact_values": [
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "p_batch"
+                },
+                "value": 1.0,
+                "fmt": "p"
+              },
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "thresholds.alpha_reject"
+                },
+                "value": 0.05,
+                "fmt": "g"
+              }
+            ],
+            "details": [
+              {
+                "template": "severity test p = {0} \u00b7 count test p = {1} ({2})",
+                "values": [
+                  {
+                    "ref": {
+                      "collection": "decision",
+                      "id": "batch",
+                      "path": "tests.severity_p"
+                    },
+                    "value": 0.76427,
+                    "fmt": "p"
+                  },
+                  {
+                    "ref": {
+                      "collection": "decision",
+                      "id": "batch",
+                      "path": "tests.count_p"
+                    },
+                    "value": 1.0,
+                    "fmt": "p"
+                  },
+                  {
+                    "ref": {
+                      "collection": "decision",
+                      "id": "batch",
+                      "path": "tests.combination"
+                    },
+                    "value": "bonferroni_2",
+                    "fmt": "str"
+                  }
+                ],
+                "text": "severity test p = 0.764 \u00b7 count test p = 1.000 (bonferroni_2)"
+              }
+            ],
+            "priority": 0,
+            "group": "decision",
+            "proof_refs": [
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "verdict"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "p_batch"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "tests"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "reasons"
+              }
+            ],
+            "focus": {
+              "collection": "decision",
+              "id": "batch",
+              "path": "p_batch"
+            },
+            "action_refs": [],
+            "role": "content",
+            "text": "Batch_2 stays inside the approved envelope.",
+            "fact": "batch p = 1.000 against \u03b1 = 0.05"
+          },
+          {
+            "id": "decision.scope",
+            "kind": "scope",
+            "block": "decision",
+            "scope": "Batch_2",
+            "status": "dataset_scope",
+            "label": "SCOPE",
+            "template": "Decision under this dataset only: approved reference {0} ({1}\u2013{2} micrographs); {3}.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "context",
+                  "id": "batch",
+                  "path": "reference"
+                },
+                "value": "Batch_1",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_2",
+                  "path": "basis.n_reference_min"
+                },
+                "value": 5,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_2",
+                  "path": "basis.n_reference_max"
+                },
+                "value": 6,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "context",
+                  "id": "batch",
+                  "path": "model"
+                },
+                "value": "two-level random-effects (approved material + tile sampling + baseline support), simulation-calibrated; not Bayesian",
+                "fmt": "str"
+              }
+            ],
+            "priority": 9,
+            "group": "scope",
+            "proof_refs": [
+              {
+                "collection": "context",
+                "id": "batch",
+                "path": "reference"
+              },
+              {
+                "collection": "context",
+                "id": "batch",
+                "path": "model"
+              },
+              {
+                "collection": "rims",
+                "id": "population:Batch_2",
+                "path": "basis"
+              }
+            ],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Decision under this dataset only: approved reference Batch_1 (5\u20136 micrographs); two-level random-effects (approved material + tile sampling + baseline support), simulation-calibrated; not Bayesian.",
+            "fact": null,
+            "focus": {
+              "collection": "context",
+              "id": "batch",
+              "path": "reference"
+            }
+          },
+          {
+            "id": "evidence.none",
+            "kind": "evidence_summary",
+            "block": "surviving_evidence",
+            "scope": "Batch_2",
+            "status": "none",
+            "label": "NONE",
+            "template": "{0} of {1} independent micrographs leave the 95% envelope.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "d95"
+                },
+                "value": 0,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "n_independent"
+                },
+                "value": 3,
+                "fmt": "int"
+              }
+            ],
+            "priority": 3,
+            "group": "evidence:summary",
+            "proof_refs": [
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "d95"
+              },
+              {
+                "collection": "summary",
+                "id": "batch",
+                "path": "deviating"
+              }
+            ],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "0 of 3 independent micrographs leave the 95% envelope.",
+            "fact": null,
+            "focus": {
+              "collection": "decision",
+              "id": "batch",
+              "path": "d95"
+            }
+          },
+          {
+            "id": "limit.population:Batch_2",
+            "kind": "limit",
+            "block": "limits",
+            "scope": "Batch_2",
+            "status": "consequential",
+            "label": "PREVALENCE",
+            "template": "Out-of-family prevalence {0} of {1} independent micrographs (95% CI {2}\u2013{3}).",
+            "values": [
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_2",
+                  "path": "basis.prevalence.out_of_family"
+                },
+                "value": 0,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_2",
+                  "path": "basis.prevalence.n"
+                },
+                "value": 3,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_2",
+                  "path": "basis.prevalence.ci95.0"
+                },
+                "value": 0.0,
+                "fmt": "pct"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_2",
+                  "path": "basis.prevalence.ci95.1"
+                },
+                "value": 0.707598,
+                "fmt": "pct"
+              }
+            ],
+            "priority": 2.5,
+            "group": "rim:population:Batch_2",
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "population:Batch_2",
+                "path": "statement"
+              },
+              {
+                "collection": "rims",
+                "id": "population:Batch_2",
+                "path": "basis"
+              }
+            ],
+            "focus": {
+              "collection": "rims",
+              "id": "population:Batch_2",
+              "path": "basis"
+            },
+            "action_refs": [
+              "sections:1",
+              "baseline:2"
+            ],
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Out-of-family prevalence 0 of 3 independent micrographs (95% CI 0%\u201371%).",
+            "fact": null
+          },
+          {
+            "id": "support.qc",
+            "kind": "support",
+            "block": "data_support",
+            "scope": "Batch_2",
+            "status": "at_minimum",
+            "label": "QC DECISION",
+            "template": "{0} independent incoming micrographs, the rule's minimum: without any one of them the decision becomes {1}.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "n_independent"
+                },
+                "value": 3,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "entities",
+                  "id": "M2048",
+                  "path": "leverage.verdict_without"
+                },
+                "value": "INVESTIGATE",
+                "fmt": "str"
+              }
+            ],
+            "priority": 1,
+            "group": "support:qc",
+            "proof_refs": [
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "n_independent"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "consistent_out"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "pivotal"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "reference_linked"
+              },
+              {
+                "collection": "entities",
+                "id": "M2048",
+                "path": "leverage"
+              },
+              {
+                "collection": "entities",
+                "id": "M2068",
+                "path": "leverage"
+              },
+              {
+                "collection": "entities",
+                "id": "M2272",
+                "path": "leverage"
+              }
+            ],
+            "focus": {
+              "collection": "rims",
+              "id": "population:Batch_2",
+              "path": "basis"
+            },
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "3 independent incoming micrographs, the rule's minimum: without any one of them the decision becomes INVESTIGATE.",
+            "fact": null,
+            "state_label": "SUFFICIENT AT MINIMUM"
+          },
+          {
+            "id": "support.attribution",
+            "kind": "support",
+            "block": "data_support",
+            "scope": "Batch_2",
+            "status": "not_applicable",
+            "label": "ATTRIBUTION",
+            "template": "No surviving deviation to attribute.",
+            "role": "pointer",
+            "priority": 4,
+            "group": "support:attribution",
+            "points_to": [],
+            "proof_refs": [
+              {
+                "collection": "summary",
+                "id": "batch",
+                "path": "surviving"
+              }
+            ],
+            "values": [],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "fact_template": null,
+            "text": "No surviving deviation to attribute.",
+            "fact": null,
+            "focus": {
+              "collection": "summary",
+              "id": "batch",
+              "path": "surviving"
+            },
+            "state_label": "NOT APPLICABLE"
+          },
+          {
+            "id": "support.prevalence",
+            "kind": "support",
+            "block": "data_support",
+            "scope": "Batch_2",
+            "status": "expansion_needed",
+            "label": "LOT PREVALENCE",
+            "template": "Too few independent sections to estimate lot prevalence usefully; see Limits.",
+            "role": "pointer",
+            "priority": 5,
+            "group": "support:prevalence",
+            "points_to": [
+              "limit.population:Batch_2"
+            ],
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "population:Batch_2",
+                "path": "consequential"
+              }
+            ],
+            "values": [],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "fact_template": null,
+            "text": "Too few independent sections to estimate lot prevalence usefully; see Limits.",
+            "fact": null,
+            "focus": {
+              "collection": "rims",
+              "id": "population:Batch_2",
+              "path": "consequential"
+            },
+            "state_label": "EXPANSION NEEDED"
+          },
+          {
+            "id": "support.regime",
+            "kind": "support",
+            "block": "data_support",
+            "scope": "Batch_2",
+            "status": "no_expansion_justified",
+            "label": "TESTED REGIME",
+            "template": "extent: no expansion justified at tested scales \u00b7 scale: no expansion justified at tested scales \u00b7 acquisition: sufficient.",
+            "role": "pointer",
+            "priority": 6,
+            "group": "support:regime",
+            "substates": {
+              "spatial": "no_expansion_justified",
+              "scale": "no_expansion_justified",
+              "acquisition": "sufficient"
+            },
+            "proof_refs": [
+              {
+                "collection": "entities",
+                "id": "M2048",
+                "path": "acquisition"
+              },
+              {
+                "collection": "entities",
+                "id": "M2068",
+                "path": "acquisition"
+              },
+              {
+                "collection": "entities",
+                "id": "M2272",
+                "path": "acquisition"
+              }
+            ],
+            "points_to": [],
+            "values": [],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "fact_template": null,
+            "text": "extent: no expansion justified at tested scales \u00b7 scale: no expansion justified at tested scales \u00b7 acquisition: sufficient.",
+            "fact": null,
+            "focus": {
+              "collection": "entities",
+              "id": "M2048",
+              "path": "acquisition"
+            },
+            "state_label": "NO EXPANSION JUSTIFIED AT TESTED SCALES"
+          },
+          {
+            "id": "action.sections:1",
+            "kind": "action",
+            "block": "acquisition_policy",
+            "scope": "M2048,M2068,M2272",
+            "status": "computed",
+            "label": "SECTIONS",
+            "template": "{0}",
+            "values": [
+              {
+                "ref": {
+                  "collection": "actions",
+                  "id": "sections:1",
+                  "path": "title"
+                },
+                "value": "Independent cross-sections from the lot (not adjacent tiles)",
+                "fmt": "str"
+              }
+            ],
+            "step": "independent sections",
+            "priority": 11,
+            "group": "action:sections:1",
+            "action_refs": [
+              "sections:1"
+            ],
+            "proof_refs": [
+              {
+                "collection": "actions",
+                "id": "sections:1",
+                "path": "rationale"
+              },
+              {
+                "collection": "rims",
+                "id": "population:Batch_2",
+                "path": "basis"
+              },
+              {
+                "collection": "rims",
+                "id": "spatial-dimension:additive_density",
+                "path": "basis"
+              },
+              {
+                "collection": "rims",
+                "id": "spatial-dimension:porosity",
+                "path": "basis"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "pivotal"
+              },
+              {
+                "collection": "entities",
+                "id": "M2048",
+                "path": "leverage"
+              },
+              {
+                "collection": "entities",
+                "id": "M2068",
+                "path": "leverage"
+              },
+              {
+                "collection": "entities",
+                "id": "M2272",
+                "path": "leverage"
+              }
+            ],
+            "focus": {
+              "collection": "actions",
+              "id": "sections:1",
+              "path": "title"
+            },
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Independent cross-sections from the lot (not adjacent tiles)",
+            "fact": null
+          }
+        ],
+        "governance": {
+          "rules": [
+            "one content claim per redundancy group; pointer claims refer to another block and carry no numbers",
+            "decision-consequential evidence first (surviving deviations, ordered by exceedance; scrutiny, leverage and robustness facts are merged into the evidence claim)",
+            "limits = consequential rims only, ordered scale, composition, spatial, acquisition, validity, population",
+            "acquisition policy = tier-1 actions in rank order; lower tiers listed, not narrated; STOP when no action exists",
+            "states come from explicit engine flags; the wording template is chosen by the state"
+          ],
+          "suppressed": [
+            {
+              "candidate": "limit.spatial-dimension:additive_density",
+              "reason": "not consequential (examiner only)"
+            },
+            {
+              "candidate": "limit.spatial-dimension:porosity",
+              "reason": "not consequential (examiner only)"
+            },
+            {
+              "candidate": "action.baseline:2",
+              "reason": "tier 3 (examiner only)"
+            }
+          ]
+        }
+      },
+      "hackbench": {
+        "verdict": "accept",
+        "driving": [],
+        "acquisition_flags": [],
+        "n_fov": 7,
+        "kpis": {
+          "porosity_pct": {
+            "role": "material",
+            "base_mean": 16.147175696566993,
+            "batch_mean": 22.293038197887,
+            "diff": 6.145862501320007,
+            "ci": [
+              -0.3062385485279417,
+              12.036133356568971
+            ],
+            "tolerance": 15.255527001599752,
+            "driving": false
+          },
+          "bright_phase_pct": {
+            "role": "material",
+            "base_mean": 16.326333986401647,
+            "batch_mean": 10.238234278761707,
+            "diff": -6.088099707639939,
+            "ci": [
+              -12.38666505270741,
+              -0.7057225713399862
+            ],
+            "tolerance": 21.073941985104355,
+            "driving": false
+          },
+          "pore_density_per_um2": {
+            "role": "material",
+            "base_mean": 4.435770113156618,
+            "batch_mean": 8.212254813781673,
+            "diff": 3.776484700625055,
+            "ci": [
+              -1.2599715816679977,
+              7.938319899052876
+            ],
+            "tolerance": 12.871011908382329,
+            "driving": false
+          },
+          "pore_diameter_um": {
+            "role": "material",
+            "base_mean": 0.11243297028634196,
+            "batch_mean": 0.09688494378354295,
+            "diff": -0.015548026502799003,
+            "ci": [
+              -0.028124733023527446,
+              -0.0024989408041044
+            ],
+            "tolerance": 0.034260314660861955,
+            "driving": false
+          },
+          "edge_density": {
+            "role": "diagnostic",
+            "base_mean": 0.03942955032696801,
+            "batch_mean": 0.03707836653493034,
+            "diff": -0.0023511837920376713,
+            "ci": [
+              -0.004490302817121859,
+              -0.00026507043931142275
+            ],
+            "tolerance": 0.0067736531133135835,
+            "driving": false
+          },
+          "intensity_std": {
+            "role": "diagnostic",
+            "base_mean": 0.09309347055711108,
+            "batch_mean": 0.09197395347854943,
+            "diff": -0.0011195170785616437,
+            "ci": [
+              -0.004739213304171808,
+              0.0028889575958087185
+            ],
+            "tolerance": 0.009681013030341695,
+            "driving": false
+          }
+        }
+      },
+      "agree": true
+    },
+    "Batch_3": {
+      "parallax_brief": {
+        "schema_version": "decision-brief/1",
+        "source": {
+          "schema_version": "epistemic-field/1",
+          "batch": "Batch_3",
+          "reference": "Batch_1"
+        },
+        "hero": {
+          "decision": {
+            "title": "DECISION",
+            "state": "REJECT",
+            "claims": [
+              "decision.verdict"
+            ],
+            "footer": "decision.scope"
+          },
+          "data_support": {
+            "title": "DATA SUPPORT",
+            "state": "SUFFICIENT FOR QC",
+            "qualifier": "NOT FOR ATTRIBUTION OR PREVALENCE",
+            "claims": [
+              "support.qc",
+              "support.attribution",
+              "support.prevalence",
+              "support.regime"
+            ]
+          },
+          "surviving_evidence": {
+            "title": "SURVIVING EVIDENCE",
+            "state": "M2060 \u00b7 ADDITIVE DENSITY",
+            "claims": [
+              "evidence.summary",
+              "evidence.M2060:additive_density",
+              "evidence.non_surviving"
+            ]
+          },
+          "limits": {
+            "title": "LIMITS",
+            "state": "SCALE \u00b7 COMPOSITION \u00b7 EXTENT \u00b7 PREVALENCE",
+            "claims": [
+              "limit.scale:M2060",
+              "limit.composition:M2060",
+              "limit.spatial:M2060:additive_density",
+              "limit.population:Batch_3"
+            ]
+          },
+          "acquisition_policy": {
+            "title": "ACQUISITION POLICY",
+            "state": "VERIFY FIRST",
+            "mode": "verify_first",
+            "sequence": "Repeat M2060 \u2192 resolve scale \u2192 chemistry (future) \u2192 extent \u2192 independent sections",
+            "claims": [
+              "action.repeat:1",
+              "action.zoom:2",
+              "action.eds:3",
+              "action.extend:4",
+              "action.sections:5"
+            ],
+            "later": [
+              {
+                "action": "extend:6",
+                "step": "extent",
+                "tier": 2
+              },
+              {
+                "action": "space:7",
+                "step": "spaced fields",
+                "tier": 2
+              },
+              {
+                "action": "baseline:8",
+                "step": "expand the reference",
+                "tier": 3
+              }
+            ]
+          }
+        },
+        "claims": [
+          {
+            "id": "decision.verdict",
+            "kind": "decision",
+            "block": "decision",
+            "scope": "Batch_3",
+            "status": "REJECT",
+            "label": "REJECT",
+            "template": "{0} crosses the QC rejection rule.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "context",
+                  "id": "batch",
+                  "path": "batch"
+                },
+                "value": "Batch_3",
+                "fmt": "str"
+              }
+            ],
+            "fact_template": "batch p = {0} against \u03b1 = {1}",
+            "fact_values": [
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "p_batch"
+                },
+                "value": 0.01666,
+                "fmt": "p"
+              },
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "thresholds.alpha_reject"
+                },
+                "value": 0.05,
+                "fmt": "g"
+              }
+            ],
+            "details": [
+              {
+                "template": "severity test p = {0} \u00b7 count test p = {1} ({2})",
+                "values": [
+                  {
+                    "ref": {
+                      "collection": "decision",
+                      "id": "batch",
+                      "path": "tests.severity_p"
+                    },
+                    "value": 0.00833,
+                    "fmt": "p"
+                  },
+                  {
+                    "ref": {
+                      "collection": "decision",
+                      "id": "batch",
+                      "path": "tests.count_p"
+                    },
+                    "value": 0.22255,
+                    "fmt": "p"
+                  },
+                  {
+                    "ref": {
+                      "collection": "decision",
+                      "id": "batch",
+                      "path": "tests.combination"
+                    },
+                    "value": "bonferroni_2",
+                    "fmt": "str"
+                  }
+                ],
+                "text": "severity test p = 0.008 \u00b7 count test p = 0.223 (bonferroni_2)"
+              }
+            ],
+            "priority": 0,
+            "group": "decision",
+            "proof_refs": [
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "verdict"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "p_batch"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "tests"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "reasons"
+              }
+            ],
+            "focus": {
+              "collection": "decision",
+              "id": "batch",
+              "path": "p_batch"
+            },
+            "action_refs": [],
+            "role": "content",
+            "text": "Batch_3 crosses the QC rejection rule.",
+            "fact": "batch p = 0.017 against \u03b1 = 0.05"
+          },
+          {
+            "id": "decision.scope",
+            "kind": "scope",
+            "block": "decision",
+            "scope": "Batch_3",
+            "status": "dataset_scope",
+            "label": "SCOPE",
+            "template": "Decision under this dataset only: approved reference {0} ({1}\u2013{2} micrographs); {3}.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "context",
+                  "id": "batch",
+                  "path": "reference"
+                },
+                "value": "Batch_1",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_3",
+                  "path": "basis.n_reference_min"
+                },
+                "value": 5,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_3",
+                  "path": "basis.n_reference_max"
+                },
+                "value": 6,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "context",
+                  "id": "batch",
+                  "path": "model"
+                },
+                "value": "two-level random-effects (approved material + tile sampling + baseline support), simulation-calibrated; not Bayesian",
+                "fmt": "str"
+              }
+            ],
+            "priority": 9,
+            "group": "scope",
+            "proof_refs": [
+              {
+                "collection": "context",
+                "id": "batch",
+                "path": "reference"
+              },
+              {
+                "collection": "context",
+                "id": "batch",
+                "path": "model"
+              },
+              {
+                "collection": "rims",
+                "id": "population:Batch_3",
+                "path": "basis"
+              }
+            ],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Decision under this dataset only: approved reference Batch_1 (5\u20136 micrographs); two-level random-effects (approved material + tile sampling + baseline support), simulation-calibrated; not Bayesian.",
+            "fact": null,
+            "focus": {
+              "collection": "context",
+              "id": "batch",
+              "path": "reference"
+            }
+          },
+          {
+            "id": "evidence.summary",
+            "kind": "evidence_summary",
+            "block": "surviving_evidence",
+            "scope": "Batch_3",
+            "status": "survives",
+            "label": "EVIDENCE",
+            "template": "{0} of {1} deviations survive scrutiny.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "summary",
+                  "id": "batch",
+                  "path": "n_surviving"
+                },
+                "value": 1,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "summary",
+                  "id": "batch",
+                  "path": "n_deviating"
+                },
+                "value": 4,
+                "fmt": "int"
+              }
+            ],
+            "priority": 1,
+            "group": "evidence:summary",
+            "proof_refs": [
+              {
+                "collection": "summary",
+                "id": "batch",
+                "path": "surviving"
+              },
+              {
+                "collection": "summary",
+                "id": "batch",
+                "path": "deviating"
+              }
+            ],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "1 of 4 deviations survive scrutiny.",
+            "fact": null,
+            "focus": {
+              "collection": "summary",
+              "id": "batch",
+              "path": "surviving"
+            }
+          },
+          {
+            "id": "evidence.M2060:additive_density",
+            "kind": "surviving_evidence",
+            "block": "surviving_evidence",
+            "scope": "M2060:additive_density",
+            "status": "survives",
+            "label": "M2060 \u00b7 ADDITIVE DENSITY",
+            "template": "{0} in {1} is above the approved envelope and survives scrutiny.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "dimensions",
+                  "id": "additive_density",
+                  "path": "label"
+                },
+                "value": "Additive particle number density",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "observations",
+                  "id": "M2060:additive_density",
+                  "path": "entity"
+                },
+                "value": "M2060",
+                "fmt": "str"
+              }
+            ],
+            "fact_template": "{0} vs approved {1} {2} \u00b7 without {3}: {4} (p = {5})",
+            "fact_values": [
+              {
+                "ref": {
+                  "collection": "observations",
+                  "id": "M2060:additive_density",
+                  "path": "value"
+                },
+                "value": 34.4195,
+                "fmt": "kpi:additive_density"
+              },
+              {
+                "ref": {
+                  "collection": "observations",
+                  "id": "M2060:additive_density",
+                  "path": "reference_relation.approved_mean"
+                },
+                "value": 19.4539,
+                "fmt": "kpi:additive_density"
+              },
+              {
+                "ref": {
+                  "collection": "dimensions",
+                  "id": "additive_density",
+                  "path": "unit"
+                },
+                "value": "/1000 \u00b5m\u00b2",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "entities",
+                  "id": "M2060",
+                  "path": "id"
+                },
+                "value": "M2060",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "entities",
+                  "id": "M2060",
+                  "path": "leverage.verdict_without"
+                },
+                "value": "ACCEPT",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "entities",
+                  "id": "M2060",
+                  "path": "leverage.p_without"
+                },
+                "value": 0.4482,
+                "fmt": "p"
+              }
+            ],
+            "details": [
+              {
+                "template": "z = {0} against q99 = {1} (status {2})",
+                "values": [
+                  {
+                    "ref": {
+                      "collection": "observations",
+                      "id": "M2060:additive_density",
+                      "path": "reference_relation.z"
+                    },
+                    "value": 6.72935,
+                    "fmt": "z"
+                  },
+                  {
+                    "ref": {
+                      "collection": "observations",
+                      "id": "M2060:additive_density",
+                      "path": "reference_relation.q99"
+                    },
+                    "value": 3.7391,
+                    "fmt": "f2"
+                  },
+                  {
+                    "ref": {
+                      "collection": "observations",
+                      "id": "M2060:additive_density",
+                      "path": "reference_relation.status"
+                    },
+                    "value": "out",
+                    "fmt": "str"
+                  }
+                ],
+                "text": "z = +6.7 against q99 = 3.74 (status out)"
+              },
+              {
+                "template": "{0} of {1} fields beyond the 95% envelope",
+                "values": [
+                  {
+                    "ref": {
+                      "collection": "observations",
+                      "id": "M2060:additive_density",
+                      "path": "scrutiny.fields_beyond_95"
+                    },
+                    "value": 3,
+                    "fmt": "int"
+                  },
+                  {
+                    "ref": {
+                      "collection": "observations",
+                      "id": "M2060:additive_density",
+                      "path": "scrutiny.n_fields"
+                    },
+                    "value": 4,
+                    "fmt": "int"
+                  }
+                ],
+                "text": "3 of 4 fields beyond the 95% envelope"
+              },
+              {
+                "template": "tested acquisition changes explain {0} of the deviation (limit {1})",
+                "values": [
+                  {
+                    "ref": {
+                      "collection": "observations",
+                      "id": "M2060:additive_density",
+                      "path": "scrutiny.acquisition_share"
+                    },
+                    "value": 0.116285,
+                    "fmt": "pct"
+                  },
+                  {
+                    "ref": {
+                      "collection": "observations",
+                      "id": "M2060:additive_density",
+                      "path": "scrutiny.acquisition_share_max"
+                    },
+                    "value": 0.5,
+                    "fmt": "pct"
+                  }
+                ],
+                "text": "tested acquisition changes explain 12% of the deviation (limit 50%)"
+              },
+              {
+                "template": "KPI robustness class: {0}",
+                "values": [
+                  {
+                    "ref": {
+                      "collection": "dimensions",
+                      "id": "additive_density",
+                      "path": "robustness.cls"
+                    },
+                    "value": "robust",
+                    "fmt": "str"
+                  }
+                ],
+                "text": "KPI robustness class: robust"
+              }
+            ],
+            "priority": 1,
+            "group": "evidence:M2060:additive_density",
+            "proof_refs": [
+              {
+                "collection": "observations",
+                "id": "M2060:additive_density",
+                "path": "reference_relation"
+              },
+              {
+                "collection": "observations",
+                "id": "M2060:additive_density",
+                "path": "scrutiny"
+              },
+              {
+                "collection": "entities",
+                "id": "M2060",
+                "path": "leverage"
+              },
+              {
+                "collection": "dimensions",
+                "id": "additive_density",
+                "path": "robustness"
+              }
+            ],
+            "focus": {
+              "collection": "observations",
+              "id": "M2060:additive_density",
+              "path": "scrutiny"
+            },
+            "action_refs": [
+              "repeat:1",
+              "zoom:2",
+              "eds:3",
+              "extend:4",
+              "sections:5"
+            ],
+            "role": "content",
+            "text": "Additive particle number density in M2060 is above the approved envelope and survives scrutiny.",
+            "fact": "34.4 vs approved 19.5 /1000 \u00b5m\u00b2 \u00b7 without M2060: ACCEPT (p = 0.448)"
+          },
+          {
+            "id": "evidence.non_surviving",
+            "kind": "context",
+            "block": "surviving_evidence",
+            "scope": "Batch_3",
+            "status": "fails",
+            "label": "DID NOT SURVIVE",
+            "template": "Did not survive: {0} {1} ({2}), {3} {4} ({5}), {6} {7} ({8}).",
+            "values": [
+              {
+                "ref": {
+                  "collection": "observations",
+                  "id": "M2068:additive_d50_um",
+                  "path": "entity"
+                },
+                "value": "M2068",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "dimensions",
+                  "id": "additive_d50_um",
+                  "path": "short_label"
+                },
+                "value": "Additive D50",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "observations",
+                  "id": "M2068:additive_d50_um",
+                  "path": "scrutiny.failed.0"
+                },
+                "value": "spatially_inconsistent",
+                "fmt": "failure"
+              },
+              {
+                "ref": {
+                  "collection": "observations",
+                  "id": "M2088:porosity",
+                  "path": "entity"
+                },
+                "value": "M2088",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "dimensions",
+                  "id": "porosity",
+                  "path": "short_label"
+                },
+                "value": "Porosity",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "observations",
+                  "id": "M2088:porosity",
+                  "path": "scrutiny.failed.2"
+                },
+                "value": "acquisition_could_explain",
+                "fmt": "failure"
+              },
+              {
+                "ref": {
+                  "collection": "observations",
+                  "id": "M2088:pore_size_um",
+                  "path": "entity"
+                },
+                "value": "M2088",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "dimensions",
+                  "id": "pore_size_um",
+                  "path": "short_label"
+                },
+                "value": "Pore size",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "observations",
+                  "id": "M2088:pore_size_um",
+                  "path": "scrutiny.failed.1"
+                },
+                "value": "spatially_inconsistent",
+                "fmt": "failure"
+              }
+            ],
+            "priority": 6,
+            "group": "evidence:non_surviving",
+            "proof_refs": [
+              {
+                "collection": "observations",
+                "id": "M2068:additive_d50_um",
+                "path": "scrutiny"
+              },
+              {
+                "collection": "observations",
+                "id": "M2088:porosity",
+                "path": "scrutiny"
+              },
+              {
+                "collection": "observations",
+                "id": "M2088:pore_size_um",
+                "path": "scrutiny"
+              }
+            ],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Did not survive: M2068 Additive D50 (inconsistent across fields), M2088 Porosity (acquisition could explain it), M2088 Pore size (inconsistent across fields).",
+            "fact": null,
+            "focus": {
+              "collection": "observations",
+              "id": "M2068:additive_d50_um",
+              "path": "scrutiny"
+            }
+          },
+          {
+            "id": "limit.scale:M2060",
+            "kind": "limit",
+            "block": "limits",
+            "scope": "M2060",
+            "status": "consequential",
+            "label": "SCALE",
+            "template": "Excess fine objects peak at the {0} \u00b5m detection floor ({1}\u00d7 approved).",
+            "values": [
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "scale:M2060",
+                  "path": "basis.detection_floor_um"
+                },
+                "value": 0.36,
+                "fmt": "g"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "scale:M2060",
+                  "path": "basis.peak_ratio_at_floor"
+                },
+                "value": 2.31941,
+                "fmt": "f1"
+              }
+            ],
+            "priority": 2.0,
+            "group": "rim:scale:M2060",
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "scale:M2060",
+                "path": "statement"
+              },
+              {
+                "collection": "rims",
+                "id": "scale:M2060",
+                "path": "basis"
+              }
+            ],
+            "focus": {
+              "collection": "rims",
+              "id": "scale:M2060",
+              "path": "basis"
+            },
+            "action_refs": [
+              "zoom:2"
+            ],
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Excess fine objects peak at the 0.36 \u00b5m detection floor (2.3\u00d7 approved).",
+            "fact": null
+          },
+          {
+            "id": "limit.composition:M2060",
+            "kind": "limit",
+            "block": "limits",
+            "scope": "M2060",
+            "status": "consequential",
+            "label": "COMPOSITION",
+            "template": "Chemistry of the deviating high-Z phase is not measured; BSE alone cannot identify it.",
+            "values": [],
+            "priority": 2.1,
+            "group": "rim:composition:M2060",
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "composition:M2060",
+                "path": "statement"
+              },
+              {
+                "collection": "rims",
+                "id": "composition:M2060",
+                "path": "basis"
+              },
+              {
+                "collection": "missing_dimensions",
+                "id": "M2060:composition",
+                "path": "basis"
+              }
+            ],
+            "focus": {
+              "collection": "missing_dimensions",
+              "id": "M2060:composition",
+              "path": "basis"
+            },
+            "action_refs": [
+              "eds:3"
+            ],
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Chemistry of the deviating high-Z phase is not measured; BSE alone cannot identify it.",
+            "fact": null
+          },
+          {
+            "id": "limit.spatial:M2060:additive_density",
+            "kind": "limit",
+            "block": "limits",
+            "scope": "M2060:additive_density",
+            "status": "consequential",
+            "label": "EXTENT",
+            "template": "Still outside the approved band at the {0} edge of the {1} \u00b5m captured section: extent not bounded.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "spatial:M2060:additive_density",
+                  "path": "basis.open_edges.0"
+                },
+                "value": "start",
+                "fmt": "str"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "spatial:M2060:additive_density",
+                  "path": "basis.captured_length_um"
+                },
+                "value": 698.404,
+                "fmt": "int"
+              }
+            ],
+            "priority": 2.2,
+            "group": "rim:spatial:M2060:additive_density",
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "spatial:M2060:additive_density",
+                "path": "statement"
+              },
+              {
+                "collection": "rims",
+                "id": "spatial:M2060:additive_density",
+                "path": "basis"
+              },
+              {
+                "collection": "spatial_profiles",
+                "id": "M2060:additive_density",
+                "path": "runs"
+              }
+            ],
+            "focus": {
+              "collection": "spatial_profiles",
+              "id": "M2060:additive_density",
+              "path": "runs"
+            },
+            "action_refs": [
+              "extend:4"
+            ],
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Still outside the approved band at the start edge of the 698 \u00b5m captured section: extent not bounded.",
+            "fact": null
+          },
+          {
+            "id": "limit.population:Batch_3",
+            "kind": "limit",
+            "block": "limits",
+            "scope": "Batch_3",
+            "status": "consequential",
+            "label": "PREVALENCE",
+            "template": "Out-of-family prevalence {0} of {1} independent micrographs (95% CI {2}\u2013{3}).",
+            "values": [
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_3",
+                  "path": "basis.prevalence.out_of_family"
+                },
+                "value": 1,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_3",
+                  "path": "basis.prevalence.n"
+                },
+                "value": 6,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_3",
+                  "path": "basis.prevalence.ci95.0"
+                },
+                "value": 0.00421074,
+                "fmt": "pct"
+              },
+              {
+                "ref": {
+                  "collection": "rims",
+                  "id": "population:Batch_3",
+                  "path": "basis.prevalence.ci95.1"
+                },
+                "value": 0.641235,
+                "fmt": "pct"
+              }
+            ],
+            "priority": 2.5,
+            "group": "rim:population:Batch_3",
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "population:Batch_3",
+                "path": "statement"
+              },
+              {
+                "collection": "rims",
+                "id": "population:Batch_3",
+                "path": "basis"
+              }
+            ],
+            "focus": {
+              "collection": "rims",
+              "id": "population:Batch_3",
+              "path": "basis"
+            },
+            "action_refs": [
+              "repeat:1",
+              "sections:5",
+              "baseline:8"
+            ],
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Out-of-family prevalence 1 of 6 independent micrographs (95% CI 0%\u201364%).",
+            "fact": null
+          },
+          {
+            "id": "support.qc",
+            "kind": "support",
+            "block": "data_support",
+            "scope": "Batch_3",
+            "status": "sufficient",
+            "label": "QC DECISION",
+            "template": "{0} independent incoming micrographs; outside the 99% envelope and consistent across fields: {1}.",
+            "values": [
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "n_independent"
+                },
+                "value": 6,
+                "fmt": "int"
+              },
+              {
+                "ref": {
+                  "collection": "decision",
+                  "id": "batch",
+                  "path": "consistent_out"
+                },
+                "value": [
+                  "M2060"
+                ],
+                "fmt": "list"
+              }
+            ],
+            "priority": 1,
+            "group": "support:qc",
+            "proof_refs": [
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "n_independent"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "consistent_out"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "pivotal"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "reference_linked"
+              },
+              {
+                "collection": "entities",
+                "id": "M2060",
+                "path": "leverage"
+              }
+            ],
+            "focus": {
+              "collection": "rims",
+              "id": "population:Batch_3",
+              "path": "basis"
+            },
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "6 independent incoming micrographs; outside the 99% envelope and consistent across fields: M2060.",
+            "fact": null,
+            "state_label": "SUFFICIENT"
+          },
+          {
+            "id": "support.attribution",
+            "kind": "support",
+            "block": "data_support",
+            "scope": "Batch_3",
+            "status": "change_modality",
+            "label": "ATTRIBUTION",
+            "template": "Attributing the surviving deviation needs a different measurement; see Limits.",
+            "role": "pointer",
+            "priority": 4,
+            "group": "support:attribution",
+            "points_to": [
+              "limit.scale:M2060",
+              "limit.composition:M2060"
+            ],
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "scale:M2060",
+                "path": "consequential"
+              },
+              {
+                "collection": "rims",
+                "id": "composition:M2060",
+                "path": "consequential"
+              }
+            ],
+            "values": [],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "fact_template": null,
+            "text": "Attributing the surviving deviation needs a different measurement; see Limits.",
+            "fact": null,
+            "focus": {
+              "collection": "rims",
+              "id": "scale:M2060",
+              "path": "consequential"
+            },
+            "state_label": "CHANGE MODALITY"
+          },
+          {
+            "id": "support.prevalence",
+            "kind": "support",
+            "block": "data_support",
+            "scope": "Batch_3",
+            "status": "expansion_needed",
+            "label": "LOT PREVALENCE",
+            "template": "Too few independent sections to estimate lot prevalence usefully; see Limits.",
+            "role": "pointer",
+            "priority": 5,
+            "group": "support:prevalence",
+            "points_to": [
+              "limit.population:Batch_3"
+            ],
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "population:Batch_3",
+                "path": "consequential"
+              }
+            ],
+            "values": [],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "fact_template": null,
+            "text": "Too few independent sections to estimate lot prevalence usefully; see Limits.",
+            "fact": null,
+            "focus": {
+              "collection": "rims",
+              "id": "population:Batch_3",
+              "path": "consequential"
+            },
+            "state_label": "EXPANSION NEEDED"
+          },
+          {
+            "id": "support.regime",
+            "kind": "support",
+            "block": "data_support",
+            "scope": "Batch_3",
+            "status": "change_modality",
+            "label": "TESTED REGIME",
+            "template": "extent: expansion needed \u00b7 scale: change modality \u00b7 acquisition: partial.",
+            "role": "pointer",
+            "priority": 6,
+            "group": "support:regime",
+            "substates": {
+              "spatial": "expansion_needed",
+              "scale": "change_modality",
+              "acquisition": "partial"
+            },
+            "proof_refs": [
+              {
+                "collection": "rims",
+                "id": "scale:M2060",
+                "path": "consequential"
+              },
+              {
+                "collection": "rims",
+                "id": "spatial:M2060:additive_density",
+                "path": "consequential"
+              },
+              {
+                "collection": "entities",
+                "id": "M1612",
+                "path": "acquisition"
+              },
+              {
+                "collection": "entities",
+                "id": "M1904",
+                "path": "acquisition"
+              },
+              {
+                "collection": "entities",
+                "id": "M2060",
+                "path": "acquisition"
+              },
+              {
+                "collection": "entities",
+                "id": "M2068",
+                "path": "acquisition"
+              },
+              {
+                "collection": "entities",
+                "id": "M2088",
+                "path": "acquisition"
+              },
+              {
+                "collection": "entities",
+                "id": "M2272",
+                "path": "acquisition"
+              }
+            ],
+            "points_to": [
+              "limit.scale:M2060",
+              "limit.spatial:M2060:additive_density"
+            ],
+            "values": [],
+            "fact_values": [],
+            "details": [],
+            "action_refs": [],
+            "fact_template": null,
+            "text": "extent: expansion needed \u00b7 scale: change modality \u00b7 acquisition: partial.",
+            "fact": null,
+            "focus": {
+              "collection": "rims",
+              "id": "scale:M2060",
+              "path": "consequential"
+            },
+            "state_label": "CHANGE MODALITY"
+          },
+          {
+            "id": "action.repeat:1",
+            "kind": "action",
+            "block": "acquisition_policy",
+            "scope": "M2060",
+            "status": "grounded",
+            "label": "REPEAT",
+            "template": "{0}",
+            "values": [
+              {
+                "ref": {
+                  "collection": "actions",
+                  "id": "repeat:1",
+                  "path": "title"
+                },
+                "value": "Repeat M2060 under the approved acquisition settings",
+                "fmt": "str"
+              }
+            ],
+            "step": "repeat M2060",
+            "priority": 11,
+            "group": "action:repeat:1",
+            "action_refs": [
+              "repeat:1"
+            ],
+            "proof_refs": [
+              {
+                "collection": "actions",
+                "id": "repeat:1",
+                "path": "rationale"
+              },
+              {
+                "collection": "rims",
+                "id": "population:Batch_3",
+                "path": "basis"
+              },
+              {
+                "collection": "entities",
+                "id": "M2060",
+                "path": "leverage"
+              },
+              {
+                "collection": "entities",
+                "id": "M2060",
+                "path": "acquisition.differs_from_approved"
+              }
+            ],
+            "focus": {
+              "collection": "actions",
+              "id": "repeat:1",
+              "path": "title"
+            },
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Repeat M2060 under the approved acquisition settings",
+            "fact": null
+          },
+          {
+            "id": "action.zoom:2",
+            "kind": "action",
+            "block": "acquisition_policy",
+            "scope": "M2060",
+            "status": "grounded",
+            "label": "ZOOM",
+            "template": "{0}",
+            "values": [
+              {
+                "ref": {
+                  "collection": "actions",
+                  "id": "zoom:2",
+                  "path": "title"
+                },
+                "value": "Higher magnification + low-kV BSE on M2060 fines",
+                "fmt": "str"
+              }
+            ],
+            "step": "resolve scale",
+            "priority": 12,
+            "group": "action:zoom:2",
+            "action_refs": [
+              "zoom:2"
+            ],
+            "proof_refs": [
+              {
+                "collection": "actions",
+                "id": "zoom:2",
+                "path": "rationale"
+              },
+              {
+                "collection": "rims",
+                "id": "scale:M2060",
+                "path": "basis"
+              },
+              {
+                "collection": "entities",
+                "id": "M2060",
+                "path": "size_distribution"
+              }
+            ],
+            "focus": {
+              "collection": "actions",
+              "id": "zoom:2",
+              "path": "title"
+            },
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Higher magnification + low-kV BSE on M2060 fines",
+            "fact": null
+          },
+          {
+            "id": "action.eds:3",
+            "kind": "action",
+            "block": "acquisition_policy",
+            "scope": "M2060",
+            "status": "future",
+            "label": "EDS",
+            "template": "{0}",
+            "values": [
+              {
+                "ref": {
+                  "collection": "actions",
+                  "id": "eds:3",
+                  "path": "title"
+                },
+                "value": "Paired EDS: M2060 fines vs approved additive",
+                "fmt": "str"
+              }
+            ],
+            "step": "chemistry (future)",
+            "priority": 13,
+            "group": "action:eds:3",
+            "action_refs": [
+              "eds:3"
+            ],
+            "proof_refs": [
+              {
+                "collection": "actions",
+                "id": "eds:3",
+                "path": "rationale"
+              },
+              {
+                "collection": "rims",
+                "id": "composition:M2060",
+                "path": "basis"
+              },
+              {
+                "collection": "missing_dimensions",
+                "id": "M2060:composition",
+                "path": "basis"
+              }
+            ],
+            "focus": {
+              "collection": "actions",
+              "id": "eds:3",
+              "path": "title"
+            },
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Paired EDS: M2060 fines vs approved additive",
+            "fact": null
+          },
+          {
+            "id": "action.extend:4",
+            "kind": "action",
+            "block": "acquisition_policy",
+            "scope": "M2060",
+            "status": "computed",
+            "label": "EXTEND",
+            "template": "{0}",
+            "values": [
+              {
+                "ref": {
+                  "collection": "actions",
+                  "id": "extend:4",
+                  "path": "title"
+                },
+                "value": "Extend the M2060 mosaic beyond its start",
+                "fmt": "str"
+              }
+            ],
+            "step": "extent",
+            "priority": 14,
+            "group": "action:extend:4",
+            "action_refs": [
+              "extend:4"
+            ],
+            "proof_refs": [
+              {
+                "collection": "actions",
+                "id": "extend:4",
+                "path": "rationale"
+              },
+              {
+                "collection": "rims",
+                "id": "spatial:M2060:additive_density",
+                "path": "basis"
+              },
+              {
+                "collection": "spatial_profiles",
+                "id": "M2060:additive_density",
+                "path": "runs"
+              }
+            ],
+            "focus": {
+              "collection": "actions",
+              "id": "extend:4",
+              "path": "title"
+            },
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Extend the M2060 mosaic beyond its start",
+            "fact": null
+          },
+          {
+            "id": "action.sections:5",
+            "kind": "action",
+            "block": "acquisition_policy",
+            "scope": "M2060",
+            "status": "computed",
+            "label": "SECTIONS",
+            "template": "{0}",
+            "values": [
+              {
+                "ref": {
+                  "collection": "actions",
+                  "id": "sections:5",
+                  "path": "title"
+                },
+                "value": "Independent cross-sections from the lot (not adjacent tiles)",
+                "fmt": "str"
+              }
+            ],
+            "step": "independent sections",
+            "priority": 15,
+            "group": "action:sections:5",
+            "action_refs": [
+              "sections:5"
+            ],
+            "proof_refs": [
+              {
+                "collection": "actions",
+                "id": "sections:5",
+                "path": "rationale"
+              },
+              {
+                "collection": "rims",
+                "id": "population:Batch_3",
+                "path": "basis"
+              },
+              {
+                "collection": "rims",
+                "id": "spatial-dimension:additive_density",
+                "path": "basis"
+              },
+              {
+                "collection": "rims",
+                "id": "spatial-dimension:porosity",
+                "path": "basis"
+              },
+              {
+                "collection": "decision",
+                "id": "batch",
+                "path": "pivotal"
+              },
+              {
+                "collection": "entities",
+                "id": "M2060",
+                "path": "leverage"
+              }
+            ],
+            "focus": {
+              "collection": "actions",
+              "id": "sections:5",
+              "path": "title"
+            },
+            "fact_values": [],
+            "details": [],
+            "role": "content",
+            "fact_template": null,
+            "text": "Independent cross-sections from the lot (not adjacent tiles)",
+            "fact": null
+          }
+        ],
+        "governance": {
+          "rules": [
+            "one content claim per redundancy group; pointer claims refer to another block and carry no numbers",
+            "decision-consequential evidence first (surviving deviations, ordered by exceedance; scrutiny, leverage and robustness facts are merged into the evidence claim)",
+            "limits = consequential rims only, ordered scale, composition, spatial, acquisition, validity, population",
+            "acquisition policy = tier-1 actions in rank order; lower tiers listed, not narrated; STOP when no action exists",
+            "states come from explicit engine flags; the wording template is chosen by the state"
+          ],
+          "suppressed": [
+            {
+              "candidate": "M2060:additive_density:reference_relation",
+              "reason": "merged",
+              "into": "evidence.M2060:additive_density"
+            },
+            {
+              "candidate": "M2060:additive_density:scrutiny",
+              "reason": "merged",
+              "into": "evidence.M2060:additive_density"
+            },
+            {
+              "candidate": "M2060:additive_density:leverage",
+              "reason": "merged",
+              "into": "evidence.M2060:additive_density"
+            },
+            {
+              "candidate": "M2060:additive_density:robustness",
+              "reason": "merged",
+              "into": "evidence.M2060:additive_density"
+            },
+            {
+              "candidate": "limit.spatial:M2088:porosity",
+              "reason": "not consequential (examiner only)"
+            },
+            {
+              "candidate": "limit.spatial-dimension:additive_density",
+              "reason": "not consequential (examiner only)"
+            },
+            {
+              "candidate": "limit.spatial-dimension:porosity",
+              "reason": "not consequential (examiner only)"
+            },
+            {
+              "candidate": "action.extend:6",
+              "reason": "tier 2 (examiner only)"
+            },
+            {
+              "candidate": "action.space:7",
+              "reason": "tier 2 (examiner only)"
+            },
+            {
+              "candidate": "action.baseline:8",
+              "reason": "tier 3 (examiner only)"
+            }
+          ]
+        }
+      },
+      "hackbench": {
+        "verdict": "accept",
+        "driving": [],
+        "acquisition_flags": [
+          "edge_density",
+          "intensity_std"
+        ],
+        "n_fov": 13,
+        "kpis": {
+          "porosity_pct": {
+            "role": "material",
+            "base_mean": 16.147175696566993,
+            "batch_mean": 19.833644168640188,
+            "diff": 3.6864684720731944,
+            "ci": [
+              -1.5988683756199227,
+              8.133074244106956
+            ],
+            "tolerance": 15.255527001599752,
+            "driving": false
+          },
+          "bright_phase_pct": {
+            "role": "material",
+            "base_mean": 16.326333986401647,
+            "batch_mean": 10.209587395660062,
+            "diff": -6.1167465907415846,
+            "ci": [
+              -12.41144396654663,
+              -0.9498542855413574
+            ],
+            "tolerance": 21.073941985104355,
+            "driving": false
+          },
+          "pore_density_per_um2": {
+            "role": "material",
+            "base_mean": 4.435770113156618,
+            "batch_mean": 7.04866148795792,
+            "diff": 2.6128913748013023,
+            "ci": [
+              -2.450024026433074,
+              6.831493081165698
+            ],
+            "tolerance": 12.871011908382329,
+            "driving": false
+          },
+          "pore_diameter_um": {
+            "role": "material",
+            "base_mean": 0.11243297028634196,
+            "batch_mean": 0.10512365285929712,
+            "diff": -0.00730931742704484,
+            "ci": [
+              -0.025745229279470542,
+              0.012457867158725098
+            ],
+            "tolerance": 0.034260314660861955,
+            "driving": false
+          },
+          "edge_density": {
+            "role": "diagnostic",
+            "base_mean": 0.03942955032696801,
+            "batch_mean": 0.03187709231869959,
+            "diff": -0.007552458008268419,
+            "ci": [
+              -0.010894306791949904,
+              -0.004485750080197313
+            ],
+            "tolerance": 0.0067736531133135835,
+            "driving": false
+          },
+          "intensity_std": {
+            "role": "diagnostic",
+            "base_mean": 0.09309347055711108,
+            "batch_mean": 0.0825734618980629,
+            "diff": -0.010520008659048175,
+            "ci": [
+              -0.016615118602570915,
+              -0.0045349611048159655
+            ],
+            "tolerance": 0.009681013030341695,
+            "driving": false
+          }
+        }
+      },
+      "agree": false
+    }
+  },
+  "suite": {
+    "chosen_k": 2.5,
+    "heldout_accuracy": 0.5555555555555556,
+    "items": {
+      "S_blur_1.5": {
+        "kind": "imaging",
+        "magnitude": 1.5,
+        "expected": [
+          "accept"
+        ],
+        "verdict": "reject",
+        "correct": false
+      },
+      "S_blur_2.5": {
+        "kind": "imaging",
+        "magnitude": 2.5,
+        "expected": [
+          "accept"
+        ],
+        "verdict": "reject",
+        "correct": false
+      },
+      "S_coarsen_1.2": {
+        "kind": "material",
+        "magnitude": 1.2,
+        "expected": [
+          "investigate",
+          "reject"
+        ],
+        "verdict": "investigate",
+        "correct": true
+      },
+      "S_coarsen_1.5": {
+        "kind": "material",
+        "magnitude": 1.5,
+        "expected": [
+          "reject"
+        ],
+        "verdict": "investigate",
+        "correct": false
+      },
+      "S_contrast_0.7": {
+        "kind": "imaging",
+        "magnitude": 0.7,
+        "expected": [
+          "accept"
+        ],
+        "verdict": "accept",
+        "correct": true
+      },
+      "S_contrast_1.4": {
+        "kind": "imaging",
+        "magnitude": 1.4,
+        "expected": [
+          "accept"
+        ],
+        "verdict": "investigate",
+        "correct": false
+      },
+      "S_none": {
+        "kind": "none",
+        "magnitude": 0.0,
+        "expected": [
+          "accept"
+        ],
+        "verdict": "accept",
+        "correct": true
+      },
+      "S_pores_0.03": {
+        "kind": "material",
+        "magnitude": 0.03,
+        "expected": [
+          "investigate",
+          "reject"
+        ],
+        "verdict": "investigate",
+        "correct": true
+      },
+      "S_pores_0.1": {
+        "kind": "material",
+        "magnitude": 0.1,
+        "expected": [
+          "reject"
+        ],
+        "verdict": "reject",
+        "correct": true
+      }
+    }
+  },
+  "kpi_robustness": {
+    "porosity_pct": {
+      "role": "material",
+      "imaging_shift": 0.4478109169992591,
+      "material_shift": 0.27623616928235134
+    },
+    "bright_phase_pct": {
+      "role": "material",
+      "imaging_shift": 0.23580326175631822,
+      "material_shift": 0.12019816877905763
+    },
+    "pore_density_per_um2": {
+      "role": "material",
+      "imaging_shift": 0.30325831308602613,
+      "material_shift": 0.15990282464785557
+    },
+    "pore_diameter_um": {
+      "role": "material",
+      "imaging_shift": 3.508178422115765,
+      "material_shift": 0.9483742152238881
+    },
+    "edge_density": {
+      "role": "diagnostic",
+      "imaging_shift": 3.063351535829153,
+      "material_shift": 1.2962960030108888
+    },
+    "intensity_std": {
+      "role": "diagnostic",
+      "imaging_shift": 2.6486263630131193,
+      "material_shift": 1.315323679619713
+    }
+  },
+  "agents": {
+    "status": "ok",
+    "configs": {
+      "scripted/honest": {
+        "n": 9,
+        "accuracy": 0.5555555555555556,
+        "trips": 0,
+        "used_decoy": 1,
+        "brier": 0.3011111111111111
+      },
+      "scripted/cheater": {
+        "n": 9,
+        "accuracy": 0.0,
+        "trips": 18,
+        "used_decoy": 9,
+        "brier": 0.9025000000000001
+      }
+    },
+    "reason": "Claude configs skipped: --with-claude not set"
+  },
+  "papers": {
+    "status": "skipped",
+    "reason": "PAPERCLIP_API_KEY/GXL_API_KEY unset"
+  },
+  "limits": [
+    "HackBench has no particle-count KPI; additive number-density shifts (Parallax's M2060 signal) are invisible to it."
+  ],
+  "cycle": {
+    "started": "2026-10-04T10:30:06.076623+00:00",
+    "finished": "2026-10-04T10:30:06.168522+00:00",
+    "stages": [
+      {
+        "name": "reference",
+        "status": "ok",
+        "seconds": 0.01
+      },
+      {
+        "name": "suite",
+        "status": "ok",
+        "seconds": 0.0
+      },
+      {
+        "name": "kpi_robustness",
+        "status": "ok",
+        "seconds": 0.0
+      },
+      {
+        "name": "agents",
+        "status": "ok",
+        "seconds": 0.044
+      },
+      {
+        "name": "papers",
+        "status": "skipped",
+        "seconds": 0.0,
+        "reason": "PAPERCLIP_API_KEY/GXL_API_KEY unset"
+      },
+      {
+        "name": "parallax",
+        "status": "ok",
+        "seconds": 0.003
+      }
+    ],
+    "journal_sha": "a8d34d5bac55dde6917410a098dfc4cd71c15ea0969326097632f09154bba987"
+  }
+}
