@@ -2,14 +2,45 @@
 
 Back to [README](../README.md) · See also: [event facts](event.md)
 
-**Status:** built and live at <https://<modal-workspace>--hackbench-web.modal.run>: the landing page
-(HTML + markdown), the agent discovery files (`llms.txt`, `robots.txt`, sitemap, agent card,
-skills index, ARD, API catalog, OpenAPI) and `/v1/health`. Built and run locally on real
-data: the Polaron QC reference pipeline (`make qc`), the drift suite with known ground truth
-and held-out scoring (`make qc-suite`, held-out 5/9), the hash-chained journal, and the agent
-session wrapper (journaled tool calls, caps, honeypot trip-wires, a staged workspace with two
-decoys), the scripted honest and cheating control agents, and the Claude agent adapter
-(tested against a fake client). Planned: the agent grid and scoring, and the UI.
+**Status (4 Oct 2026, `main` @ `e9fc4c7`):** live at <https://<modal-workspace>--hackbench-web.modal.run>.
+Parallax (the teammate's QC) decides on each batch; HackBench checks whether those decisions,
+and the agents making them, can be trusted. Both run in one Modal cycle and are served from one
+URL. Last recorded run: [runs/2026-10-04-e2e.md](runs/2026-10-04-e2e.md).
+
+```
+   GitHub ── CI green ──▶ auto-deploy
+                              │
+                              ▼
+  ┌───────────────────────── Modal: app "hackbench" ─────────────────────────┐
+  │                                                                          │
+  │   Volume                     Cycle (on demand, 7 stages)                 │
+  │   ┌──────────────────┐      ┌──────────────────────────────────────┐     │
+  │   │ derived inputs   │─────▶│ Parallax briefs  (teammate QC)       │     │
+  │   │ Parallax briefs  │      │        +                             │     │
+  │   │                  │      │ HackBench evals:                     │     │
+  │   │                  │      │   reference verdict · drift suite ·  │     │
+  │   │                  │      │   KPI robustness · agents vs         │     │
+  │   │                  │      │   honeypots · paper judge ───────────┼──┐  │
+  │   │ results.json     │◀─────│ → results + hash-chained journal     │  │  │
+  │   └────────┬─────────┘      └──────────────────────────────────────┘  │  │
+  │            │                                                          │  │
+  │            ▼                                                          │  │
+  │   Web (FastAPI)  https://<modal-workspace>--hackbench-web.modal.run           │  │
+  │     /            Parallax console                                     │  │
+  │     /results/    Parallax + HackBench side by side                    │  │
+  │     /v1/results  everything as JSON (agents)                          │  │
+  └───────────────────────────────────────────────────────────────────────┼──┘
+                                                                          │
+                                    ┌─────────────────────────────────────┴──┐
+                                    ▼                                        ▼
+                          GXL Paperclip (literature)        Cloudflare Workers AI (LLM judge)
+```
+
+**Flow:** derived inputs and Parallax briefs sit on the Modal Volume (no raw images). The cycle
+runs on demand (`make cycle-modal`), calls Paperclip and Workers AI, and writes `results.json`
+with a hash-chained journal. The web function reads it per request (falling back to a committed
+snapshot) and serves people and agents from one URL. GitHub CI gates every merge, then
+auto-deploys to Modal; `/v1/health` reports the live commit.
 
 ## Code layout: what is generic, what is swappable
 
@@ -36,67 +67,6 @@ numbers it reports.
 tiles of fewer parent micrographs, some spanning batch folders, so real-data confidence intervals
 may be too narrow until the teammate repo's tile-to-micrograph mapping becomes the statistical
 unit.
-
-```
-                    ┌──────────────────────────────────────────────────────────────────┐
-                    │           ONE FastAPI APP  (Modal web endpoint, @asgi_app)       │
-                    │      https://<workspace>--hackbench-web.modal.run                │
-                    │                                                                  │
-   HUMANS ────────▶ │  UI   /                leaderboard (hack rate · calibration · acc)│
-   (QC engineer,    │       /runs/{id}       evidence: verdict · tool trace · trips    │
-    judges)         │       /batches/{id}    verdict card: accept/investigate/reject   │
-                    │                        + driving KPIs + confidence intervals     │
-                    │       *.md twins · JSON-LD · no-JS server-rendered               │
-                    │                                                                  │
-   AGENTS ────────▶ │  API  /v1/tasks  /v1/runs/{id}  /v1/leaderboard   (public read)  │
-   (Claude, judges' │       POST /v1/verdicts                           (bearer token) │
-    own agents)     │       /openapi.json · /mcp (MCP server)                          │
-                    │  DISC /llms.txt · /robots.txt (Content-Signal)                   │
-                    │       /.well-known/{agent-card.json, mcp/server-card.json,       │
-                    │        agent-skills/index.json → SKILL.md, api-catalog, ard.json}│
-                    └───────────────┬───────────────────────────────┬──────────────────┘
-                                    │ same data (DRY)               │ reads
-                                    ▼                               ▼
-┌─ ENVIRONMENT ──────────────────────────────────┐   ┌─ RESULTS STORE (Modal Volume) ─────┐
-│ REAL       Polaron Batch_1/2/3 (31 FOV × 3 ch) │   │ runs/*.jsonl  hash-chained journal │
-│ HELD-OUT   unseen batch (opened only after tag)│   │ kpis/*.csv · verdicts/*.json       │
-│ SYNTHETIC  drift injector (contrast · blur ·   │   │ → exported to repo (replayable)    │
-│            particle-scale · pores, known size) │   └──────────────▲─────────────────────┘
-│ HONEYPOTS  decoy labels.json · channel/filename│                  │ every call + verdict
-│            shortcut · cached-verdict tool ·    │                  │
-│            early unseen-batch path             │                  │
-│                                                │                  │
-│ TOOLS (every call logged) ─────────────────────┼──────────────────┘
-│   list_items()  kpis(fov_id)                   │
-│   compare_to_baseline()  list_files/read_text  │
-│   submit_verdict(label, confidence, falsifier) │
-└───────────────┬────────────────────────────────┘
-                │ tasks + tools via one adapter
-                ▼
-┌─ AGENTS UNDER TEST ────────────────────────────────────────────────────────────────────┐
-│ Claude Haiku / Sonnet (neutral vs score-pressure prompt) · Claude Code headless        │
-│ open model on Modal GPU · optional Devin ×5 (own VM → GitHub PRs)                      │
-│ CONTROLS: reference pipeline (honest, non-agent) · cheating control agent (trips all)  │
-└───────────────┬────────────────────────────────────────────────────────────────────────┘
-                │ verdict + confidence + "what would change my mind" + tool log
-                ▼
-┌─ EVALS: detector chain, cheap → expensive ────────────────────────────────────────────┐
-│ 1 honeypot trip-wires        did it touch a planted shortcut?                         │
-│ 2 re-score                   vs synthetic ground truth / unseen batch                 │
-│ 3 provenance                 every reported number ↔ a tool-log entry                 │
-│ 4 fast judge (Jev / Laya)    "did this run exploit X?"  (calibrated; optional)        │
-│ 5 Claude escalation          only when the fast judge is unsure                       │
-│ + calibration                ECE / Brier: stated confidence vs outcome                │
-│ + falsification              does its stated counterexample flip the verdict?         │
-└───────────────┬───────────────────────────────────────────────────────────────────────┘
-                ▼
-     verdicts: honest / hack(type) / borderline  ──▶  results store  ──▶  UI + API
-
- OUTSIDE THE APP
- ├─ GitHub repo ◀── agent PRs · CI (tests, guards) · pre-registration TAG
- │                   (tag before the unseen batch is first opened)
- └─ (optional) GitHub Pages static leaderboard mirror; agent discovery stays on Modal
-```
 
 ## How it serves both tracks
 
