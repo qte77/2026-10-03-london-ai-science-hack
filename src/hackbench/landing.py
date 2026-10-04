@@ -40,6 +40,9 @@ footer { border-top:1px solid var(--border); margin-top:64px; padding-top:16px; 
 """
 
 
+CONSOLE_PATH = "/results/"
+
+
 def render_markdown(p: Profile, base_url: str) -> str:
     links = "\n".join(f"- [{label}]({path})" for path, label in AGENT_LINKS)
     use = "\n".join(f"- {item}" for item in p.when_to_use)
@@ -47,7 +50,9 @@ def render_markdown(p: Profile, base_url: str) -> str:
     return (
         f"---\ntitle: {DISPLAY_NAME}\ndescription: {p.tagline}\ncanonical: {base_url}/\n"
         f"last-updated: {p.updated.isoformat()}\n---\n\n"
-        f"# {DISPLAY_NAME}\n\n> {p.tagline}\n\n{p.status}\n\n"
+        f"# {DISPLAY_NAME}\n\n> {p.tagline}\n\n"
+        f"[Open the QC console: batch verdicts]({CONSOLE_PATH}) · "
+        f"[results as markdown](/results.md)\n\n{p.status}\n\n"
         f"## When to use {DISPLAY_NAME}\n\n{use}\n\n## When not to use it\n\n{avoid}\n\n"
         f"## For agents\n\n{links}\n\n## Source\n\n- [GitHub repository]({REPO_URL})\n"
     )
@@ -105,6 +110,7 @@ def render_html(p: Profile, base_url: str) -> str:
 <h1>{DISPLAY_NAME}</h1>
 <div class="rule" aria-hidden="true"></div>
 <p>{tagline}</p>
+<p><strong><a href="{CONSOLE_PATH}">Open the QC console: batch verdicts →</a></strong></p>
 <p class="muted">{html.escape(p.status)}</p>
 <h2>When to use {DISPLAY_NAME}</h2>
 <ul>
