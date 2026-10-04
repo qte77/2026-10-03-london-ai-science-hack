@@ -218,6 +218,19 @@ def test_compute_parallax_marks_the_baseline_as_not_comparable(tmp_path: Path) -
     assert out["Batch_2"]["parallax_brief"]["source"]["role"] is None
 
 
+def test_compute_parallax_includes_briefs_for_batches_hackbench_did_not_run(
+    tmp_path: Path,
+) -> None:
+    (tmp_path / "decision_brief.Hackathon-Polaron-test.json").write_text(
+        json.dumps({"source": {"role": None}, "claims": []})
+    )
+    out = compute_parallax({}, tmp_path)
+    test_batch = out["Hackathon-Polaron-test"]
+    assert test_batch["hackbench"] is None  # we never claim a run we didn't do
+    assert test_batch["agree"] is None
+    assert test_batch["parallax_brief"] is not None
+
+
 def test_run_cycle_end_to_end_on_synthetic_inputs_needs_no_keys(
     tmp_path: Path,
     dataset: dict[str, Any],  # noqa: F811 - fixture param, not a redefinition
