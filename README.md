@@ -42,11 +42,12 @@ drift suite is not affected.
 
 | Command | What |
 |---|---|
-| `make install` | `uv sync --all-extras` (app, dev tools, Modal CLI, QC libraries) |
+| `make install` | `uv sync --all-extras` (app, dev tools, Modal CLI, QC libraries, Anthropic SDK) |
 | `make validate` | Lint (incl. security rules), format check, `mypy --strict`, tests; run before pushing |
 | `make audit` | Dependency vulnerability scan (`pip-audit`) |
 | `make qc` | Reference QC pipeline on `HACKBENCH_DATA_DIR`: KPIs per field of view, bootstrap CIs vs the baseline batch, accept / investigate / reject; writes `results/` (git-ignored) |
 | `make qc-suite` | Builds a **training** and a **held-out** synthetic drift suite from the baseline (material vs imaging drift, known truth), chooses the tolerance `k` on training only, scores the held-out suite once; images go to `/tmp/hackbench-scratch` (`--scratch`), results to `results/suite.json` |
+| `make agent-smoke` | **Costs money.** One live Claude session (default `AGENT=haiku-4-5/neutral`, `CANDIDATE=Batch_3`) on `HACKBENCH_DATA_DIR`; reads `ANTHROPIC_API_KEY` from `.env`; capped at 15 calls, 180 s, $1.50; journal in `results/runs/` |
 | `make e2e` | End-to-end tests against the live deploy (`HACKBENCH_E2E_URL` overrides the target) |
 | `make run` | Serve locally at <http://localhost:8000> |
 | `make deploy` | Deploy to Modal |
@@ -60,6 +61,7 @@ drift suite is not affected.
 | `HACKBENCH_DATA_DIR` | shell / `.env` | Folder of batch subfolders with SEM TIFFs for `make qc` (default `data/polaron`, git-ignored) |
 | `HACKBENCH_COMMIT` | set by `make deploy` / CI | Commit reported by `/v1/health` |
 | `HACKBENCH_E2E_URL` | shell, when running `make e2e` | Deployment the e2e tests target (default: the live URL above) |
+| `ANTHROPIC_API_KEY` | local `.env` | Claude agents under test (`make agent-smoke`); never needed by tests or CI |
 | Sponsor API keys | local `.env` | See [`.env.example`](.env.example) |
 
 One-time Modal setup:

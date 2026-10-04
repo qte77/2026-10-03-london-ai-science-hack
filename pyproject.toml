@@ -16,6 +16,9 @@ qc = [
     "scikit-image>=0.26.0",
     "tifffile>=2026.9.20",
 ]
+agents = [
+    "anthropic>=1.11.0",
+]
 
 [dependency-groups]
 dev = [
