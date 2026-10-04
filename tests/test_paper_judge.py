@@ -205,7 +205,7 @@ def test_provider_selection_order(tmp_path: Path) -> None:
         backoff=(),
     )
     assert out["judge"]["provider"] == "cloudflare-workers-ai"
-    assert out["judge"]["model"] == "@cf/meta/llama-3.1-8b-instruct"
+    assert out["judge"]["model"] == "@cf/openai/gpt-oss-20b"
     assert seen["host"] == "api.cloudflare.com"
     assert "acct123" in seen["path"]
     assert seen["auth"] == "Bearer tok456"

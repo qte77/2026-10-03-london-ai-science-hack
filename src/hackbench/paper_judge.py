@@ -23,7 +23,9 @@ from hackbench.journal import Journal
 PAPERCLIP_BASE_URL = "https://paperclip.gxl.ai/api/v1"
 MAX_CALLS = 60
 JUDGE_MAX_TOKENS = 400
-CF_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+# Reason: @cf/meta/llama-3.1-8b-instruct returns HTTP 410 (deprecated 2026-05-30, checked live
+# 2026-10-04); gpt-oss-20b answered the same OpenAI-compatible request with clean JSON.
+CF_MODEL = "@cf/openai/gpt-oss-20b"
 DIRECTIONS = ("SUPPORTIVE", "CONTRADICTORY", "NEUTRAL")
 # Reason: retry schedule tolerating a cold-starting Modal vLLM container (scale-to-zero); tests
 # pass `backoff=()` so MockTransport cases never sleep. Sum = 465s, under the ~8min cap.
@@ -248,7 +250,7 @@ def _call_judge(
     curated: object,
     evidence: Sequence[Mapping[str, Any]],
     backoff: Sequence[float],
-) -> tuple[dict[str, Any] | None, float]:
+) -> tuple[dict[str, Any] | None, float, int | None]:
     ev_lines = [
         f"- {e.get('title')} (doi={e.get('doi')}): {str(e.get('snippet') or '')[:200]}"
         for e in list(evidence)[:5]
@@ -269,14 +271,16 @@ def _call_judge(
     t0 = time.monotonic()
     r = _post_with_retry(http, f"{base_url}/chat/completions", payload, backoff, headers=headers)
     seconds = round(time.monotonic() - t0, 3)
+    # Reason: return the HTTP status so failures (e.g. a 410 deprecated model) are journaled.
+    status = r.status_code if r is not None else None
     if r is None or r.status_code != 200:
-        return None, seconds
+        return None, seconds, status
     try:
         body = r.json()
         text = body["choices"][0]["message"]["content"]
     except (ValueError, KeyError, IndexError, TypeError):
-        return None, seconds
-    return _parse_judgment(str(text)), seconds
+        return None, seconds, status
+    return _parse_judgment(str(text)), seconds, status
 
 
 def run_paper_judge(
@@ -440,7 +444,7 @@ def _run_judge(
         for row in rows:
             evidence = row.pop("_evidence", [])
             claim = row.pop("_claim", "")
-            parsed, seconds = _call_judge(
+            parsed, seconds, status = _call_judge(
                 jhttp,
                 base_url,
                 headers,
@@ -460,6 +464,7 @@ def _run_judge(
                     "prompt_hash": _hash(f"{row['target']}\n{claim}"),
                     "model": model,
                     "latency_s": seconds,
+                    "status_code": status,
                     "parsed": parsed,
                 }
             )
