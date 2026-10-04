@@ -17,10 +17,12 @@ URL. Last recorded run: [runs/2026-10-04-e2e.md](runs/2026-10-04-e2e.md).
   │   ┌──────────────────┐      ┌──────────────────────────────────────┐     │
   │   │ derived inputs   │─────▶│ Parallax briefs  (teammate QC)       │     │
   │   │ Parallax briefs  │      │        +                             │     │
-  │   │                  │      │ HackBench evals:                     │     │
-  │   │                  │      │   reference verdict · drift suite ·  │     │
-  │   │                  │      │   KPI robustness · agents vs         │     │
-  │   │                  │      │   honeypots · paper judge ───────────┼──┐  │
+  │   │ suite.json       │      │ HackBench evals:                     │     │
+  │   │  (precomputed by │      │   reference verdict                  │     │
+  │   │  make qc-suite)  │      │   drift suite     (precomputed)      │     │
+  │   │                  │      │   KPI robustness  (precomputed)      │     │
+  │   │                  │      │   agents vs honeypots (scripted)     │     │
+  │   │                  │      │   paper judge ───────────────────────┼──┐  │
   │   │ results.json     │◀─────│ → results + hash-chained journal     │  │  │
   │   └────────┬─────────┘      └──────────────────────────────────────┘  │  │
   │            │                                                          │  │
@@ -38,7 +40,9 @@ URL. Last recorded run: [runs/2026-10-04-e2e.md](runs/2026-10-04-e2e.md).
 
 **Flow:** derived inputs and Parallax briefs sit on the Modal Volume (no raw images). The cycle
 runs on demand (`make cycle-modal`), calls Paperclip and Workers AI, and writes `results.json`
-with a hash-chained journal. The web function reads it per request (falling back to a committed
+with a hash-chained journal. The drift suite and KPI robustness are precomputed locally from the
+raw images (`make qc-suite`) and only summarised by the cycle; the scripted agents re-run each
+cycle (live Claude configs need `--with-claude`). The web function reads it per request (falling back to a committed
 snapshot) and serves people and agents from one URL. GitHub CI gates every merge, then
 auto-deploys to Modal; `/v1/health` reports the live commit.
 
