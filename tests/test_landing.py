@@ -16,6 +16,11 @@ def test_root_serves_html_for_browsers() -> None:
         assert f'href="{path}"' in r.text
 
 
+def test_both_landing_forms_link_to_the_qc_console() -> None:
+    assert 'href="/results/"' in client.get("/", headers={"Accept": "text/html"}).text
+    assert "](/results/)" in client.get("/index.md").text
+
+
 def test_root_advertises_its_markdown_twin() -> None:
     r = client.get("/")
     assert '<link rel="alternate" type="text/markdown" href="/index.md">' in r.text
