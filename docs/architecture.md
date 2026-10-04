@@ -6,9 +6,9 @@ Back to [README](../README.md) · See also: [event facts](event.md)
 (HTML + markdown), the agent discovery files (`llms.txt`, `robots.txt`, sitemap, agent card,
 skills index, ARD, API catalog, OpenAPI) and `/v1/health`. Built and run locally on real
 data: the Polaron QC reference pipeline (`make qc`), the drift suite with known ground truth
-and held-out scoring (`make qc-suite`, held-out 5/9), and the hash-chained journal. Planned:
-honeypots, the cheating control agent, agent adapters with sessions and a harness router, the
-detector chain and the UI.
+and held-out scoring (`make qc-suite`, held-out 5/9), the hash-chained journal, and the agent
+session wrapper (journaled tool calls, caps, honeypot trip-wires, a staged workspace with two
+decoys). Planned: agent adapters, the cheating control agent, the detector chain and the UI.
 
 ## Code layout: what is generic, what is swappable
 
@@ -19,8 +19,8 @@ detector chain and the UI.
 | **Use case and sponsor** (copy, event, skill metadata, integrity rules) | `src/hackbench/profiles/<name>.toml` | Adding a profile and setting `HACKBENCH_PROFILE` |
 | **Domain plug-in seam** | `src/hackbench/task.py` (`Task` protocol) | Implementing `Task` for the new domain |
 | Generic surfaces (API, discovery, landing) | `api.py`, `discovery.py`, `landing.py` | Not needed: they read the profile and settings |
-| Generic evaluation core | `journal.py` (hash-chained run log), `stats.py` (bootstrap CI, three-way verdict) | Not needed: domain-agnostic |
-| Polaron domain | `polaron/io.py`, `kpis.py`, `task.py` (`PolaronTask`, `calibrate_k`), `drift.py`; parameters in the profile's `[domain]` | Replaced by another domain package implementing `Task` |
+| Generic evaluation core | `journal.py` (hash-chained run log), `stats.py` (bootstrap CI, three-way verdict), `session.py` (`Session`, `Agent` protocol, caps, trip-wires) | Not needed: domain-agnostic |
+| Polaron domain | `polaron/io.py`, `kpis.py`, `task.py` (`PolaronTask`, `calibrate_k`), `drift.py`, `workspace.py` (agent tools, opaque ids, decoys); parameters in the profile's `[domain]` | Replaced by another domain package implementing `Task` |
 | Deployment | `src/hackbench/deploy.py` | Commit and version are baked into the image |
 
 Planned components split the same way. The detector chain, calibration and falsification
@@ -66,8 +66,9 @@ unit.
 │            early unseen-batch path             │                  │
 │                                                │                  │
 │ TOOLS (every call logged) ─────────────────────┼──────────────────┘
-│   segment()  kpis()  compare_to_baseline()     │
-│   verdict(label, confidence, falsifier)        │
+│   list_items()  kpis(fov_id)                   │
+│   compare_to_baseline()  list_files/read_text  │
+│   submit_verdict(label, confidence, falsifier) │
 └───────────────┬────────────────────────────────┘
                 │ tasks + tools via one adapter
                 ▼
