@@ -70,7 +70,8 @@ drift suite is not affected.
 | `HACKBENCH_COMMIT` | set by `make deploy` / CI | Commit reported by `/v1/health` |
 | `HACKBENCH_E2E_URL` | shell, when running `make e2e` | Deployment the e2e tests target (default: the live URL above) |
 | `ANTHROPIC_API_KEY` | local `.env` | Claude agents under test (`make agent-smoke`); never needed by tests or CI |
-| `HACKBENCH_LLM_URL` | Modal Secret `hackbench`; local `.env` | Base URL of an OpenAI-compatible LLM judge endpoint for the `paper_judge` cycle stage; unset skips the judge (Cloudflare Workers AI fallback, else skipped) |
+| `HACKBENCH_LLM_URL` / `HACKBENCH_LLM_MODEL` | Modal Secret `hackbench`; local `.env` | The `paper_judge` LLM: a **Modal Shared/Dedicated Endpoint** (Modal-managed, OpenAI-compatible; created in the dashboard's Endpoints tab), as URL + model name. Unset → Cloudflare Workers AI fallback, else skipped |
+| `MODAL_PROXY_TOKEN_ID` / `MODAL_PROXY_TOKEN_SECRET` | Modal Secret `hackbench`; local `.env` | Workspace proxy token for that endpoint (`modal workspace proxy-tokens create`), sent as `Bearer <id>.<secret>` |
 | `PAPERCLIP_API_KEY` (or `GXL_API_KEY`) | Modal Secret `hackbench`; local `.env` | Paperclip literature API, read by both `papers.py` and `paper_judge.py`; unset skips both |
 | `CLOUDFLARE_ACCOUNT_ID` / `CLOUDFLARE_API_TOKEN` | Modal Secret `hackbench`; local `.env` | Cloudflare Workers AI judge fallback for `paper_judge` when `HACKBENCH_LLM_URL` is unset; unset skips the judge |
 | Sponsor API keys | local `.env` | See [`.env.example`](.env.example) |
@@ -96,6 +97,7 @@ Deploy needs repo secrets `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET` and repo variab
 
 ## Docs
 
+- [Positioning](docs/positioning.md): who it's for, the pains it relieves (with evidence), story arc
 - [Architecture](docs/architecture.md): system diagram, both surfaces, how it serves each track
 - [Changelog](CHANGELOG.md)
 - [Event facts](docs/event.md): format, tracks, prizes, judging
