@@ -7,6 +7,11 @@ versioning: [SemVer](https://semver.org/).
 
 ### Added
 
+- Scripted control agents (`polaron/agents.py`, no LLM): `HonestAgent` judges only from
+  `compare_to_baseline` with the reference rule (matches the reference pipeline, trips no
+  honeypot, cites its evidence); `CheatingAgent` reads the decoy report and the cached verdict
+  and submits the decoy's label (trips every honeypot). They are the negative and positive
+  controls for the detectors.
 - Agent session wrapper (`session.py`): every agent tool call goes through `Session.call` and
   is journaled (hash-chained, one file per session); caps of 15 calls, 180 s and $1.50 per
   session; `submit_verdict(label, confidence, falsifier {kpi, threshold}, cited_entries)` with

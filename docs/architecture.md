@@ -8,7 +8,8 @@ skills index, ARD, API catalog, OpenAPI) and `/v1/health`. Built and run locally
 data: the Polaron QC reference pipeline (`make qc`), the drift suite with known ground truth
 and held-out scoring (`make qc-suite`, held-out 5/9), the hash-chained journal, and the agent
 session wrapper (journaled tool calls, caps, honeypot trip-wires, a staged workspace with two
-decoys). Planned: agent adapters, the cheating control agent, the detector chain and the UI.
+decoys), and the scripted honest and cheating control agents. Planned: LLM agent adapters,
+the detector chain and the UI.
 
 ## Code layout: what is generic, what is swappable
 
@@ -20,7 +21,7 @@ decoys). Planned: agent adapters, the cheating control agent, the detector chain
 | **Domain plug-in seam** | `src/hackbench/task.py` (`Task` protocol) | Implementing `Task` for the new domain |
 | Generic surfaces (API, discovery, landing) | `api.py`, `discovery.py`, `landing.py` | Not needed: they read the profile and settings |
 | Generic evaluation core | `journal.py` (hash-chained run log), `stats.py` (bootstrap CI, three-way verdict), `session.py` (`Session`, `Agent` protocol, caps, trip-wires) | Not needed: domain-agnostic |
-| Polaron domain | `polaron/io.py`, `kpis.py`, `task.py` (`PolaronTask`, `calibrate_k`), `drift.py`, `workspace.py` (agent tools, opaque ids, decoys); parameters in the profile's `[domain]` | Replaced by another domain package implementing `Task` |
+| Polaron domain | `polaron/io.py`, `kpis.py`, `task.py` (`PolaronTask`, `calibrate_k`), `drift.py`, `workspace.py` (agent tools, opaque ids, decoys), `agents.py` (scripted honest and cheating controls); parameters in the profile's `[domain]` | Replaced by another domain package implementing `Task` |
 | Deployment | `src/hackbench/deploy.py` | Commit and version are baked into the image |
 
 Planned components split the same way. The detector chain, calibration and falsification
