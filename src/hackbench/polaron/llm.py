@@ -112,5 +112,7 @@ def make_agent(config: str, client: Client | None = None) -> ClaudeAgent:
 
         # Reason: the SDK client matches `Client` at runtime; its typed overloads don't match
         # the protocol's **kwargs signature structurally.
-        client = cast(Client, anthropic.Anthropic())
+        # Reason: the session's time cap is checked only between calls, so one hung request
+        # (SDK default: 10 min x 3 tries) must not outlive it: 60 s x 2 tries < 180 s.
+        client = cast(Client, anthropic.Anthropic(timeout=60.0, max_retries=1))
     return ClaudeAgent(config, c.model, SYSTEM, TOOL_SPECS, client, effort=c.effort)
