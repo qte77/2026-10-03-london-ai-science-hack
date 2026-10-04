@@ -7,17 +7,24 @@ from hackbench.api import create_app
 client = TestClient(create_app())
 
 
-def test_root_serves_html_for_browsers() -> None:
+def test_root_serves_the_designed_console_for_browsers() -> None:
     r = client.get("/", headers={"Accept": "text/html"})
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("text/html")
+    assert '<div id="root"></div>' in r.text  # the React console
+    assert "/results/assets/" in r.text
+    assert "<noscript><h1>Parallax</h1>" in r.text  # readable without JS
+
+
+def test_about_keeps_the_plain_landing_page() -> None:
+    r = client.get("/about")
+    assert r.status_code == 200
     assert "<h1>Parallax</h1>" in r.text
-    for path in ("/llms.txt", "/openapi.json", "/.well-known/agent-card.json"):
+    for path in ("/llms.txt", "/openapi.json", "/.well-known/agent-card.json", "/results/"):
         assert f'href="{path}"' in r.text
 
 
-def test_both_landing_forms_link_to_the_qc_console() -> None:
-    assert 'href="/results/"' in client.get("/", headers={"Accept": "text/html"}).text
+def test_markdown_twin_links_to_the_qc_console() -> None:
     assert "](/results/)" in client.get("/index.md").text
 
 
@@ -41,7 +48,7 @@ def test_root_varies_on_accept_so_caches_keep_both_forms() -> None:
 
 def test_root_html_carries_identity_metadata() -> None:
     page = client.get("/", headers={"Accept": "text/html"}).text
-    assert '<html lang="en">' in page
+    assert '<html lang="en"' in page
     assert '<link rel="canonical"' in page
     assert '<meta property="og:type" content="website">' in page
     assert '<script type="application/ld+json">' in page

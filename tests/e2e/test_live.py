@@ -55,7 +55,8 @@ def test_openapi_lists_the_health_route(http: httpx.Client) -> None:
 def test_homepage_serves_html_and_markdown(http: httpx.Client) -> None:
     page = http.get("/", headers={"Accept": "text/html"})
     assert page.status_code == 200
-    assert "<h1>Parallax</h1>" in page.text
+    assert '<div id="root"></div>' in page.text  # the designed console
+    assert "<noscript><h1>Parallax</h1>" in page.text
     md = http.get("/", headers={"Accept": "text/markdown"})
     assert md.headers["content-type"].startswith("text/markdown")
     assert "\n# Parallax\n" in md.text
