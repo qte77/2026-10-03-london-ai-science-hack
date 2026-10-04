@@ -15,6 +15,9 @@ runs on Modal with a hash-chained journal: the reference, the planted-drift suit
 no material drift accepted), scripted honest and cheating agents against honeypots, and the
 briefs. The pipeline is pre-registered at `prereg-2026-10-04-unseen` (10:04:32 BST).
 
+**Last end-to-end run (4 Oct, 15:26 BST):** 7/7 cycle stages ok on Modal, CI and auto-deploy
+green on GitHub. Record: [docs/runs/2026-10-04-e2e.md](docs/runs/2026-10-04-e2e.md).
+
 **Team:** built together with author **GRAMSINATOR**,
 [GRAMSINATOR/2026_10_03_hackathon_AI-X-SCIENCE](https://github.com/GRAMSINATOR/2026_10_03_hackathon_AI-X-SCIENCE)
 (Track 4 QC core with a Streamlit dashboard). This repo is the evaluation layer. Coordination
