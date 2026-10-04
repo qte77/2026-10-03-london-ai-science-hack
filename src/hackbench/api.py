@@ -139,6 +139,26 @@ def _render_results_md(d: Mapping[str, Any]) -> str:
             f"- **{name}** ({r.get('role')}): imaging={r.get('imaging_shift')} "
             f"material={r.get('material_shift')}"
         )
+    pj = d.get("paper_judge") or {}
+    lines += ["", "## Paper judge", ""]
+    if pj.get("status") == "ok":
+        lines.append(
+            f"- paperclip: n={pj.get('n')} errors={pj.get('errors')} "
+            f"resolved_rate={pj.get('paperclip_resolved_rate')} "
+            f"agreement={pj.get('paperclip_agreement')}"
+        )
+        judge = pj.get("judge") or {}
+        if judge.get("status") == "ok":
+            lines.append(
+                f"- judge ({judge.get('provider')}/{judge.get('model')}): "
+                f"agreement={judge.get('judge_agreement')} brier={judge.get('brier')} "
+                f"grounded_rate={judge.get('grounded_rate')} errors={judge.get('errors')}"
+            )
+        else:
+            lines.append(f"- judge: {judge.get('status', 'skipped')} ({judge.get('reason', '—')})")
+    else:
+        lines.append(f"- {pj.get('status', 'skipped')}: {pj.get('reason', '—')}")
+
     lines += ["", "## Cycle stages", ""]
     for stg in (d.get("cycle") or {}).get("stages", []):
         lines.append(f"- {stg.get('name')}: {stg.get('status')} ({stg.get('seconds')}s)")

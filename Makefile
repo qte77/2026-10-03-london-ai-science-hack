@@ -33,11 +33,14 @@ agent-smoke: ## ONE live Haiku session on Batch_3 (needs ANTHROPIC_API_KEY; ~$0.
 cycle: ## End-to-end cycle on local derived results (PARALLAX=dir of their decision briefs) -> results/cycle/
 	uv run python -m hackbench.cycle --inputs results --out results/cycle $${PARALLAX:+--parallax $$PARALLAX}
 
-cycle-upload: ## Upload derived inputs (no TIFFs) to the Modal Volume; PARALLAX=dir of their briefs
+BUNDLE ?= /workspaces/qte77/2026-10-03-london-ai-science-hack/private/research/2026-10-04-salvage/qte77.research.0001.json
+
+cycle-upload: ## Upload derived inputs (no TIFFs) to the Modal Volume; PARALLAX=dir of briefs, BUNDLE=paper_judge research bundle
 	uv run modal volume put --force hackbench-data results/results.json /qc/results.json
 	uv run modal volume put --force hackbench-data results/journal.jsonl /qc/journal.jsonl
 	uv run modal volume put --force hackbench-data results/suite.json /qc/suite.json
 	uv run modal volume put --force hackbench-data results/suite-journal.jsonl /qc/suite-journal.jsonl
+	uv run modal volume put --force hackbench-data $(BUNDLE) /qc/research/qte77.research.0001.json
 	for f in $$PARALLAX/decision_brief.*.json; do uv run modal volume put --force hackbench-data "$$f" /qc/parallax/$$(basename "$$f"); done
 
 cycle-modal: ## Run the cycle on Modal; results go live at /v1/results and /results
