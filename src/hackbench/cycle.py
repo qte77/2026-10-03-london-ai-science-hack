@@ -341,6 +341,14 @@ def compute_parallax(
             if p_label is not None:
                 agree = p_label == hackbench["verdict"]
         out[batch] = {"parallax_brief": brief, "hackbench": hackbench, "agree": agree}
+    # Reason: Parallax may have briefs for batches HackBench has no data for (e.g. the
+    # unseen test batch); show them, with `hackbench: None` rather than an implied run.
+    if parallax_dir is not None:
+        for path in sorted(parallax_dir.glob("decision_brief.*.json")):
+            batch = path.name.removeprefix("decision_brief.").removesuffix(".json")
+            if batch not in out:
+                brief = strip_blobs(json.loads(path.read_text()))
+                out[batch] = {"parallax_brief": brief, "hackbench": None, "agree": None}
     return out
 
 
