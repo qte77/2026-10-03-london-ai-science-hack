@@ -3,14 +3,14 @@
 # Only fields the code reads live here; domain fields (KPIs, honeypots, data layout) are
 # added when the tool layer needs them.
 
-tagline = "Science agents doing Polaron's battery-electrode QC, and the evals that tell you when to trust them: correctness, reward hacking, calibration, falsification."
-status = "Status: the agent-native surface is live; the QC tools and evals are in progress."
-updated = 2026-10-03
+tagline = "Find what to measure next. Parallax turns the variance in a scientific dataset into insight: which signals are real, what the current measurement cannot see, and which new measurements would resolve it. Shown on Polaron's battery-electrode SEM micrographs; HackBench is its trust layer (pre-registered, tested on planted drift)."
+status = "Status: live. The QC console and the end-to-end cycle run on Modal; an agent-curated literature bundle (18 papers) feeds the opportunity map. Batch verdicts are the proof points."
+updated = 2026-10-04
 
 when_to_use = [
-  "To check whether a science agent's accept / investigate / reject verdict on a battery-electrode micrograph batch is correct against known ground truth.",
-  "To detect reward hacking: an agent using shortcuts such as filenames, detector-channel metadata or leaked labels instead of the microstructure.",
-  "To measure calibration: whether an agent's stated confidence matches how often it is right.",
+  "To see where a micrograph dataset disagrees with itself: which micrograph or KPI drives a batch-level call, and whether the call survives removing it.",
+  "To find blind spots: signals the current measurement cannot observe (e.g. additive particle counts, chemistry, 3-D structure) and the literature that says whether a new capability would resolve them.",
+  "To cross-check a QC call with a second, pre-registered method tested on planted drift of known size, and to test whether science agents use shortcuts (honeypots) instead of the evidence.",
 ]
 when_not_to_use = [
   "Not a production QC system or a certified materials test; it is a hackathon research prototype (London AI x Science Hackathon, October 2026).",
