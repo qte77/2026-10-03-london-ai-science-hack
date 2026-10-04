@@ -62,12 +62,11 @@ def test_index_md_is_the_markdown_twin() -> None:
     assert r.text == client.get("/", headers={"Accept": "text/markdown"}).text
 
 
-def test_console_assets_and_data_are_served_without_images() -> None:
+def test_console_assets_and_data_are_served_with_image_files() -> None:
     assert client.get("/assets/app.js").status_code == 200
-    index = client.get("/data/index.json").json()
-    assert index["batches"]
-    assert not any(b["imagery"] for b in index["batches"])
-    field = client.get(f"/data/{index['batches'][0]['id']}/field.json")
+    batch = client.get("/data/index.json").json()["batches"][0]["id"]
+    field = client.get(f"/data/{batch}/field.json")
     assert field.status_code == 200
-    assert field.json()["assets"] == {}
     assert "data:image" not in field.text
+    image = next(iter(field.json()["assets"].values()))["image"]
+    assert client.get(f"/data/{batch}/{image}").headers["content-type"] == "image/jpeg"
