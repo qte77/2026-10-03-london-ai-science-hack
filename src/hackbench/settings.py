@@ -18,6 +18,16 @@ class Settings:
     snapshot_path: str = "data/results.snapshot.json"
     # Reason: the built React console; Modal overrides this to where `deploy.py` copies it.
     ui_dir: str = "ui/dist"
+    # Reason: base URL of an OpenAI-compatible LLM judge endpoint for the paper_judge cycle
+    # stage; empty means unset, so the judge sub-stage self-reports skipped rather than failing.
+    llm_url: str = ""
+    # Reason: Paperclip API key for paper_judge's resolve/claims-support calls; empty means
+    # unset, so the whole paper_judge stage self-reports skipped rather than failing.
+    paperclip_api_key: str = ""
+    # Reason: Cloudflare Workers AI is the judge fallback when the Modal vLLM endpoint is
+    # unset; empty means unset, so that fallback self-reports skipped rather than failing.
+    cloudflare_account_id: str = ""
+    cloudflare_api_token: str = ""
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -31,4 +41,14 @@ class Settings:
             results_path=os.environ.get("HACKBENCH_RESULTS_PATH", defaults.results_path),
             snapshot_path=os.environ.get("HACKBENCH_SNAPSHOT_PATH", defaults.snapshot_path),
             ui_dir=os.environ.get("HACKBENCH_UI_DIR", defaults.ui_dir),
+            llm_url=os.environ.get("HACKBENCH_LLM_URL", defaults.llm_url).rstrip("/"),
+            paperclip_api_key=(
+                os.environ.get("PAPERCLIP_API_KEY") or os.environ.get("GXL_API_KEY") or ""
+            ),
+            cloudflare_account_id=os.environ.get(
+                "CLOUDFLARE_ACCOUNT_ID", defaults.cloudflare_account_id
+            ),
+            cloudflare_api_token=os.environ.get(
+                "CLOUDFLARE_API_TOKEN", defaults.cloudflare_api_token
+            ),
         )

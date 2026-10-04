@@ -285,9 +285,18 @@ def test_run_cycle_end_to_end_on_synthetic_inputs_needs_no_keys(
     assert result["batches"]["Batch_1"]["hackbench"] is None
     assert result["agents"]["configs"]["scripted/honest"]["n"] > 0
     assert result["papers"]["status"] == "skipped"
+    assert result["paper_judge"]["status"] == "skipped"
     assert len(result["limits"]) == 1
     names = [s["name"] for s in result["cycle"]["stages"]]
-    assert names == ["reference", "suite", "kpi_robustness", "agents", "papers", "parallax"]
+    assert names == [
+        "reference",
+        "suite",
+        "kpi_robustness",
+        "agents",
+        "papers",
+        "paper_judge",
+        "parallax",
+    ]
     assert (out_dir / "results.json").exists()
     assert (out_dir / "cycle-journal.jsonl").exists()
 
@@ -325,5 +334,6 @@ def test_run_cycle_is_missing_claude_key_by_default(
         "status": "skipped",
         "reason": "PAPERCLIP_API_KEY/GXL_API_KEY unset",
     }
+    assert result["paper_judge"] == {"status": "skipped", "reason": "research bundle missing"}
     reason = result["agents"]["reason"]
     assert "ANTHROPIC_API_KEY" in reason or "--with-claude" in reason
