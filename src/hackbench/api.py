@@ -183,9 +183,9 @@ def create_app(reload: Callable[[], None] | None = None) -> FastAPI:
         headers = {"Vary": "Accept", "Link": discovery.link_header()}
         if _wants_markdown(request):
             return Response(render_markdown(p, s.base_url), media_type=MARKDOWN, headers=headers)
-        # Reason: people get the owner's designed QC console at /; its assets resolve under
-        # /results/ (Vite base). Agents keep the markdown twin; the plain landing is at /about.
-        console = Path(s.ui_dir) / "index.html"
+        # Reason: people get the owner's design artifact (the console SSOT) at /; its assets and
+        # data resolve under /assets and /data. Agents keep the markdown twin; plain landing /about.
+        console = Path(s.console_dir) / "index.html"
         if console.exists():
             page = render_console(console.read_text(), p, s.base_url)
             return HTMLResponse(page, headers=headers)
@@ -265,6 +265,21 @@ def create_app(reload: Callable[[], None] | None = None) -> FastAPI:
                 "# HackBench results\n\nNo results yet.\n", media_type=MARKDOWN, status_code=503
             )
         return Response(_render_results_md(data), media_type=MARKDOWN)
+
+    @app.get("/data/{batch}/brief.json", include_in_schema=False)
+    def console_brief(batch: str) -> Response:
+        # Reason: the console's decision brief comes live from the latest cycle, not the import.
+        data, _source = _load_results(reload)
+        brief = ((data or {}).get("batches") or {}).get(batch, {}).get("parallax_brief")
+        if brief is None:
+            return JSONResponse({"detail": f"no brief for {batch}"}, status_code=404)
+        return JSONResponse(brief)
+
+    console_dir = Path(Settings.from_env().console_dir)
+    for sub in ("assets", "data"):
+        if (console_dir / sub).is_dir():
+            static = StaticFiles(directory=str(console_dir / sub))
+            app.mount(f"/{sub}", static, name=f"console-{sub}")
 
     # Reason: mount the built console only if present, so the API still works without it.
     ui_dist = Path(Settings.from_env().ui_dir)

@@ -27,6 +27,7 @@ RESULTS_DIR = f"{DATA_MOUNT}/results"
 RESULTS_PATH = f"{RESULTS_DIR}/results.json"
 SNAPSHOT_PATH = "/opt/hackbench/results.snapshot.json"
 UI_DIR = "/opt/hackbench/ui"
+CONSOLE_DIR = "/opt/hackbench/console"
 data_volume = modal.Volume.from_name(f"{APP_NAME}-data", create_if_missing=True)
 
 base = (
@@ -39,6 +40,7 @@ base = (
             "HACKBENCH_RESULTS_PATH": RESULTS_PATH,
             "HACKBENCH_SNAPSHOT_PATH": SNAPSHOT_PATH,
             "HACKBENCH_UI_DIR": UI_DIR,
+            "HACKBENCH_CONSOLE_DIR": CONSOLE_DIR,
         }
     )
 )
@@ -53,6 +55,7 @@ def _with_local_files(img: modal.Image) -> modal.Image:
         # A committed, derived-only fallback so `/v1/results` works before the first cycle.
         .add_local_file("data/results.snapshot.json", SNAPSHOT_PATH)
         .add_local_dir("ui/dist", UI_DIR)
+        .add_local_dir("ui/console", CONSOLE_DIR)
     )
 
 

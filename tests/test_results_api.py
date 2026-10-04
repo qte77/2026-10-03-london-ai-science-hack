@@ -167,3 +167,18 @@ def test_no_ui_mount_without_dist(monkeypatch: pytest.MonkeyPatch, tmp_path: Pat
     monkeypatch.chdir(tmp_path)  # no ui/dist here
     r = TestClient(create_app()).get("/results/")
     assert r.status_code == 404
+
+
+def test_console_brief_comes_live_from_results(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    live = tmp_path / "live.json"
+    _write(live, SAMPLE)
+    monkeypatch.setenv("HACKBENCH_RESULTS_PATH", str(live))
+    client = TestClient(create_app())
+
+    r = client.get("/data/Batch_2/brief.json")
+
+    assert r.status_code == 200
+    assert r.json() == SAMPLE["batches"]["Batch_2"]["parallax_brief"]
+    assert client.get("/data/Batch_1/brief.json").status_code == 404

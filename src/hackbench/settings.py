@@ -18,6 +18,8 @@ class Settings:
     snapshot_path: str = "data/results.snapshot.json"
     # Reason: the built React console; Modal overrides this to where `deploy.py` copies it.
     ui_dir: str = "ui/dist"
+    # Reason: the owner's design artifact (imported by `scripts/import_artifact.py`), served at /.
+    console_dir: str = "ui/console"
     # Reason: base URL of an OpenAI-compatible LLM judge endpoint for the paper_judge cycle
     # stage; empty means unset, so the judge sub-stage self-reports skipped rather than failing.
     llm_url: str = ""
@@ -46,6 +48,7 @@ class Settings:
             results_path=os.environ.get("HACKBENCH_RESULTS_PATH", defaults.results_path),
             snapshot_path=os.environ.get("HACKBENCH_SNAPSHOT_PATH", defaults.snapshot_path),
             ui_dir=os.environ.get("HACKBENCH_UI_DIR", defaults.ui_dir),
+            console_dir=os.environ.get("HACKBENCH_CONSOLE_DIR", defaults.console_dir),
             llm_url=os.environ.get("HACKBENCH_LLM_URL", defaults.llm_url).rstrip("/"),
             llm_model=os.environ.get("HACKBENCH_LLM_MODEL", defaults.llm_model),
             modal_proxy_token_id=os.environ.get("MODAL_PROXY_TOKEN_ID", ""),
