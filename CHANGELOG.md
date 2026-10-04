@@ -5,6 +5,10 @@ versioning: [SemVer](https://semver.org/).
 
 ## [Unreleased]
 
+### Known limitations
+
+- A Modal dedicated endpoint for the paper judge can't be created without a payment method on the Modal workspace (H100 only, even for small models). The judge falls back automatically to Cloudflare Workers AI. See the README's Configuration section.
+
 ## [0.2.0] - 2026-10-04
 
 ### Added
