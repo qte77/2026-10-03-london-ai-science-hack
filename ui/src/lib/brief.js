@@ -58,7 +58,7 @@ export function findCounterfactual(brief) {
     const verdict = findFactValue(c, "leverage.verdict_without");
     const p = findFactValue(c, "leverage.p_without");
     if (verdict !== undefined && p !== undefined) {
-      const entity = findFactValue(c, "entities.id") ?? c.scope;
+      const entity = findFactValue(c, "entity") ?? c.scope;
       return { entity, verdict, p };
     }
   }

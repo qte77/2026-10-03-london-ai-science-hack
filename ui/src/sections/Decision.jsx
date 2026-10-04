@@ -32,7 +32,7 @@ export function DecisionSlab({ brief }) {
           <div className="verdict-word" style={{ fontSize: "clamp(32px,5vw,72px)" }}>
             {fmtP(stats.p)}
           </div>
-          <p className="verdict-fact">vs α = {stats.alpha ?? 0.05}</p>
+          <p className="verdict-fact">vs α = {stats.alpha ?? "—"}</p>
           {stats.rule && <p className="sub-label">{stats.rule}</p>}
         </div>
       </div>
