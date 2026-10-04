@@ -1,4 +1,4 @@
-"""HackBench: science agents doing a QC job, and the evals that tell you when to trust them.
+"""Parallax: find what to measure next. HackBench (this package) is its trust and evaluation layer.
 
 Project identity lives here; use-case copy lives in `profiles/<name>.toml`.
 """
@@ -7,7 +7,7 @@ import os
 from importlib.metadata import PackageNotFoundError, version
 
 APP_NAME = "hackbench"
-DISPLAY_NAME = "HackBench"
+DISPLAY_NAME = "Parallax"
 REPO_URL = "https://github.com/qte77/2026-10-03-london-ai-science-hack"
 
 try:

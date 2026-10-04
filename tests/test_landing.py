@@ -11,7 +11,7 @@ def test_root_serves_html_for_browsers() -> None:
     r = client.get("/", headers={"Accept": "text/html"})
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("text/html")
-    assert "<h1>HackBench</h1>" in r.text
+    assert "<h1>Parallax</h1>" in r.text
     for path in ("/llms.txt", "/openapi.json", "/.well-known/agent-card.json"):
         assert f'href="{path}"' in r.text
 
@@ -30,8 +30,8 @@ def test_root_serves_markdown_when_asked() -> None:
     r = client.get("/", headers={"Accept": "text/markdown"})
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("text/markdown")
-    assert r.text.startswith("---\ntitle: HackBench\n")
-    assert "\n# HackBench\n" in r.text
+    assert r.text.startswith("---\ntitle: Parallax\n")
+    assert "\n# Parallax\n" in r.text
 
 
 def test_root_varies_on_accept_so_caches_keep_both_forms() -> None:

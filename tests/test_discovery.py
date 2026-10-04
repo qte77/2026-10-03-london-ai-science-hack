@@ -11,7 +11,7 @@ client = TestClient(create_app())
 
 def test_llms_txt_says_when_to_use_and_when_not() -> None:
     text = client.get("/llms.txt").text
-    assert "## When to use HackBench" in text
+    assert "## When to use Parallax" in text
     assert "## When not to use it" in text
 
 
