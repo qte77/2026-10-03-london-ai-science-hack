@@ -12,7 +12,7 @@ def test_root_serves_the_designed_console_for_browsers() -> None:
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("text/html")
     assert '<div id="root"></div>' in r.text  # the owner's design artifact
-    assert 'src="assets/app.js"' in r.text
+    assert "window.__QC_DATA__=" in r.text  # served as-is, data inline
     assert "<noscript><h1>Parallax</h1>" in r.text  # readable without JS
 
 
