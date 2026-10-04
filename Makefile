@@ -38,7 +38,7 @@ cycle-upload: ## Upload derived inputs (no TIFFs) to the Modal Volume; PARALLAX=
 	uv run modal volume put --force hackbench-data results/journal.jsonl /qc/journal.jsonl
 	uv run modal volume put --force hackbench-data results/suite.json /qc/suite.json
 	uv run modal volume put --force hackbench-data results/suite-journal.jsonl /qc/suite-journal.jsonl
-	for f in $$PARALLAX/decision_brief.Batch_*.json; do uv run modal volume put --force hackbench-data "$$f" /qc/parallax/$$(basename "$$f"); done
+	for f in $$PARALLAX/decision_brief.*.json; do uv run modal volume put --force hackbench-data "$$f" /qc/parallax/$$(basename "$$f"); done
 
 cycle-modal: ## Run the cycle on Modal; results go live at /v1/results and /results
 	uv run modal run src/hackbench/deploy.py::cycle
