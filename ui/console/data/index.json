@@ -1,0 +1,1 @@
+{"batches":[{"id":"Batch_1","verdict":"REFERENCE","brief":true,"imagery":false},{"id":"Batch_2","verdict":"ACCEPT","brief":true,"imagery":false},{"id":"Batch_3","verdict":"REJECT","brief":true,"imagery":false},{"id":"Hackathon-Polaron-test","verdict":"INVESTIGATE","brief":true,"imagery":false}],"default":"Batch_3"}
