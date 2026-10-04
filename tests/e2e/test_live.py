@@ -26,7 +26,7 @@ def test_health(http: httpx.Client) -> None:
 def test_llms_txt_advertises_the_public_url(http: httpx.Client) -> None:
     r = http.get("/llms.txt")
     assert r.status_code == 200
-    assert r.text.startswith("# HackBench")
+    assert r.text.startswith("# Parallax")
     assert f"{BASE_URL}/openapi.json" in r.text
     assert "localhost" not in r.text
 
@@ -41,7 +41,7 @@ def test_agent_card_points_at_the_deployment(http: httpx.Client) -> None:
     r = http.get("/.well-known/agent-card.json")
     assert r.status_code == 200
     card = r.json()
-    assert card["name"] == "HackBench"
+    assert card["name"] == "Parallax"
     assert card["url"] == BASE_URL
     assert any(s["id"] == "evaluate-qc-verdict" for s in card["skills"])
 
@@ -55,10 +55,10 @@ def test_openapi_lists_the_health_route(http: httpx.Client) -> None:
 def test_homepage_serves_html_and_markdown(http: httpx.Client) -> None:
     page = http.get("/", headers={"Accept": "text/html"})
     assert page.status_code == 200
-    assert "<h1>HackBench</h1>" in page.text
+    assert "<h1>Parallax</h1>" in page.text
     md = http.get("/", headers={"Accept": "text/markdown"})
     assert md.headers["content-type"].startswith("text/markdown")
-    assert "\n# HackBench\n" in md.text
+    assert "\n# Parallax\n" in md.text
     assert "Accept" in md.headers["vary"]
 
 

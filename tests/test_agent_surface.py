@@ -12,7 +12,7 @@ def test_llms_txt_describes_the_project_and_links_the_api() -> None:
     r = client.get("/llms.txt")
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("text/plain")
-    assert r.text.startswith("# HackBench")
+    assert r.text.startswith("# Parallax")
     assert "/openapi.json" in r.text
 
 
@@ -26,7 +26,7 @@ def test_agent_card_is_served_from_well_known() -> None:
     r = client.get("/.well-known/agent-card.json")
     assert r.status_code == 200
     card = r.json()
-    assert card["name"] == "HackBench"
+    assert card["name"] == "Parallax"
     assert card["url"].startswith("http")
     assert card["skills"], "agent card must list at least one skill"
 
@@ -34,7 +34,7 @@ def test_agent_card_is_served_from_well_known() -> None:
 def test_openapi_schema_is_published() -> None:
     r = client.get("/openapi.json")
     assert r.status_code == 200
-    assert r.json()["info"]["title"] == "HackBench"
+    assert r.json()["info"]["title"] == "Parallax"
 
 
 def test_health_endpoint() -> None:
