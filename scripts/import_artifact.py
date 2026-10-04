@@ -83,9 +83,7 @@ def main() -> None:
     (out / "assets" / "app.css").write_text(css)
     # Reason: owner wants the artifact served as-is (inline data + imaging bay), so the page is
     # the artifact's own HTML; only the Polymer default and our header overrides are added.
-    page = html.replace(
-        "return`console`}", f"return`{DEFAULT_LOOK}`}}", 1
-    ).replace(
+    page = html.replace("return`console`}", f"return`{DEFAULT_LOOK}`}}", 1).replace(
         '<div id="root"></div>',
         '<link rel="stylesheet" href="assets/overrides.css">\n<div id="root"></div>',
         1,
