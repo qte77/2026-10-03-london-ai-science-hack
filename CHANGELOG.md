@@ -5,6 +5,8 @@ versioning: [SemVer](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-04
+
 ### Added
 
 - `docs/positioning.md`: who Parallax is for, the pains it relieves (each with evidence from the live run), the story arc, and what is not claimed.
