@@ -20,10 +20,17 @@ def test_settings_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
         "HACKBENCH_PROFILE",
         "HACKBENCH_COMMIT",
         "HACKBENCH_DATA_DIR",
+        "HACKBENCH_RESULTS_PATH",
+        "HACKBENCH_SNAPSHOT_PATH",
     ):
         monkeypatch.delenv(var, raising=False)
     assert Settings.from_env() == Settings(
-        base_url="http://localhost:8000", profile="polaron", commit="local", data_dir="data/polaron"
+        base_url="http://localhost:8000",
+        profile="polaron",
+        commit="local",
+        data_dir="data/polaron",
+        results_path="results/cycle/results.json",
+        snapshot_path="data/results.snapshot.json",
     )
 
 

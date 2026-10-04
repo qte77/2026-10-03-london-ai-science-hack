@@ -5,5 +5,6 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 # Real-data inputs and derived results stay local until Polaron agrees to publication
-data/
+data/*
+!data/results.snapshot.json
 results/

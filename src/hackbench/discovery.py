@@ -34,6 +34,7 @@ def llms_txt(p: Profile, base: str) -> str:
 - [Agent skill]({base}{SKILL_PATH})
 - [Agent card]({base}/.well-known/agent-card.json)
 - [Health]({base}/v1/health)
+- [Results]({base}/v1/results) ([markdown twin]({base}/results.md))
 
 ## Source
 
@@ -107,6 +108,7 @@ def api_catalog(base: str) -> dict[str, object]:
                 "service-desc": [{"href": f"{base}/openapi.json", "type": "application/json"}],
                 "service-doc": [{"href": f"{base}/llms.txt", "type": "text/plain"}],
                 "status": [{"href": f"{base}/v1/health", "type": "application/json"}],
+                "item": [{"href": f"{base}/v1/results", "type": "application/json"}],
             }
         ]
     }
