@@ -235,9 +235,8 @@ def create_app(reload: Callable[[], None] | None = None) -> FastAPI:
             )
         return Response(_render_results_md(data), media_type=MARKDOWN)
 
-    # Reason: another agent builds `ui/` in parallel; mount it only if it exists so this
-    # app works before and after that lands, locally and in the Modal image.
-    ui_dist = Path("ui/dist")
+    # Reason: mount the built console only if present, so the API still works without it.
+    ui_dist = Path(Settings.from_env().ui_dir)
     if (ui_dist / "index.html").exists():
         app.mount("/results", StaticFiles(directory=str(ui_dist), html=True), name="results-ui")
 

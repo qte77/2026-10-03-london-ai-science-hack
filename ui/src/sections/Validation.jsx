@@ -1,3 +1,5 @@
+import { safeUrl } from "../lib/safeUrl.js";
+
 function Skipped({ reason }) {
   return <p className="status-skipped">skipped: {reason}</p>;
 }
@@ -77,7 +79,13 @@ export function ValidationPanel({ suite, kpiRobustness, agents, papers }) {
             <ul>
               {papers.hits.map((h) => (
                 <li key={h.id}>
-                  <a href={h.url}>{h.title}</a>
+                  {safeUrl(h.url) ? (
+                    <a href={safeUrl(h.url)} rel="noopener noreferrer">
+                      {h.title}
+                    </a>
+                  ) : (
+                    h.title
+                  )}
                 </li>
               ))}
             </ul>

@@ -1,3 +1,5 @@
+import { safeUrl } from "../lib/safeUrl.js";
+
 function PreregRow({ label, prereg }) {
   if (!prereg) {
     return (
@@ -13,10 +15,10 @@ function PreregRow({ label, prereg }) {
       <span>
         <code>{prereg.tag}</code> · {prereg.sha?.slice(0, 10)} ·{" "}
         {prereg.created_at ? new Date(prereg.created_at).toISOString() : "—"}
-        {prereg.release_url ? (
+        {safeUrl(prereg.release_url) ? (
           <>
             {" "}
-            · <a href={prereg.release_url}>release</a>
+            · <a href={safeUrl(prereg.release_url)}>release</a>
           </>
         ) : (
           " · release pending"

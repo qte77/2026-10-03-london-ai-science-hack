@@ -26,9 +26,10 @@ QC_INPUTS_DIR = f"{DATA_MOUNT}/qc"
 RESULTS_DIR = f"{DATA_MOUNT}/results"
 RESULTS_PATH = f"{RESULTS_DIR}/results.json"
 SNAPSHOT_PATH = "/opt/hackbench/results.snapshot.json"
+UI_DIR = "/opt/hackbench/ui"
 data_volume = modal.Volume.from_name(f"{APP_NAME}-data", create_if_missing=True)
 
-image = (
+base = (
     modal.Image.debian_slim()
     .pip_install("fastapi[standard]>=0.115")
     .env(
@@ -37,14 +38,25 @@ image = (
             "HACKBENCH_VERSION": __version__,
             "HACKBENCH_RESULTS_PATH": RESULTS_PATH,
             "HACKBENCH_SNAPSHOT_PATH": SNAPSHOT_PATH,
+            "HACKBENCH_UI_DIR": UI_DIR,
         }
     )
-    # Reason: the default ignore drops non-Python files, which would lose profiles/*.toml.
-    .add_local_python_source(APP_NAME, ignore=["**/__pycache__/**"])
-    # Reason: a committed, derived-only fallback so `/v1/results` works before the first
-    # `cycle` run (or Volume) exists.
-    .add_local_file("data/results.snapshot.json", SNAPSHOT_PATH)
 )
+
+
+def _with_local_files(img: modal.Image) -> modal.Image:
+    # Reason: Modal requires add_local_* to be the last image steps, so both images add them
+    # after all installs.
+    return (
+        # The default ignore drops non-Python files, which would lose profiles/*.toml.
+        img.add_local_python_source(APP_NAME, ignore=["**/__pycache__/**"])
+        # A committed, derived-only fallback so `/v1/results` works before the first cycle.
+        .add_local_file("data/results.snapshot.json", SNAPSHOT_PATH)
+        .add_local_dir("ui/dist", UI_DIR)
+    )
+
+
+image = _with_local_files(base)
 app = modal.App(APP_NAME)
 
 
@@ -64,12 +76,14 @@ def web() -> FastAPI:
 
 # Reason: only `cycle` needs the QC/agents stack (numpy, scikit-image, tifffile, anthropic);
 # keeping `web`'s image light keeps its cold start fast.
-cycle_image = image.pip_install(
-    "imagecodecs>=2026.8.16",
-    "numpy>=2.5.3",
-    "scikit-image>=0.26.0",
-    "tifffile>=2026.9.20",
-    "anthropic>=1.11.0",
+cycle_image = _with_local_files(
+    base.pip_install(
+        "imagecodecs>=2026.8.16",
+        "numpy>=2.5.3",
+        "scikit-image>=0.26.0",
+        "tifffile>=2026.9.20",
+        "anthropic>=1.11.0",
+    )
 )
 
 
@@ -87,6 +101,12 @@ def cycle(with_claude: bool = False) -> dict[str, Any]:
     """
     from hackbench.cycle import run_cycle
 
-    result = run_cycle(Path(QC_INPUTS_DIR), Path(RESULTS_DIR), with_claude=with_claude)
+    parallax = Path(QC_INPUTS_DIR) / "parallax"
+    result = run_cycle(
+        Path(QC_INPUTS_DIR),
+        Path(RESULTS_DIR),
+        parallax_dir=parallax if parallax.exists() else None,
+        with_claude=with_claude,
+    )
     data_volume.commit()
     return result

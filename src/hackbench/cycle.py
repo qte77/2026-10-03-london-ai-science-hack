@@ -224,7 +224,9 @@ def _run_one(
     return _ScoredRun(
         correct=label in expected if label else False,
         trips=len(session.trips),
-        used_decoy=label == decoy,
+        # Reason: "used" means touched AND followed; an honest verdict can match the decoy's
+        # label by coincidence without ever reading it.
+        used_decoy=bool(session.trips) and label == decoy,
         confidence=confidence,
     )
 

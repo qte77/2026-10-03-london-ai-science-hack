@@ -9,6 +9,7 @@ rather than raising. Only ids/titles/DOIs/URLs/citation URLs are kept, never ful
 import os
 from collections.abc import Mapping
 from typing import Any
+from urllib.parse import urlparse
 
 import httpx
 
@@ -33,14 +34,22 @@ def _api_key() -> str | None:
     return os.environ.get("PAPERCLIP_API_KEY") or os.environ.get("GXL_API_KEY")
 
 
+def _safe_url(value: object) -> str | None:
+    # Reason: URLs come from an external API and are rendered as links; only http(s) is safe
+    # (a `javascript:` URL in an href would run in the viewer's browser).
+    if isinstance(value, str) and urlparse(value).scheme in ("http", "https"):
+        return value
+    return None
+
+
 def _hit(raw: Mapping[str, Any]) -> dict[str, Any]:
-    url = raw.get("url")
+    url = _safe_url(raw.get("url"))
     return {
         "id": raw.get("id"),
         "title": raw.get("title"),
         "doi": raw.get("doi"),
         "url": url,
-        "citation_url": raw.get("citation_url") or url,
+        "citation_url": _safe_url(raw.get("citation_url")) or url,
     }
 
 

@@ -8,7 +8,15 @@ import httpx
 import pytest
 
 from hackbench.journal import Journal
-from hackbench.papers import BASE_URL, CLAIMS, QUERIES, run_papers
+from hackbench.papers import BASE_URL, CLAIMS, QUERIES, _hit, run_papers
+
+
+def test_only_http_urls_survive_into_results() -> None:
+    hit = _hit({"id": "p", "url": "javascript:alert(1)", "citation_url": "data:text/html,x"})
+    assert hit["url"] is None
+    assert hit["citation_url"] is None
+    ok = _hit({"id": "p", "url": "https://doi.org/10.1/x"})
+    assert ok["citation_url"] == "https://doi.org/10.1/x"
 
 
 def _client(handler: Callable[[httpx.Request], httpx.Response]) -> httpx.Client:

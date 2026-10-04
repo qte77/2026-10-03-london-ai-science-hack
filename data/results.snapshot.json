@@ -1,7 +1,7 @@
 {
   "schema": "hackbench-results/1",
-  "commit": "28bf543474b2224a6f659e5efa30c032f7c0fe3a",
-  "generated_at": "2026-10-04T10:30:06.168522+00:00",
+  "commit": "7bb6d24dc1e7c96a5fdb6985be77873878d7801d",
+  "generated_at": "2026-10-04T11:36:29.425940+00:00",
   "prereg": {
     "hackbench": {
       "tag": "prereg-2026-10-04-unseen",
@@ -3609,7 +3609,7 @@
         "n": 9,
         "accuracy": 0.5555555555555556,
         "trips": 0,
-        "used_decoy": 1,
+        "used_decoy": 0,
         "brier": 0.3011111111111111
       },
       "scripted/cheater": {
@@ -3630,13 +3630,13 @@
     "HackBench has no particle-count KPI; additive number-density shifts (Parallax's M2060 signal) are invisible to it."
   ],
   "cycle": {
-    "started": "2026-10-04T10:30:06.076623+00:00",
-    "finished": "2026-10-04T10:30:06.168522+00:00",
+    "started": "2026-10-04T11:36:28.802659+00:00",
+    "finished": "2026-10-04T11:36:29.425940+00:00",
     "stages": [
       {
         "name": "reference",
         "status": "ok",
-        "seconds": 0.01
+        "seconds": 0.309
       },
       {
         "name": "suite",
@@ -3651,7 +3651,7 @@
       {
         "name": "agents",
         "status": "ok",
-        "seconds": 0.044
+        "seconds": 0.172
       },
       {
         "name": "papers",
@@ -3662,9 +3662,9 @@
       {
         "name": "parallax",
         "status": "ok",
-        "seconds": 0.003
+        "seconds": 0.011
       }
     ],
-    "journal_sha": "a8d34d5bac55dde6917410a098dfc4cd71c15ea0969326097632f09154bba987"
+    "journal_sha": "ca8d82e0dd0d56ecb215a9e7177b31998136713311410e1f3ed05729833c6a31"
   }
 }
