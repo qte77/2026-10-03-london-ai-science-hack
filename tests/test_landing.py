@@ -11,8 +11,8 @@ def test_root_serves_the_designed_console_for_browsers() -> None:
     r = client.get("/", headers={"Accept": "text/html"})
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("text/html")
-    assert '<div id="root"></div>' in r.text  # the React console
-    assert "/results/assets/" in r.text
+    assert '<div id="root"></div>' in r.text  # the owner's design artifact
+    assert 'src="assets/app.js"' in r.text
     assert "<noscript><h1>Parallax</h1>" in r.text  # readable without JS
 
 
@@ -60,3 +60,14 @@ def test_index_md_is_the_markdown_twin() -> None:
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("text/markdown")
     assert r.text == client.get("/", headers={"Accept": "text/markdown"}).text
+
+
+def test_console_assets_and_data_are_served_without_images() -> None:
+    assert client.get("/assets/app.js").status_code == 200
+    index = client.get("/data/index.json").json()
+    assert index["batches"]
+    assert not any(b["imagery"] for b in index["batches"])
+    field = client.get(f"/data/{index['batches'][0]['id']}/field.json")
+    assert field.status_code == 200
+    assert field.json()["assets"] == {}
+    assert "data:image" not in field.text
