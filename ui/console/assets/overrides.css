@@ -1,0 +1,43 @@
+/* Our layout fixes on top of the imported artifact CSS (app.css); kept separate so a
+   re-import never overwrites them. Header: brand, controls and caption share one centre axis. */
+:root .rail {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+}
+:root .rail .brand {
+  justify-content: center;
+}
+:root .rail .brand-name {
+  align-items: flex-start;
+  text-align: left;
+}
+:root .rail-controls {
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 12px 18px;
+}
+:root .rail-controls .field-label.stacked {
+  text-align: left;
+}
+/* Reason: the look switch and status lamp have no label row; sit them on the selects' line. */
+:root .rail-controls .look-switch,
+:root .rail-controls .status {
+  align-self: flex-end;
+}
+:root .rail-controls .status {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+}
+:root .rail-caption {
+  flex-basis: auto;
+  margin: 0;
+  text-align: center;
+}
+

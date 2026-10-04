@@ -6,14 +6,16 @@ Science agents doing Polaron's battery-electrode QC, and the evals that tell you
 them: correctness, reward hacking, calibration, falsification. Built during the
 [London AI x Science Hackathon](docs/event.md), 3–4 Oct 2026.
 
-**Status (4 Oct, live):** the QC console runs at
+**Status (4 Oct, live):** the Parallax QC console by **GRAMSINATOR**
+([source repo](https://github.com/GRAMSINATOR/2026_10_03_hackathon_AI-X-SCIENCE)) is hosted at <https://thismay52--hackbench-web.modal.run/>, as-is from
+their design artifact. Our own rebuild runs at
 <https://thismay52--hackbench-web.modal.run/results/>. It renders Parallax's decision briefs
 beside HackBench's cross-check, with the disagreement on Batch_3 stated. The end-to-end cycle
 runs on Modal with a hash-chained journal: the reference, the planted-drift suite (held-out 5/9,
 no material drift accepted), scripted honest and cheating agents against honeypots, and the
 briefs. The pipeline is pre-registered at `prereg-2026-10-04-unseen` (10:04:32 BST).
 
-**Team:** built together with
+**Team:** built together with author **GRAMSINATOR**,
 [GRAMSINATOR/2026_10_03_hackathon_AI-X-SCIENCE](https://github.com/GRAMSINATOR/2026_10_03_hackathon_AI-X-SCIENCE)
 (Track 4 QC core with a Streamlit dashboard). This repo is the evaluation layer. Coordination
 happens in that repo's issues.
