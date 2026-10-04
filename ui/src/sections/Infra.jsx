@@ -33,7 +33,7 @@ export function InfraPanel({ cycle, prereg }) {
     <section aria-label="Infrastructure">
       <div className="section-head">
         <h2>
-          <span className="num">07</span>Infrastructure
+          <span className="num">08</span>Infrastructure
         </h2>
       </div>
       <div className="panel-grid">
