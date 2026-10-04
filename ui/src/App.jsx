@@ -7,6 +7,7 @@ import { SupportAndLimits, NextCapture } from "./sections/BriefPanels.jsx";
 import { HackbenchStrip } from "./sections/Hackbench.jsx";
 import { ValidationPanel } from "./sections/Validation.jsx";
 import { InfraPanel } from "./sections/Infra.jsx";
+import { LiteraturePanel } from "./sections/Literature.jsx";
 import { AppFooter } from "./sections/Footer.jsx";
 
 function readInitialBatch(batchIds) {
@@ -100,6 +101,7 @@ export default function App() {
         agents={data.agents}
         papers={data.papers}
       />
+      <LiteraturePanel papers={data.papers} paperJudge={data.paper_judge} />
       <InfraPanel cycle={data.cycle} prereg={data.prereg} />
       <AppFooter commit={data.commit} generatedAt={data.generated_at} />
     </div>
