@@ -27,6 +27,9 @@ qc: ## Run the reference QC pipeline on HACKBENCH_DATA_DIR (writes results/, git
 qc-suite: ## Build the synthetic drift suite from the baseline, run it, score vs known truth
 	uv run python -m hackbench.polaron --suite --out results
 
+agent-smoke: ## ONE live Haiku session on Batch_3 (needs ANTHROPIC_API_KEY; ~$0.1, capped at $1.50)
+	uv run --env-file .env python -m hackbench.polaron --agent $${AGENT:-haiku-4-5/neutral} --candidate $${CANDIDATE:-Batch_3} --out results
+
 validate: lint typecheck test ## Full local gate (run before pushing)
 
 run: ## Serve the app locally on :8000
@@ -35,4 +38,4 @@ run: ## Serve the app locally on :8000
 deploy: ## Deploy to Modal (needs `modal token new` once); stamps the git commit
 	HACKBENCH_COMMIT=$${HACKBENCH_COMMIT:-$$(git rev-parse HEAD)} uv run modal deploy src/hackbench/deploy.py
 
-.PHONY: help install test lint typecheck audit e2e qc qc-suite validate run deploy
+.PHONY: help install test lint typecheck audit e2e qc qc-suite agent-smoke validate run deploy
