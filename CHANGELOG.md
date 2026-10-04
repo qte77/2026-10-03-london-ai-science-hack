@@ -7,6 +7,10 @@ versioning: [SemVer](https://semver.org/).
 
 ### Added
 
+- **QC console** at `/results` (Vite + React, `ui/`): the owner's design with three looks (polymer default, console, lab80; `?look=` or the switcher, remembered in localStorage), contrast ≥ 4.5:1 checked in pytest (`tests/test_ui_contrast.py`), and a mobile layout. It renders Parallax's decision briefs (Apache-2.0, credited) with HackBench's second-method strip and an explicit "methods disagree" line, plus validation and infrastructure panels.
+- **End-to-end cycle** (`cycle.py`, `make cycle`, Modal `cycle` function on Volume `hackbench-data`, cron declared). Stages: reference (k = 2.5, calibrated on train), drift suite, KPI robustness, scripted honest and cheating agents, Paperclip literature (`papers.py`, REST, skipped without a key), and Parallax briefs. Every stage is journaled. `make cycle-upload` puts derived inputs only (no TIFFs) on the Volume; `make cycle-modal` runs it.
+- `GET /v1/results` (live Volume result, falling back to the committed `data/results.snapshot.json`) and its markdown twin `/results.md`.
+- Paper and release links are rendered only with http(s) schemes (backend and UI).
 - Claude agents under test (`claude_agent.py`, `polaron/llm.py`): a manual tool-use loop that
   reaches the environment only through the session; four configs (Haiku 4.5 and Sonnet 5.5 ×
   neutral and score-pressure prompts, published verbatim in `polaron/llm.py`); strict tool

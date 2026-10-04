@@ -1,7 +1,14 @@
 """One FastAPI app serving both surfaces: UI for people, REST/discovery files for agents."""
 
+import contextlib
+import json
+from collections.abc import Callable, Mapping
+from pathlib import Path
+from typing import Any
+
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, Response
+from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from hackbench import DISPLAY_NAME, __version__, discovery
@@ -10,6 +17,7 @@ from hackbench.profile import Profile, load_profile
 from hackbench.settings import Settings
 
 MARKDOWN = "text/markdown; charset=utf-8"
+LABELS = ("accept", "investigate", "reject")
 
 # Reason: name the major AI agents/crawlers explicitly so per-bot policy is unambiguous.
 # Infra policy, not use-case data, so it stays in code rather than the profile.
@@ -63,7 +71,81 @@ def _wants_markdown(request: Request) -> bool:
     return "text/markdown" in request.headers.get("accept", "")
 
 
-def create_app() -> FastAPI:
+def _load_results(reload: Callable[[], None] | None) -> tuple[dict[str, Any] | None, str]:
+    """Live results (Modal volume), else a committed snapshot, else `(None, "none")`."""
+    if reload is not None:
+        # Reason: a stale/unmounted volume must not break the endpoint; fall through to snapshot.
+        with contextlib.suppress(Exception):
+            reload()
+    s = Settings.from_env()
+    for path, source in ((Path(s.results_path), "live"), (Path(s.snapshot_path), "snapshot")):
+        if path.exists():
+            try:
+                return json.loads(path.read_text()), source
+            except (OSError, json.JSONDecodeError):
+                continue
+    return None, "none"
+
+
+def _parallax_label(brief: Mapping[str, Any]) -> str | None:
+    # Reason: duplicated (not imported) from `cycle.py` so the web image never pulls in
+    # the QC stack (numpy/scipy/scikit-image) that `cycle.py` transitively imports.
+    claims = brief.get("claims") or []
+    claim = next(
+        (c for c in claims if isinstance(c, dict) and c.get("id") == "decision.verdict"), None
+    )
+    label = (claim or {}).get("label")
+    if not isinstance(label, str):
+        label = brief.get("hero", {}).get("decision", {}).get("state")
+    if isinstance(label, str) and label.lower() in LABELS:
+        return label.lower()
+    return None
+
+
+def _render_results_md(d: Mapping[str, Any]) -> str:
+    lines = [
+        "# HackBench results",
+        "",
+        f"Commit `{d.get('commit')}` · generated {d.get('generated_at')}",
+        "",
+        "## Batches",
+        "",
+    ]
+    for batch, b in (d.get("batches") or {}).items():
+        hb = b.get("hackbench")
+        brief = b.get("parallax_brief")
+        px = _parallax_label(brief) if brief else None
+        lines.append(
+            f"- **{batch}**: hackbench=`{hb['verdict'] if hb else '—'}` "
+            f"parallax=`{px or '—'}` agree=`{b.get('agree')}`"
+        )
+    suite = d.get("suite") or {}
+    lines += [
+        "",
+        "## Suite",
+        "",
+        f"Held-out accuracy: {suite.get('heldout_accuracy')} (k={suite.get('chosen_k')})",
+        "",
+        "## KPI robustness (top by material shift)",
+        "",
+    ]
+    rob = sorted(
+        (d.get("kpi_robustness") or {}).items(),
+        key=lambda kv: kv[1].get("material_shift", 0),
+        reverse=True,
+    )
+    for name, r in rob[:3]:
+        lines.append(
+            f"- **{name}** ({r.get('role')}): imaging={r.get('imaging_shift')} "
+            f"material={r.get('material_shift')}"
+        )
+    lines += ["", "## Cycle stages", ""]
+    for stg in (d.get("cycle") or {}).get("stages", []):
+        lines.append(f"- {stg.get('name')}: {stg.get('status')} ({stg.get('seconds')}s)")
+    return "\n".join(lines) + "\n"
+
+
+def create_app(reload: Callable[[], None] | None = None) -> FastAPI:
     _, profile = _ctx()
     app = FastAPI(title=DISPLAY_NAME, version=__version__, description=profile.tagline)
 
@@ -136,5 +218,26 @@ def create_app() -> FastAPI:
         return JSONResponse(
             discovery.api_catalog(Settings.from_env().base_url), media_type=discovery.LINKSET
         )
+
+    @app.get("/v1/results")
+    def results() -> Response:
+        data, source = _load_results(reload)
+        if data is None:
+            return JSONResponse({"detail": "no results available yet"}, status_code=503)
+        return JSONResponse(data, headers={"X-Results-Source": source})
+
+    @app.get("/results.md", include_in_schema=False)
+    def results_md() -> Response:
+        data, _source = _load_results(reload)
+        if data is None:
+            return Response(
+                "# HackBench results\n\nNo results yet.\n", media_type=MARKDOWN, status_code=503
+            )
+        return Response(_render_results_md(data), media_type=MARKDOWN)
+
+    # Reason: mount the built console only if present, so the API still works without it.
+    ui_dist = Path(Settings.from_env().ui_dir)
+    if (ui_dist / "index.html").exists():
+        app.mount("/results", StaticFiles(directory=str(ui_dist), html=True), name="results-ui")
 
     return app

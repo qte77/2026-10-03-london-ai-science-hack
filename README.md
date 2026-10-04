@@ -36,6 +36,9 @@ drift suite is not affected.
 | `/.well-known/ard.json` | agents | Agentic Resource Discovery catalog |
 | `/.well-known/agent-card.json` | agents (A2A) | Agent card with the `evaluate-qc-verdict` skill |
 | `/openapi.json` | agents | REST schema |
+| `/results` | people | QC console: batch verdicts (Parallax), HackBench second method, validation, infrastructure; `?look=polymer\|console\|lab80` |
+| `/v1/results` | agents | All results as JSON (`hackbench-results/1`) |
+| `/results.md` | agents | Markdown version of the results |
 | `/v1/health` | anyone | `{"status": "ok", "commit": "<git SHA of the deployed code>"}` |
 
 ## Quick start
@@ -48,6 +51,8 @@ drift suite is not affected.
 | `make qc` | Reference QC pipeline on `HACKBENCH_DATA_DIR`: KPIs per field of view, bootstrap CIs vs the baseline batch, accept / investigate / reject; writes `results/` (git-ignored) |
 | `make qc-suite` | Builds a **training** and a **held-out** synthetic drift suite from the baseline (material vs imaging drift, known truth), chooses the tolerance `k` on training only, scores the held-out suite once; images go to `/tmp/hackbench-scratch` (`--scratch`), results to `results/suite.json` |
 | `make agent-smoke` | **Costs money.** One live Claude session (default `AGENT=haiku-4-5/neutral`, `CANDIDATE=Batch_3`) on `HACKBENCH_DATA_DIR`; reads `ANTHROPIC_API_KEY` from `.env`; capped at 15 calls, 180 s, $1.50; journal in `results/runs/` |
+| `make cycle` | End-to-end cycle on local derived results (`PARALLAX=<dir>` adds their decision briefs); writes `results/cycle/results.json` |
+| `make cycle-upload` / `make cycle-modal` | Put derived inputs (no TIFFs) on the Modal Volume, then run the cycle on Modal; the result is served live at `/v1/results` and `/results` |
 | `make e2e` | End-to-end tests against the live deploy (`HACKBENCH_E2E_URL` overrides the target) |
 | `make run` | Serve locally at <http://localhost:8000> |
 | `make deploy` | Deploy to Modal |
