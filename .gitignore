@@ -9,4 +9,5 @@ ui/node_modules/
 # Real-data inputs and derived results stay local until Polaron agrees to publication
 data/*
 !data/results.snapshot.json
+!data/submissions/
 results/

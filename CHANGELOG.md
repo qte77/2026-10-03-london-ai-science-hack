@@ -5,6 +5,10 @@ versioning: [SemVer](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `data/submissions/` (CSV + JSON): all 50 event submissions from iterate.inc's public projects endpoint, with participants' names in free text replaced by `[name]` (team names and URLs kept). Track names are mapped from `track_id`, inferred from submission content since the public API serves IDs only. Regenerate with `python3 scripts/scrape_submissions.py` (fetches via a sibling `polyfetch-scrape` checkout; the raw payload and the redaction list stay in gitignored `private/`).
+
 ### Known limitations
 
 - A Modal dedicated endpoint for the paper judge can't be created without a payment method on the Modal workspace (H100 only, even for small models). The judge falls back automatically to Cloudflare Workers AI. See the README's Configuration section.
