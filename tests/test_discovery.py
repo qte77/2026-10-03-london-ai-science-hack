@@ -58,7 +58,7 @@ def test_sitemap_lists_the_indexable_pages() -> None:
 
 def test_homepage_advertises_discovery_via_link_header() -> None:
     link = client.get("/").headers["link"]
-    assert 'rel="sitemap"' in link
+    assert '<http://localhost:8000/sitemap.xml>; rel="sitemap"' in link
     assert 'rel="alternate"; type="text/markdown"' in link
     assert 'rel="api-catalog"' in link
     assert 'rel="service-desc"' in link
@@ -68,7 +68,7 @@ def test_missing_page_returns_markdown_404_when_asked() -> None:
     r = client.get("/no-such-page", headers={"Accept": "text/markdown"})
     assert r.status_code == 404
     assert r.headers["content-type"].startswith("text/markdown")
-    assert "/llms.txt" in r.text
+    assert "(http://localhost:8000/llms.txt)" in r.text
 
 
 def test_missing_page_keeps_json_404_by_default() -> None:

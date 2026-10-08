@@ -11,3 +11,4 @@ data/*
 !data/results.snapshot.json
 !data/submissions/
 results/
+_site/
