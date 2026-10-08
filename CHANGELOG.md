@@ -9,6 +9,10 @@ versioning: [SemVer](https://semver.org/).
 
 - `data/submissions/` (CSV + JSON): all 50 event submissions from iterate.inc's public projects endpoint, with participants' names in free text replaced by `[name]` (team names and URLs kept). Track names are mapped from `track_id`, inferred from submission content since the public API serves IDs only. Regenerate with `python3 scripts/scrape_submissions.py` (fetches via a sibling `polyfetch-scrape` checkout; the raw payload and the redaction list stay in gitignored `private/`).
 
+### Security
+
+- UI build toolchain: `vite` 5.4.21 → 6.4.4 (`esbuild` 0.21.5 → 0.25.12), clearing four Dependabot alerts (one high, three moderate). All four concern the local dev server, not the deployed console. `ui/dist` rebuilt; same source, minifier-only differences.
+
 ### Known limitations
 
 - A Modal dedicated endpoint for the paper judge can't be created without a payment method on the Modal workspace (H100 only, even for small models). The judge falls back automatically to Cloudflare Workers AI. See the README's Configuration section.
