@@ -1,0 +1,90 @@
+name: Pages
+
+# Publish the pre-rendered site to GitHub Pages after CI passes on main, then run the e2e tests
+# against the live URL.
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # Reason: only a successful CI run from a *push* in *this* repo may publish. workflow_run also
+    # fires for fork PRs (whose branch may be named main); never build those.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-latest
+    outputs:
+      base_url: ${{ steps.pages.outputs.base_url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Reason: publish exactly the commit CI validated, not whatever main is now.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - id: pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - run: pip install uv
+      - run: uv sync --frozen
+      - name: Pre-render the site
+        env:
+          HACKBENCH_BASE_URL: ${{ steps.pages.outputs.base_url }}
+          HACKBENCH_COMMIT: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: make site
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  e2e:
+    needs: [build, deploy]
+    runs-on: ubuntu-latest
+    env:
+      HACKBENCH_E2E_URL: ${{ needs.build.outputs.base_url }}
+      HACKBENCH_COMMIT: ${{ github.event.workflow_run.head_sha || github.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - run: pip install uv
+      - run: uv sync --frozen
+      - name: Wait until the new commit is the one serving
+        # Reason: the Pages CDN can serve the previous build for a short while.
+        run: |
+          for i in $(seq 1 36); do
+            live=$(curl -fsS "$HACKBENCH_E2E_URL/v1/health" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("commit",""))' || true)
+            if [ "$live" = "$HACKBENCH_COMMIT" ]; then echo "serving $live"; exit 0; fi
+            echo "waiting: live=$live want=$HACKBENCH_COMMIT"; sleep 5
+          done
+          echo "::error::new commit not serving after 3 minutes"; exit 1
+      - name: End-to-end tests against the live site
+        run: make e2e

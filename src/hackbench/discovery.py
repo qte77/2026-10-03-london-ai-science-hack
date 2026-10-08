@@ -77,7 +77,7 @@ def skills_index(p: Profile, base: str) -> dict[str, object]:
                 "name": APP_NAME,
                 "type": "skill-md",
                 "description": p.skill.summary,
-                "url": SKILL_PATH,
+                "url": f"{base}{SKILL_PATH}",
                 "digest": f"sha256:{digest}",
             }
         ],
@@ -126,21 +126,21 @@ def sitemap_xml(p: Profile, base: str) -> str:
     )
 
 
-def link_header() -> str:
+def link_header(base: str) -> str:
     return ", ".join(
         (
-            '</sitemap.xml>; rel="sitemap"',
-            '</index.md>; rel="alternate"; type="text/markdown"',
-            '</.well-known/api-catalog>; rel="api-catalog"',
-            '</openapi.json>; rel="service-desc"',
-            '</llms.txt>; rel="describedby"',
+            f'<{base}/sitemap.xml>; rel="sitemap"',
+            f'<{base}/index.md>; rel="alternate"; type="text/markdown"',
+            f'<{base}/.well-known/api-catalog>; rel="api-catalog"',
+            f'<{base}/openapi.json>; rel="service-desc"',
+            f'<{base}/llms.txt>; rel="describedby"',
         )
     )
 
 
-def markdown_404() -> str:
+def markdown_404(base: str) -> str:
     return (
         f"# Not found\n\nThis page does not exist on {DISPLAY_NAME}. Start from "
-        "[/llms.txt](/llms.txt), the [markdown homepage](/index.md) or the "
-        "[sitemap](/sitemap.xml).\n"
+        f"[/llms.txt]({base}/llms.txt), the [markdown homepage]({base}/index.md) or the "
+        f"[sitemap]({base}/sitemap.xml).\n"
     )

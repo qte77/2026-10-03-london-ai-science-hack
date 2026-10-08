@@ -12,7 +12,7 @@ pytestmark = pytest.mark.skipif(not BASE_URL, reason="HACKBENCH_E2E_URL not set"
 
 @pytest.fixture(scope="module")
 def http() -> httpx.Client:
-    # Reason: generous timeout so a Modal cold start doesn't fail the first request.
+    # Reason: generous timeout so a slow first CDN fetch doesn't fail the run.
     return httpx.Client(base_url=BASE_URL, timeout=60.0, follow_redirects=False)
 
 
@@ -52,15 +52,32 @@ def test_openapi_lists_the_health_route(http: httpx.Client) -> None:
     assert "/v1/health" in r.json()["paths"]
 
 
-def test_homepage_serves_html_and_markdown(http: httpx.Client) -> None:
+def test_homepage_serves_html_and_its_markdown_twin(http: httpx.Client) -> None:
     page = http.get("/", headers={"Accept": "text/html"})
     assert page.status_code == 200
     assert '<div id="root"></div>' in page.text  # the designed console
     assert "<noscript><h1>Parallax</h1>" in page.text
-    md = http.get("/", headers={"Accept": "text/markdown"})
-    assert md.headers["content-type"].startswith("text/markdown")
+    assert f'href="{BASE_URL}/index.md"' in page.text
+    # Reason: a static host cannot negotiate on Accept, so agents use the twin URL.
+    md = http.get("/index.md")
+    assert md.status_code == 200
     assert "\n# Parallax\n" in md.text
-    assert "Accept" in md.headers["vary"]
+
+
+def test_results_and_a_batch_brief_are_published(http: httpx.Client) -> None:
+    results = http.get("/v1/results").json()
+    assert results["schema"] == "hackbench-results/1"
+    batch = next(b for b, d in results["batches"].items() if d.get("parallax_brief"))
+    brief = results["batches"][batch]["parallax_brief"]
+    assert http.get(f"/data/{batch}/brief.json").json() == brief
+
+
+def test_react_console_loads_its_assets(http: httpx.Client) -> None:
+    page = http.get("/results/")
+    assert page.status_code == 200
+    src = page.text.split('src="', 1)[1].split('"', 1)[0]
+    assert src.startswith("./assets/")  # relative, so it resolves under any sub-path
+    assert http.get(f"/results/{src.removeprefix('./')}").status_code == 200
 
 
 def test_served_over_https(http: httpx.Client) -> None:

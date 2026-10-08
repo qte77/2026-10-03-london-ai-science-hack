@@ -6,7 +6,9 @@ import json
 from hackbench import DISPLAY_NAME, REPO_URL
 from hackbench.profile import Profile
 
-# (path, label) pairs shown to both audiences.
+# (path, label) pairs shown to both audiences. Every internal link is written as
+# f"{base_url}{path}". Reason: a host under a sub-path (a GitHub project page) would send a
+# root-relative "/path" outside the site.
 AGENT_LINKS: tuple[tuple[str, str], ...] = (
     ("/llms.txt", "llms.txt: project summary for agents"),
     ("/.well-known/agent-card.json", "Agent card (A2A discovery)"),
@@ -44,15 +46,15 @@ CONSOLE_PATH = "/results/"
 
 
 def render_markdown(p: Profile, base_url: str) -> str:
-    links = "\n".join(f"- [{label}]({path})" for path, label in AGENT_LINKS)
+    links = "\n".join(f"- [{label}]({base_url}{path})" for path, label in AGENT_LINKS)
     use = "\n".join(f"- {item}" for item in p.when_to_use)
     avoid = "\n".join(f"- {item}" for item in p.when_not_to_use)
     return (
         f"---\ntitle: {DISPLAY_NAME}\ndescription: {p.tagline}\ncanonical: {base_url}/\n"
         f"last-updated: {p.updated.isoformat()}\n---\n\n"
         f"# {DISPLAY_NAME}\n\n> {p.tagline}\n\n"
-        f"[Open the QC console: batch verdicts]({CONSOLE_PATH}) · "
-        f"[results as markdown](/results.md)\n\n{p.status}\n\n"
+        f"[Open the QC console: batch verdicts]({base_url}{CONSOLE_PATH}) · "
+        f"[results as markdown]({base_url}/results.md)\n\n{p.status}\n\n"
         f"## When to use {DISPLAY_NAME}\n\n{use}\n\n## When not to use it\n\n{avoid}\n\n"
         f"## For agents\n\n{links}\n\n## Source\n\n- [GitHub repository]({REPO_URL})\n"
     )
@@ -85,7 +87,7 @@ def head_meta(p: Profile, base_url: str) -> str:
     base = html.escape(base_url)
     return f"""<meta name="description" content="{tagline}">
 <link rel="canonical" href="{base}/">
-<link rel="alternate" type="text/markdown" href="/index.md">
+<link rel="alternate" type="text/markdown" href="{base}/index.md">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{DISPLAY_NAME}">
 <meta property="og:description" content="{tagline}">
@@ -99,11 +101,13 @@ def head_meta(p: Profile, base_url: str) -> str:
 def render_console(console_html: str, p: Profile, base_url: str) -> str:
     """The designed console as the homepage, carrying the landing's identity metadata and a
     no-JS summary so crawlers and agents still read who we are and where to go."""
+    b = html.escape(base_url)
     noscript = (
         f"<noscript><h1>{DISPLAY_NAME}</h1><p>{html.escape(p.tagline)}</p>"
-        '<p><a href="/about">About</a> · <a href="/index.md">Markdown</a> · '
-        '<a href="/results.md">Results (markdown)</a> · <a href="/v1/results">Results (JSON)</a> · '
-        '<a href="/llms.txt">llms.txt</a></p></noscript>'
+        f'<p><a href="{b}/about">About</a> · <a href="{b}/index.md">Markdown</a> · '
+        f'<a href="{b}/results.md">Results (markdown)</a> · '
+        f'<a href="{b}/v1/results">Results (JSON)</a> · '
+        f'<a href="{b}/llms.txt">llms.txt</a></p></noscript>'
     )
     page = console_html.replace("<html>", '<html lang="en">', 1)
     page = page.replace(
@@ -114,12 +118,12 @@ def render_console(console_html: str, p: Profile, base_url: str) -> str:
 
 
 def render_html(p: Profile, base_url: str) -> str:
+    base = html.escape(base_url)
     links = "\n".join(
-        f'<li><a href="{html.escape(path)}">{html.escape(label)}</a></li>'
+        f'<li><a href="{base}{html.escape(path)}">{html.escape(label)}</a></li>'
         for path, label in AGENT_LINKS
     )
     tagline = html.escape(p.tagline)
-    base = html.escape(base_url)
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -128,7 +132,7 @@ def render_html(p: Profile, base_url: str) -> str:
 <title>{DISPLAY_NAME}</title>
 <meta name="description" content="{tagline}">
 <link rel="canonical" href="{base}/">
-<link rel="alternate" type="text/markdown" href="/index.md">
+<link rel="alternate" type="text/markdown" href="{base}/index.md">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{DISPLAY_NAME}">
 <meta property="og:description" content="{tagline}">
@@ -144,7 +148,7 @@ def render_html(p: Profile, base_url: str) -> str:
 <h1>{DISPLAY_NAME}</h1>
 <div class="rule" aria-hidden="true"></div>
 <p>{tagline}</p>
-<p><strong><a href="{CONSOLE_PATH}">Open the QC console: batch verdicts →</a></strong></p>
+<p><strong><a href="{base}{CONSOLE_PATH}">Open the QC console: batch verdicts →</a></strong></p>
 <p class="muted">{html.escape(p.status)}</p>
 <h2>When to use {DISPLAY_NAME}</h2>
 <ul>
@@ -159,7 +163,7 @@ def render_html(p: Profile, base_url: str) -> str:
 {links}
 </ul>
 <p class="muted">Agents can request this page as markdown: <code>Accept: text/markdown</code>
-or <a href="/index.md">/index.md</a>.</p>
+or <a href="{base}/index.md">/index.md</a>.</p>
 <footer>Source: <a href="{REPO_URL}">GitHub</a> · Apache-2.0</footer>
 </main>
 </body>

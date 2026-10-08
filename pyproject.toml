@@ -9,7 +9,6 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-deploy = ["modal>=1.0"]
 qc = [
     "imagecodecs>=2026.8.16",
     "numpy>=2.5.3",
