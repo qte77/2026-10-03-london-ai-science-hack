@@ -1,7 +1,10 @@
 # Plan 0001: host on GitHub Pages, drop Modal, scrub the Modal workspace name from history
 
-**Status (8 Oct 2026):** Phase A (agent) is in PR `feat/gh-pages`. Phase B (owner) and Phase C
-(agent) are open; see [Remaining work](#remaining-work), the only list of open items.
+**Status (8 Oct 2026):**
+- Phase A shipped in #42; the site is live.
+- The first Pages run deployed and e2e passed 8 of 9. `/.well-known/*` returned 404 because
+  `upload-pages-artifact` drops dot-paths by default; this PR sets `include-hidden-files: true`.
+- Phase B and C rows are open; see [Remaining work](#remaining-work), the only list of open items.
 
 ## Where things stand
 
@@ -35,11 +38,11 @@
 
 | # | Item | Gate | Done when |
 |---|---|---|---|
-| A1 | Merge `feat/gh-pages` | owner | PR merged; `pages.yml` run green, including the e2e job |
+| ~~A1~~ | ~~Merge `feat/gh-pages`~~: **merged as #42**. Fixed in `fix/pages-hidden-files`: the e2e job failed on `/.well-known/agent-card.json` (404, hidden files not uploaded) | owner | PR merged; `pages.yml` run green, including the e2e job |
 | A2 | Browser check of the live Pages site: `/` and `/results/`, desktop and mobile, looks, batch switch | agent | No console errors or failed requests; screenshots taken |
-| B1 | Stop the Modal app and delete its secret: `modal app stop hackbench`, `modal secret delete hackbench`, and the Volume `hackbench-data` if unwanted | owner | The old URL no longer answers |
-| B2 | After A1: delete repo secrets `MODAL_TOKEN_ID` and `MODAL_TOKEN_SECRET`, and repo variable `HACKBENCH_BASE_URL` (its value is the old Modal URL). `deploy.yml` reads it until A1 merges | owner | `gh secret list` and `gh variable list` don't show them |
-| B2b | After A1: delete the logs of the 33 runs of the removed "Deploy" workflow. Each step's log prints the old URL from that variable | owner | `gh run list --workflow Deploy` is empty |
+| B1 | Stop the Modal app and delete its secret: `uvx modal app stop hackbench --yes`, `uvx modal secret delete hackbench`, and the Volume `hackbench-data` if unwanted. The agent's attempt was blocked by its safety check, so this is an owner step. The app was still deployed on 8 Oct | owner | The old URL no longer answers |
+| ~~B2~~ | ~~Delete repo secrets `MODAL_TOKEN_ID`/`MODAL_TOKEN_SECRET` and repo variable `HACKBENCH_BASE_URL`~~: **done 8 Oct**; both lists are empty | owner | `gh secret list` and `gh variable list` don't show them |
+| ~~B2b~~ | ~~Delete the logs of the removed "Deploy" workflow's runs~~: **done 8 Oct**. Logs of all 33 runs deleted; the run records are kept (`private/rewrite/delete_deploy_logs.sh`) | owner | 33/33 log deletions succeeded |
 | B3 | Run the rewrite (`private/rewrite/rewrite.sh`, after A1), review the report, then force-push `main` and all tags from the rewritten mirror | owner | 0 occurrences in blobs and messages; remote refs match `refs-after.txt` |
 | B4 | Re-point the 3 releases to the rewritten tags; add the rewrite note to `prereg-2026-10-04-unseen` | owner | Each release shows the new tag; the prereg note lists old → new commit |
 | B5 | GitHub Support: purge cached views and `refs/pull/*` that still hold the old commits | owner | Support confirms |
@@ -76,8 +79,9 @@
   pushed on rewrite day. The B4 note must state the old and new commit and that only the
   workspace name changed.
 - **Pages limits:** there is no `Accept` negotiation at `/` (agents use `/index.md`).
-  Extensionless files (`/v1/results`, `/v1/health`) may not be served as `application/json`
-  (UNVERIFIED until A2). `/robots.txt` and `/.well-known/` sit under the sub-path, not at the host root.
+  Extensionless files (`/v1/results`, `/v1/health`) parse as JSON in the live e2e; their exact
+  content type is not checked. `/robots.txt` and `/.well-known/` sit under the sub-path, not at
+  the host root. `upload-pages-artifact` drops dot-paths unless `include-hidden-files: true`.
 - **Push from the rewritten mirror only** with `env -u GH_TOKEN -u GITHUB_TOKEN`. Any clone made
   before B3 still holds the name; re-clone or reset it (C2).
 - `ui/console/engine/instrument.html` was referenced by the console before this arc and is still
