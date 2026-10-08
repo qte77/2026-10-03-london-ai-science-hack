@@ -72,7 +72,7 @@ def _wants_markdown(request: Request) -> bool:
 
 
 def _load_results(reload: Callable[[], None] | None) -> tuple[dict[str, Any] | None, str]:
-    """Live results (Modal volume), else a committed snapshot, else `(None, "none")`."""
+    """Live results (the latest cycle run), else a committed snapshot, else `(None, "none")`."""
     if reload is not None:
         # Reason: a stale/unmounted volume must not break the endpoint; fall through to snapshot.
         with contextlib.suppress(Exception):
@@ -173,14 +173,15 @@ def create_app(reload: Callable[[], None] | None = None) -> FastAPI:
     async def http_error(request: Request, exc: StarletteHTTPException) -> Response:
         # Reason: agents asking for markdown get a readable 404 with a way back in.
         if exc.status_code == 404 and _wants_markdown(request):
-            return Response(discovery.markdown_404(), status_code=404, media_type=MARKDOWN)
+            body = discovery.markdown_404(Settings.from_env().base_url)
+            return Response(body, status_code=404, media_type=MARKDOWN)
         return JSONResponse({"detail": exc.detail}, status_code=exc.status_code)
 
     @app.get("/", include_in_schema=False)
     def root(request: Request) -> Response:
         s, p = _ctx()
         # Reason: one URL, two audiences; Vary tells caches the body depends on Accept.
-        headers = {"Vary": "Accept", "Link": discovery.link_header()}
+        headers = {"Vary": "Accept", "Link": discovery.link_header(s.base_url)}
         if _wants_markdown(request):
             return Response(render_markdown(p, s.base_url), media_type=MARKDOWN, headers=headers)
         # Reason: people get the owner's design artifact (the console SSOT) at /; its assets and
@@ -194,7 +195,8 @@ def create_app(reload: Callable[[], None] | None = None) -> FastAPI:
     @app.get("/about", include_in_schema=False)
     def about() -> Response:
         s, p = _ctx()
-        return HTMLResponse(render_html(p, s.base_url), headers={"Link": discovery.link_header()})
+        headers = {"Link": discovery.link_header(s.base_url)}
+        return HTMLResponse(render_html(p, s.base_url), headers=headers)
 
     @app.get("/index.md", include_in_schema=False)
     def index_md() -> Response:
@@ -202,7 +204,7 @@ def create_app(reload: Callable[[], None] | None = None) -> FastAPI:
         return Response(
             render_markdown(p, s.base_url),
             media_type=MARKDOWN,
-            headers={"Link": discovery.link_header()},
+            headers={"Link": discovery.link_header(s.base_url)},
         )
 
     @app.get("/v1/health")

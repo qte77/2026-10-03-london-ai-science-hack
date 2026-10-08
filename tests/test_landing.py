@@ -1,5 +1,6 @@
 """Landing page: HTML for people at /, markdown for agents (content negotiation + /index.md)."""
 
+import pytest
 from fastapi.testclient import TestClient
 
 from hackbench.api import create_app
@@ -16,21 +17,32 @@ def test_root_serves_the_designed_console_for_browsers() -> None:
     assert "<noscript><h1>Parallax</h1>" in r.text  # readable without JS
 
 
+BASE = "http://localhost:8000"  # Settings.base_url default
+
+
 def test_about_keeps_the_plain_landing_page() -> None:
     r = client.get("/about")
     assert r.status_code == 200
     assert "<h1>Parallax</h1>" in r.text
     for path in ("/llms.txt", "/openapi.json", "/.well-known/agent-card.json", "/results/"):
-        assert f'href="{path}"' in r.text
+        assert f'href="{BASE}{path}"' in r.text
 
 
 def test_markdown_twin_links_to_the_qc_console() -> None:
-    assert "](/results/)" in client.get("/index.md").text
+    assert f"]({BASE}/results/)" in client.get("/index.md").text
 
 
 def test_root_advertises_its_markdown_twin() -> None:
     r = client.get("/")
-    assert '<link rel="alternate" type="text/markdown" href="/index.md">' in r.text
+    assert f'<link rel="alternate" type="text/markdown" href="{BASE}/index.md">' in r.text
+
+
+def test_links_follow_a_base_url_with_a_sub_path(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("HACKBENCH_BASE_URL", "https://example.test/sub")
+    sub = TestClient(create_app())
+    assert 'href="https://example.test/sub/results/"' in sub.get("/about").text
+    assert 'href="https://example.test/sub/llms.txt"' in sub.get("/").text  # noscript links
+    assert "](https://example.test/sub/results.md)" in sub.get("/index.md").text
 
 
 def test_root_serves_markdown_when_asked() -> None:
