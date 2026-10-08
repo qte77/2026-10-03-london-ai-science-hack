@@ -11,7 +11,7 @@ to trust them. Architecture: [docs/architecture.md](docs/architecture.md).
 ## Commands
 
 `make help` lists everything. Before pushing, run `make validate` (lint + tests). `make run`
-serves locally; `make deploy` deploys to Modal.
+serves locally; `make site` pre-renders the static site that the Pages workflow publishes.
 
 ## Rules
 

@@ -1,7 +1,10 @@
 const SCHEMA = "hackbench-results/1";
 
+// Relative to the page at <site>/results/, so it also works when the site lives under a sub-path.
+const RESULTS_URL = "../v1/results";
+
 async function fetchLive() {
-  const res = await fetch("/v1/results", { headers: { Accept: "application/json" } });
+  const res = await fetch(RESULTS_URL, { headers: { Accept: "application/json" } });
   if (!res.ok) {
     throw new Error(`GET /v1/results -> ${res.status}`);
   }
