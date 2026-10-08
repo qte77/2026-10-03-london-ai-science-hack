@@ -1,10 +1,11 @@
 # Plan 0001: host on GitHub Pages, drop Modal, scrub the Modal workspace name from history
 
 **Status (8 Oct 2026):**
-- Phase A shipped in #42; the site is live.
-- The first Pages run deployed and e2e passed 8 of 9. `/.well-known/*` returned 404 because
-  `upload-pages-artifact` drops dot-paths by default; this PR sets `include-hidden-files: true`.
-- Phase B and C rows are open; see [Remaining work](#remaining-work), the only list of open items.
+- Phase A shipped (#42, #43); the site is live and verified (A2).
+- Agent-side cleanup is done: the old URL variable, secrets and Deploy-run logs (B2, B2b), and
+  the PR and release text (C1).
+- Open: stop the Modal app (B1), the history rewrite and force-push (B3–B5), and clones (C2, C3);
+  see [Remaining work](#remaining-work), the only list of open items.
 
 ## Where things stand
 
@@ -39,7 +40,7 @@
 | # | Item | Gate | Done when |
 |---|---|---|---|
 | ~~A1~~ | ~~Merge `feat/gh-pages`~~: **merged as #42**. Fixed in `fix/pages-hidden-files`: the e2e job failed on `/.well-known/agent-card.json` (404, hidden files not uploaded) | owner | PR merged; `pages.yml` run green, including the e2e job |
-| A2 | Browser check of the live Pages site: `/` and `/results/`, desktop and mobile, looks, batch switch | agent | No console errors or failed requests; screenshots taken |
+| ~~A2~~ | ~~Browser check of the live Pages site~~: **done 8 Oct**. The Pages run for #43 passed build, deploy and e2e (9/9, including `/.well-known/agent-card.json` and HTTPS). In Patchright on desktop 1440×900 and mobile 390×844: both consoles render, Batch_3 shows REJECT, all three looks switch `data-look`, 0 console errors and 0 failed requests | agent | No console errors or failed requests; screenshots taken |
 | B1 | Stop the Modal app and delete its secret: `uvx modal app stop hackbench --yes`, `uvx modal secret delete hackbench`, and the Volume `hackbench-data` if unwanted. The agent's attempt was blocked by its safety check, so this is an owner step. The app was still deployed on 8 Oct | owner | The old URL no longer answers |
 | ~~B2~~ | ~~Delete repo secrets `MODAL_TOKEN_ID`/`MODAL_TOKEN_SECRET` and repo variable `HACKBENCH_BASE_URL`~~: **done 8 Oct**; both lists are empty | owner | `gh secret list` and `gh variable list` don't show them |
 | ~~B2b~~ | ~~Delete the logs of the removed "Deploy" workflow's runs~~: **done 8 Oct**. Logs of all 33 runs deleted; the run records are kept (`private/rewrite/delete_deploy_logs.sh`) | owner | 33/33 log deletions succeeded |
