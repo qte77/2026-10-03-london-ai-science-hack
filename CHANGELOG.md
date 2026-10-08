@@ -5,6 +5,16 @@ versioning: [SemVer](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- **Hosting moved from Modal to GitHub Pages:** <https://qte77.github.io/2026-10-03-london-ai-science-hack/>. `make site` (`hackbench.static_site`) renders every route of the FastAPI app into static files, so the site and `make run` cannot drift. The new `pages.yml` workflow publishes it after CI passes on `main`, waits until `/v1/health` reports the new commit, then runs `make e2e`. The site shows the committed results snapshot; publish a new cycle by copying `results/cycle/results.json` to `data/results.snapshot.json`.
+- Every internal link (landing, noscript summary, markdown twin, `Link` header, markdown 404, skills index) is now built from `HACKBENCH_BASE_URL` instead of root-relative paths, so the site works under a sub-path. The React console uses a relative vite `base` and fetches `../v1/results`.
+- e2e: the homepage test checks the markdown twin at `/index.md` (a static host cannot negotiate on `Accept`); new checks cover `/v1/results`, a batch brief, and the React console's assets.
+
+### Removed
+
+- Modal hosting: `deploy.yml`, `src/hackbench/deploy.py`, `make deploy`, `make cycle-upload`, `make cycle-modal`, the `deploy` extra (`modal`) and the CI deploy tokens in `.env.example`. The optional Modal LLM endpoint for the paper judge (`HACKBENCH_LLM_URL`) is unchanged.
+
 ### Added
 
 - `data/submissions/` (CSV + JSON): all 50 event submissions from iterate.inc's public projects endpoint, with participants' names in free text replaced by `[name]` (team names and URLs kept). Track names are mapped from `track_id`, inferred from submission content since the public API serves IDs only. Regenerate with `python3 scripts/scrape_submissions.py` (fetches via a sibling `polyfetch-scrape` checkout; the raw payload and the redaction list stay in gitignored `private/`).
@@ -114,7 +124,7 @@ versioning: [SemVer](https://semver.org/).
 
 - FastAPI app serving the agent-native surface: `/llms.txt`, `/robots.txt` with a
   Content-Signal line, `/.well-known/agent-card.json`, `/openapi.json`, `/v1/health` (#1).
-- Modal deployment (`make deploy`), live at <https://thismay52--hackbench-web.modal.run> (#1).
+- Modal deployment (`make deploy`), live at <https://<modal-workspace>--hackbench-web.modal.run> (#1).
 - `HACKBENCH_BASE_URL`, loaded from the `hackbench` Modal Secret, so the agent card and
   `llms.txt` advertise the public URL (#2).
 - `.env.example` with sponsor API variable names (#2).
