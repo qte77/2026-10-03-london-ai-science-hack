@@ -7,7 +7,10 @@ python -m hackbench.polaron --agent CONFIG        one live LLM session (needs a 
 """
 
 import argparse
+import contextlib
 import json
+import tempfile
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +21,18 @@ from hackbench.profile import load_profile
 from hackbench.settings import Settings
 
 HELDOUT_SEED_OFFSET = 1000
+
+
+@contextlib.contextmanager
+def _scratch_dir(chosen: Path | None) -> Iterator[Path]:
+    """The --scratch dir as given, else a private temporary one that is removed afterwards."""
+    if chosen is not None:
+        yield chosen
+        return
+    # Reason: a fixed /tmp path is predictable and shared with other users (pre-created dirs,
+    # symlinks); mkdtemp is unique and owner-only. Its contents are regenerable per run.
+    with tempfile.TemporaryDirectory(prefix="hackbench-scratch-") as tmp:
+        yield Path(tmp)
 
 
 def _print_batches(results: dict[str, Any]) -> None:
@@ -125,8 +140,7 @@ def main() -> None:
     parser.add_argument(
         "--scratch",
         type=Path,
-        default=Path("/tmp/hackbench-scratch"),  # noqa: S108 - regenerable images only
-        help="where suite images are written (large, regenerable)",
+        help="where suite images and agent workspaces go (default: a private temp dir, removed)",
     )
     parser.add_argument(
         "--agent", help="run ONE live LLM session with this config, e.g. haiku-4-5/neutral"
@@ -138,10 +152,12 @@ def main() -> None:
     params = dict(load_profile(s.profile).domain)
 
     if args.agent:
-        print(json.dumps(_agent_session(args, params), indent=2))
+        with _scratch_dir(args.scratch) as args.scratch:
+            print(json.dumps(_agent_session(args, params), indent=2))
         return
     if args.suite:
-        results = _suite(args, params)
+        with _scratch_dir(args.scratch) as args.scratch:
+            results = _suite(args, params)
         name = "suite.json"
     else:
         task = PolaronTask(args.data_dir, params)

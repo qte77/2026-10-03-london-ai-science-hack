@@ -12,6 +12,7 @@ versioning: [SemVer](https://semver.org/).
 ### Security
 
 - UI build toolchain: `vite` 5.4.21 → 6.4.4 (`esbuild` 0.21.5 → 0.25.12), clearing four Dependabot alerts (one high, three moderate). All four concern the local dev server, not the deployed console. `ui/dist` rebuilt; same source, minifier-only differences.
+- `python -m hackbench.polaron` (`make qc-suite`, `make agent-smoke`): the scratch dir for suite images and agent workspaces defaulted to the fixed, shared path `/tmp/hackbench-scratch` (Bandit S108, insecure temp path). It is now a private, uniquely named temp dir (owner-only), removed after the run; `--scratch DIR` still picks a fixed one.
 
 ### Known limitations
 

@@ -58,7 +58,7 @@ drift suite is not affected.
 | `make validate` | Lint (incl. security rules), format check, `mypy --strict`, tests; run before pushing |
 | `make audit` | Dependency vulnerability scan (`pip-audit`) |
 | `make qc` | Reference QC pipeline on `HACKBENCH_DATA_DIR`: KPIs per field of view, bootstrap CIs vs the baseline batch, accept / investigate / reject; writes `results/` (git-ignored) |
-| `make qc-suite` | Builds a **training** and a **held-out** synthetic drift suite from the baseline (material vs imaging drift, known truth), chooses the tolerance `k` on training only, scores the held-out suite once; images go to `/tmp/hackbench-scratch` (`--scratch`), results to `results/suite.json` |
+| `make qc-suite` | Builds a **training** and a **held-out** synthetic drift suite from the baseline (material vs imaging drift, known truth), chooses the tolerance `k` on training only, scores the held-out suite once; images go to a private temp dir removed after the run (or `--scratch DIR`), results to `results/suite.json` |
 | `make agent-smoke` | **Costs money.** One live Claude session (default `AGENT=haiku-4-5/neutral`, `CANDIDATE=Batch_3`) on `HACKBENCH_DATA_DIR`; reads `ANTHROPIC_API_KEY` from `.env`; capped at 15 calls, 180 s, $1.50; journal in `results/runs/` |
 | `make cycle` | End-to-end cycle on local derived results (`PARALLAX=<dir>` adds their decision briefs); writes `results/cycle/results.json` |
 | `make cycle-upload` / `make cycle-modal` | Put derived inputs (no TIFFs) on the Modal Volume, then run the cycle on Modal; the result is served live at `/v1/results` and `/results` |
